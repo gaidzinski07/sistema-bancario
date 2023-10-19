@@ -81,7 +81,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
   justify-content: center;
 }
 .home-text {
-  font-size: 40px;
+  font-size: 56px;
   font-style: normal;
   font-weight: 700;
 }
@@ -105,14 +105,58 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
   flex-direction: column;
   justify-content: center;
 }
+.home-container11 {
+  flex: 0 0 auto;
+  width: 536px;
+  height: auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
 .home-text2 {
   font-size: 24px;
-  align-self: center;
+  align-self: flex-start;
+  text-align: justify;
+  padding-top: 4px;
+  padding-bottom: 4px;
 }
 .home-select {
   align-self: center;
 }
-.home-container11 {
+.home-container12 {
+  flex: 0 0 auto;
+  width: auto;
+  border: 2px dashed rgba(120, 120, 120, 0.4);
+  height: auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.home-container13 {
+  flex: 0 0 auto;
+  width: auto;
+  height: auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.home-text3 {
+  font-size: 24px;
+}
+.home-text4 {
+  color: var(--dl-color-primary-100);
+  font-size: 24px;
+}
+.home-container14 {
+  flex: 0 0 auto;
+  width: auto;
+  border: 2px dashed rgba(120, 120, 120, 0.4);
+  height: auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.home-container15 {
   width: 100%;
   height: 672px;
   display: flex;
@@ -120,7 +164,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
   flex-direction: column;
   justify-content: flex-start;
 }
-.home-container12 {
+.home-container16 {
   flex: 0 0 auto;
   width: 100%;
   height: 100px;
@@ -129,38 +173,41 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
   flex-direction: column;
   justify-content: center;
 }
-.home-text3 {
+.home-text5 {
   font-size: 24px;
 }
 .home-button {
+  width: 109px;
+  height: 50px;
   align-self: center;
+  background-color: var(--dl-color-success-700);
 }
-.home-container13 {
+.home-container17 {
   flex: 0 0 auto;
-  width: 719px;
+  width: 555px;
+  height: 388px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.home-container18 {
+  flex: 0 0 auto;
+  width: 614px;
   height: auto;
   display: flex;
   align-items: center;
   flex-direction: column;
 }
-.home-container14 {
+.home-container19 {
   flex: 0 0 auto;
-  width: 719px;
+  width: 544px;
   height: auto;
   display: flex;
   align-items: center;
   flex-direction: column;
 }
-.home-container15 {
-  flex: 0 0 auto;
-  width: 719px;
-  height: auto;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-}
-.home-container16 {
-  width: 719px;
+.home-container20 {
+  width: 301px;
   height: 100px;
   display: flex;
   align-items: flex-start;
@@ -171,18 +218,18 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
   height: 95px;
   object-fit: cover;
 }
-.home-container17 {
+.home-container21 {
   flex: 0 0 auto;
-  width: 100%;
+  width: 556px;
   height: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.home-text4 {
+.home-text6 {
   font-size: 40px;
 }
-.home-container18 {
+.home-container22 {
   flex: 0 0 auto;
   width: 100%;
   height: 100px;
@@ -191,13 +238,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
   flex-direction: column;
   justify-content: center;
 }
-.home-text5 {
+.home-text7 {
   align-self: center;
 }
 .home-textinput1 {
   align-self: center;
 }
-.home-container19 {
+.home-container23 {
   flex: 0 0 auto;
   width: 100%;
   height: 100px;
@@ -206,7 +253,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
   flex-direction: column;
   justify-content: center;
 }
-.home-text6 {
+.home-text8 {
   align-self: center;
 }
 .home-textinput2 {
