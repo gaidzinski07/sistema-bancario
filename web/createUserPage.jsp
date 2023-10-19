@@ -1,6 +1,6 @@
 <%-- Document : createUserPage Created on : 19 de out. de 2023, 18:19:17 Author : Lucas Magalhães --%> <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
+<html>
     <head>
         <!-- Required meta tags -->
         <meta charset="utf-8" />
