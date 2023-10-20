@@ -23,74 +23,98 @@
               <div class="home-container06">
                 <div class="home-container07">
                   <div class="home-container08">
-                    <span class="home-text">Transferência</span>
+                    <div class="home-container09">
+                      <div class="home-container10">
+                        <div class="home-container11">
+                          <div class="home-container12">
+                            <span class="home-text">Transferência</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="home-container13">
+                        <span class="home-text01">De:</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div class="home-container09">
-                <span class="home-text1">De:</span>
-              </div>
-            </div>
-            <div class="home-container10">
-              <div class="home-container11">
-                <span class="home-text2">Selecione o tipo de conta:</span>
-                <select class="home-select">
-                  <option value="CC">Conta Corrente</option>
-                  <option value="CP">Conta Poupança</option>
-                  <option value="CI">Conta Investimento</option>
-                </select>
-              </div>
-              <div class="home-container12"></div>
-              <div class="home-container13">
-                <span class="home-text3">Saldo : </span>
-                <span class="home-text4">R$ 0,00</span>
-              </div>
-              <ul class="list">
-                <li class="list-item"></li>
-                <li class="list-item"></li>
-              </ul>
-              <div class="home-container14"></div>
             </div>
           </div>
+        </div>
+        <div class="home-container14">
+          <span class="home-text02">Selecione o tipo de conta:</span>
+          <select>
+            <option value="Option 1">Conta Corrente</option>
+            <option value="Option 2">Conta Poupança</option>
+            <option value="Option 3">Conta Investimento</option>
+          </select>
           <div class="home-container15">
-            <div class="home-container16">
-              <span class="home-text5">Digite sua senha</span>
-              <input type="text" placeholder="Senha" class="input" />
-            </div>
-            <button type="button" class="home-button button">Ok</button>
+            <span class="home-text03">Saldo : </span>
+            <span class="home-text04">R$ 0,00</span>
           </div>
+        </div>
+      </div>
+      <div class="home-container16">
+        <span class="home-text05">Digite sua senha</span>
+        <input
+          type="text"
+          placeholder="Senha"
+          autofocus
+          class="home-textinput input"
+        />
+        <div class="home-container17">
+          <button type="submit" class="home-button button">ok</button>
         </div>
       </div>
     </div>
-    <div class="home-container17">
-      <div class="home-container18">
-        <div class="home-container19">
-          <div class="home-container20">
-            <img
-              alt="image"
-              src="https://i.imgur.com/kBOkecM.png"
-              class="home-image"
+    <div class="home-container18">
+      <div class="home-container19">
+        <div class="home-container20">
+          <div class="home-container21">
+            <div class="home-container22">
+              <div class="home-container23">
+                <div class="home-container24">
+                  <img
+                    alt="image"
+                    src="https://i.imgur.com/kBOkecM.png"
+                    class="home-image"
+                  />
+                </div>
+                <div class="home-container25">
+                  <span class="home-text06">Para:</span>
+                </div>
+              </div>
+              <div class="home-container26">
+                <span class="home-text07">Digite o número da Agência: </span>
+                <input
+                  type="text"
+                  placeholder="1234-5"
+                  class="home-textinput1 input"
+                />
+              </div>
+            </div>
+            <div class="home-container27">
+              <span class="home-text08">Digite o número da Conta</span>
+              <input
+                type="text"
+                placeholder="6789"
+                class="home-textinput2 input"
+              />
+            </div>
+          </div>
+          <div class="home-container28">
+            <span>Valor a ser creditado R$</span>
+            <input
+              type="text"
+              placeholder="0,00"
+              class="home-textinput3 input"
             />
           </div>
-          <div class="home-container21">
-            <span class="home-text6">Para:</span>
-          </div>
         </div>
-        <div class="home-container22">
-          <span class="home-text7">Digite o número da Agência: </span>
-          <input
-            type="text"
-            placeholder="1234-5"
-            class="home-textinput1 input"
-          />
-        </div>
-      </div>
-      <div class="home-container23">
-        <span class="home-text8">Digite o número da Conta</span>
-        <input type="text" placeholder="6789" class="home-textinput2 input" />
       </div>
     </div>
   </div>
 </div>
+
     </body>
 </html>

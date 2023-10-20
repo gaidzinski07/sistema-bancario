@@ -15,6 +15,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
   align-items: flex-start;
   flex-direction: row;
   justify-content: center;
+  background-color: #aab8dc;
 }
 .home-container01 {
   flex: 0 0 auto;
@@ -73,6 +74,38 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
   flex-direction: column;
 }
 .home-container08 {
+  flex: 0 0 auto;
+  width: 390px;
+  height: auto;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.home-container09 {
+  flex: 0 0 auto;
+  width: 390px;
+  height: auto;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.home-container10 {
+  flex: 0 0 auto;
+  width: 390px;
+  height: auto;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.home-container11 {
+  flex: 0 0 auto;
+  width: 390px;
+  height: auto;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.home-container12 {
   width: 390px;
   height: 100px;
   display: flex;
@@ -85,7 +118,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
   font-style: normal;
   font-weight: 700;
 }
-.home-container09 {
+.home-container13 {
   flex: 0 0 auto;
   width: 100%;
   height: 100px;
@@ -93,96 +126,98 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
   align-items: center;
   justify-content: center;
 }
-.home-text1 {
+.home-text01 {
   font-size: 40px;
 }
-.home-container10 {
-  flex: 0 0 auto;
+.home-container14 {
   width: 100%;
-  height: 100px;
+  height: 187px;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   flex-direction: column;
-  justify-content: center;
-}
-.home-container11 {
-  flex: 0 0 auto;
-  width: 536px;
-  height: auto;
-  display: flex;
-  align-items: flex-start;
   justify-content: flex-start;
 }
-.home-text2 {
+.home-text02 {
   font-size: 24px;
   align-self: flex-start;
   text-align: justify;
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
-.home-select {
-  align-self: center;
-}
-.home-container12 {
-  flex: 0 0 auto;
-  width: auto;
-  border: 2px dashed rgba(120, 120, 120, 0.4);
-  height: auto;
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-}
-.home-container13 {
-  flex: 0 0 auto;
-  width: auto;
-  height: auto;
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-}
-.home-text3 {
-  font-size: 24px;
-}
-.home-text4 {
-  color: var(--dl-color-primary-100);
-  font-size: 24px;
-}
-.home-container14 {
-  flex: 0 0 auto;
-  width: auto;
-  border: 2px dashed rgba(120, 120, 120, 0.4);
-  height: auto;
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
+  padding-top: 24px;
+  padding-bottom: 24px;
 }
 .home-container15 {
-  width: 100%;
-  height: 672px;
+  flex: 0 0 auto;
+  width: auto;
+  height: auto;
   display: flex;
   align-items: flex-start;
+  justify-content: center;
+}
+.home-text03 {
+  font-size: 24px;
+  padding-top: 30px;
+}
+.home-text04 {
+  color: var(--dl-color-primary-100);
+  font-size: 24px;
+  padding-top: 30px;
+}
+.home-container16 {
+  width: 100%;
+  height: 190px;
+  display: flex;
+  align-items: center;
   flex-direction: column;
   justify-content: flex-start;
 }
-.home-container16 {
+.home-text05 {
+  font-size: 24px;
+  padding-bottom: 15px;
+}
+.home-textinput {
+  box-shadow: 5px 5px 10px 0px #d4d4d4;
+  border-radius: var(--dl-radius-radius-radius8);
+}
+.home-container17 {
   flex: 0 0 auto;
   width: 100%;
   height: 100px;
   display: flex;
+  position: relative;
   align-items: center;
-  flex-direction: column;
   justify-content: center;
 }
-.home-text5 {
-  font-size: 24px;
-}
 .home-button {
-  width: 109px;
-  height: 50px;
-  align-self: center;
-  background-color: var(--dl-color-success-700);
+  color: #ffffff;
+  width: 235px;
+  height: var(--dl-size-size-small);
+  box-shadow: 5px 5px 10px 0px #d4d4d4;
+  border-style: solid;
+  background-color: #3728f1;
 }
-.home-container17 {
+.home-container18 {
+  flex: 0 0 auto;
+  width: 555px;
+  height: auto;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.home-container19 {
+  width: 555px;
+  height: 545px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.home-container20 {
+  flex: 0 0 auto;
+  width: 555px;
+  height: auto;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.home-container21 {
   flex: 0 0 auto;
   width: 555px;
   height: 388px;
@@ -190,7 +225,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
   align-items: center;
   flex-direction: column;
 }
-.home-container18 {
+.home-container22 {
   flex: 0 0 auto;
   width: 614px;
   height: auto;
@@ -198,7 +233,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
   align-items: center;
   flex-direction: column;
 }
-.home-container19 {
+.home-container23 {
   flex: 0 0 auto;
   width: 544px;
   height: auto;
@@ -206,7 +241,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
   align-items: center;
   flex-direction: column;
 }
-.home-container20 {
+.home-container24 {
   width: 301px;
   height: 100px;
   display: flex;
@@ -218,7 +253,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
   height: 95px;
   object-fit: cover;
 }
-.home-container21 {
+.home-container25 {
   flex: 0 0 auto;
   width: 556px;
   height: 100px;
@@ -226,10 +261,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
   align-items: center;
   justify-content: center;
 }
-.home-text6 {
+.home-text06 {
   font-size: 40px;
 }
-.home-container22 {
+.home-container26 {
   flex: 0 0 auto;
   width: 100%;
   height: 100px;
@@ -238,13 +273,16 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
   flex-direction: column;
   justify-content: center;
 }
-.home-text7 {
+.home-text07 {
   align-self: center;
 }
 .home-textinput1 {
   align-self: center;
+  box-shadow: 5px 5px 10px 0px #d4d4d4;
+  border-style: solid;
+  border-radius: var(--dl-radius-radius-radius8);
 }
-.home-container23 {
+.home-container27 {
   flex: 0 0 auto;
   width: 100%;
   height: 100px;
@@ -253,9 +291,23 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
   flex-direction: column;
   justify-content: center;
 }
-.home-text8 {
+.home-text08 {
   align-self: center;
 }
 .home-textinput2 {
   align-self: center;
+  box-shadow: 5px 5px 10px 0px #d4d4d4;
+  border-radius: var(--dl-radius-radius-radius8);
+}
+.home-container28 {
+  flex: 0 0 auto;
+  width: 100%;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+.home-textinput3 {
+  box-shadow: 5px 5px 10px 0px #d4d4d4;
 }
