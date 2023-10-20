@@ -7,3 +7,7 @@ background: -webkit-linear-gradient(to bottom right, rgba(0,83,154, 1), rgba(13,
 /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 background: linear-gradient(to bottom right, rgba(0,83,154, 1), rgba(13,110,253, 1))
 }
+
+.gradientBackground {
+    background: linear-gradient(to right, rgba(0,83,154, 1), rgba(13,110,253, 1));
+}
