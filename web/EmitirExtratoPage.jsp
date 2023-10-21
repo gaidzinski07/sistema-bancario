@@ -71,9 +71,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                     <%
                                     HttpSession sessao = request.getSession() ;
                                 Boolean showTable = (Boolean) sessao.getAttribute("mostrarTabela") ;
-                                    out.print("Flag mostrar tabela <b>" + showTable + "</b> logado.<br>") ;
+                                    if(showTable) {
                                     %> 
-                                <div class="extract">
+                                    <div class="extract">
                                     <table class="table table-sm">
                                         <thead>
                                       <tr>
@@ -105,6 +105,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                   
                                     </table>
                                 </div>
+                                <%
+                                        }
+                                    %> 
+                                
                             </div>
                         </div>
                     </div>
