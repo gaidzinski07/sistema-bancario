@@ -21,7 +21,7 @@
                     <div class="card shadow border">
                         <div class="card-body d-flex flex-column align-items-center">
                             <div class="col d-flex justify-content-center">
-                                <img class="mb-4" src="https://i.imgur.com/kBOkecM.png" alt="" height="57">
+                                <img class="mb-4" src="https://uploaddeimagens.com.br/images/004/641/545/original/Design_sem_nome.png?1697751630" alt="" height="57">
                             </div>
                             <h1>Entrar</h1>
                             <form>

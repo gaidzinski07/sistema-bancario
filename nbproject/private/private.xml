@@ -4,6 +4,11 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/E:/projetos/intro-dev-web/sistema-bancario/web/index.html</file>
+<<<<<<< Updated upstream
+=======
+            <file>file:/E:/projetos/intro-dev-web/sistema-bancario/web/realizarInvestimento.jsp</file>
+            <file>file:/E:/projetos/intro-dev-web/sistema-bancario/web/visualizarInvestimentos.jsp</file>
+>>>>>>> Stashed changes
         </group>
     </open-files>
 </project-private>
