@@ -7,10 +7,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+/**
+ * @author lucas
+ */
 
-
-@WebServlet(urlPatterns = {"/EmitirExtratoController"})
-public class EmitirExtratoController extends HttpServlet {
+@WebServlet(urlPatterns = {"/EmitirSaldoController"})
+public class EmitirSaldoController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -19,17 +21,17 @@ public class EmitirExtratoController extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Verifique se o parâmetro "emitirExtrato" está presente na URL
-        HttpSession sessao = request.getSession();
-        
-        String emitirExtrato = request.getParameter("emitirExtrato");
+        // Verifique se o parâmetro "emitirSaldo" está presente na URL
 
-        if (emitirExtrato != null && emitirExtrato.equals("true")) {
-            sessao.setAttribute("mostrarTabela", true);
+        HttpSession sessao = request.getSession();
+        String emitirSaldo = request.getParameter("emitirSaldo");
+
+        if (emitirSaldo != null && emitirSaldo.equals("true")) {
+            sessao.setAttribute("mostraSaldo", true);
         } else {
-            sessao.setAttribute("mostrarTabela", false);
+            sessao.setAttribute("mostraSaldo", false);
         }
-        RequestDispatcher rd = request.getRequestDispatcher("EmitirExtratoPage.jsp") ;
+        RequestDispatcher rd = request.getRequestDispatcher("EmitirSaldoPage.jsp") ;
         rd.forward(request, response);
 
     }
