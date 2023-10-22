@@ -1,0 +1,28 @@
+.gradient-custom {
+    background: white;
+
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to bottom right, rgba(0, 83, 154, 1), rgba(13, 110, 253, 1));
+
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to bottom right, rgba(0, 83, 154, 1), rgba(13, 110, 253, 1))
+}
+
+.gradientBackground {
+    background: linear-gradient(to right, rgba(0, 83, 154, 1), rgba(13, 110, 253, 1));
+}
+
+.master-card-style {
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to bottom right, #ff9f00,#FF0015);
+
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to bottom right, #ff9f00,#FF0015);
+}
+.visa-card-style {
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to bottom right,#FAA619,#429be9);
+
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to bottom right,#FAA619,#429be9);
+}
