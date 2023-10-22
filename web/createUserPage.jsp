@@ -10,6 +10,7 @@
         <link href="./formsStyle.css" rel="stylesheet" />
         <title>Criar Conta</title>
     </head>
+    <jsp:include page="HeaderComponent.html"/>
     <body>
         <section class="vh-100 gradient-custom">
             <div class="container h-100">
