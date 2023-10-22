@@ -30,47 +30,47 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                 <form action="EmitirExtratoController" method="get">
                                     <button type="submit" class="btn btn-primary btn-lg" name="emitirExtrato" value="true">Emitir Extrato</button>
                                 </form>
-                                    <%
-                                    HttpSession sessao = request.getSession() ;
-                                Boolean showTable = (Boolean) sessao.getAttribute("mostrarTabela") ;
-                                    if(showTable) {
-                                    %> 
-                                    <div class="extract">
+                                <%
+                                HttpSession sessao = request.getSession() ;
+                            Boolean showTable = (Boolean) sessao.getAttribute("mostrarTabela") ;
+                                if(showTable) {
+                                %> 
+                                <div class="extract">
                                     <table class="table table-sm">
                                         <thead>
-                                      <tr>
-                                        <th scope="col">ID Da Transação</th>
-                                        <th scope="col">Doador/Favorecido</th>
-                                        <th scope="col">Entrada</th>
-                                        <th scope="col">Saída</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      <tr>
-                                        <th scope="row">1</th>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                      </tr>
-                                      <tr>
-                                        <th scope="row">2</th>
-                                        <td>Jacob</td>
-                                        <td>Thornton</td>
-                                        <td>@fat</td>
-                                      </tr>
-                                      <tr>
-                                        <th scope="row">3</th>
-                                        <td colspan="2">Larry the Bird</td>
-                                        <td>@twitter</td>
-                                      </tr>
-                                    </tbody>
-                                  
+                                            <tr>
+                                                <th scope="col">ID Da Transação</th>
+                                                <th scope="col">Doador/Favorecido</th>
+                                                <th scope="col">Entrada</th>
+                                                <th scope="col">Saída</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row">1</th>
+                                                <td>Mark</td>
+                                                <td>Otto</td>
+                                                <td>@mdo</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">2</th>
+                                                <td>Jacob</td>
+                                                <td>Thornton</td>
+                                                <td>@fat</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">3</th>
+                                                <td colspan="2">Larry the Bird</td>
+                                                <td>@twitter</td>
+                                            </tr>
+                                        </tbody>
+
                                     </table>
                                 </div>
                                 <%
                                         }
-                                    %> 
-                                
+                                %> 
+
                             </div>
                         </div>
                     </div>

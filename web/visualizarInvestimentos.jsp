@@ -122,8 +122,8 @@
                 </div>
             </div>
         </div>
-        
-        
+
+
         <script>
             function popularModal(nomeFundo, valorMaximo) {
                 var inputNomeFundo = document.getElementById("fundoInput");

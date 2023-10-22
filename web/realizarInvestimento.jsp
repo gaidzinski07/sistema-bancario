@@ -18,8 +18,8 @@
         <jsp:include page="HeaderComponent.html"/>
         <h1>Fundos de Investimento</h1>
         <div class="container">
-            
-            
+
+
             <div class="row align-items-center vh-100">
                 <table class="table">
                     <thead>
@@ -129,10 +129,10 @@
                 inputValor.value = 0;
                 inputNomeFundo.value = nomeFundo;
             }
-            function teste(){
+            function teste() {
                 document.getElementById("abc").alert();
             }
-            
+
         </script>
 
     </body>
