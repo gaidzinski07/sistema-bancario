@@ -16,78 +16,81 @@
     </head>
     <body style="background-color: #0156a5">
         <jsp:include page="HeaderComponent.html"/>
-        <h1>Fundos de Investimento</h1>
         <div class="container">
-
-
             <div class="row align-items-center vh-100">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Cód.</th>
-                            <th scope="col">Nome</th>
-                            <th scope="col">Valor da Cota (R$)</th>
-                            <th scope="col">Valor Mín. (R$)</th>
-                            <th scope="col">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">0001</th>
-                            <td>Lojas Americanas</td>
-                            <td>1,99</td>
-                            <td>10,00</td>
-                            <td>
-                                <div class="btn-group">
-                                    <button
-                                        type="button"
-                                        class="btn btn-primary"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#exampleModalCenter"
-                                        onclick="popularModal('0001 - Lojas Americanas', 10)">
-                                        Aplicar
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">0002</th>
-                            <td>777 Partners Investimentos Desportivos</td>
-                            <td>7,77</td>
-                            <td>77</td>
-                            <td>
-                                <div class="btn-group">
-                                    <button
-                                        type="button"
-                                        class="btn btn-primary"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#exampleModalCenter"
-                                        onclick="popularModal('0002 - 777 Partners Investimentos Desportivos', 77)">
-                                        Aplicar
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">0003</th>
-                            <td>LG Tecnologia</td>
-                            <td>88,99</td>
-                            <td>180</td>
-                            <td>
-                                <div class="btn-group">
-                                    <button
-                                        type="button"
-                                        class="btn btn-primary"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#exampleModalCenter"
-                                        onclick="popularModal('0003 - LG Tecnologia', 180)">
-                                        Aplicar
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Fundos de Investimento</h5>
+                        <p class="card-text">Visualize fundos de investimento disponíveis no UFFBank</p>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Cód.</th>
+                                    <th scope="col">Nome</th>
+                                    <th scope="col">Valor da Cota (R$)</th>
+                                    <th scope="col">Valor Mín. (R$)</th>
+                                    <th scope="col">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">0001</th>
+                                    <td>Lojas Americanas</td>
+                                    <td>1,99</td>
+                                    <td>10,00</td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button
+                                                type="button"
+                                                class="btn btn-primary"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#exampleModalCenter"
+                                                onclick="popularModal('0001 - Lojas Americanas', 10)">
+                                                Aplicar
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">0002</th>
+                                    <td>777 Partners Investimentos Desportivos</td>
+                                    <td>7,77</td>
+                                    <td>77</td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button
+                                                type="button"
+                                                class="btn btn-primary"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#exampleModalCenter"
+                                                onclick="popularModal('0002 - 777 Partners Investimentos Desportivos', 77)">
+                                                Aplicar
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">0003</th>
+                                    <td>LG Tecnologia</td>
+                                    <td>88,99</td>
+                                    <td>180</td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button
+                                                type="button"
+                                                class="btn btn-primary"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#exampleModalCenter"
+                                                onclick="popularModal('0003 - LG Tecnologia', 180)">
+                                                Aplicar
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
 
