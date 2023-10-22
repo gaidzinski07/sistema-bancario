@@ -1,5 +1,5 @@
 .gradient-custom {
-    background: #00539A;
+    background: white;
 
     /* Chrome 10-25, Safari 5.1-6 */
     background: -webkit-linear-gradient(to bottom right, rgba(0, 83, 154, 1), rgba(13, 110, 253, 1));

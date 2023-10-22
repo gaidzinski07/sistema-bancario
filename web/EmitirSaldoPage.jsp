@@ -73,44 +73,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
                                             </div>
                                         </div>
                                     </section>
-                                    <section>
-                                        <div class="container py-5 h-100">
-                                            <div class="row d-flex justify-content-center align-items-center h-100">
-                                                <div>
-                                                    <div class="card mb-3" style="border-radius: .5rem;">
-                                                        <div class="row g-0">
-                                                            <div class="col-md-4 visa-card-style text-center text-white"
-                                                                style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
-                                                                <img src="https://www.mobills.com.br/blog/wp-content/uploads/2022/06/logo-da-visa-bandeira-cartao.png"
-                                                                    alt="Avatar" class="img-fluid my-5  px-4" />
-                                                                <i class="far fa-edit mb-5"></i>
-                                                            </div>
-                                                            <div class="col-md-8">
-                                                                <div class="card-body p-4">
-                                                                    <h6>Informações da Conta</h6>
-                                                                    <hr class="mt-0 mb-4">
-                                                                    <div class="row pt-1">
-                                                                        <div class="col-6 mb-3">
-                                                                            <h6>Agência</h6>
-                                                                            <p>0123</p>
-                                                                        </div>
-                                                                        <div class="col-6 mb-3">
-                                                                            <h6>Número da Conta</h6>
-                                                                            <p>1234 5678 9843 1253</p>
-                                                                        </div>
-                                                                    </div>
-                                                                    <h6>Saldo da Conta</h6>
-                                                                    <div><b class="text-success">R$85,00</b></div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </section>
                                     <% } %>
-
                             </div>
                         </div>
                     </div>
@@ -121,5 +84,4 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit thi
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
     </body>
-
     </html>
