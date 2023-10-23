@@ -15,18 +15,15 @@
               integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <link href="./formsStyle.css" rel="stylesheet" />
     </head>
-    <body>
+    <body style="background-color:#0156a5">
         <jsp:include page="HeaderComponent.html"/>
-        <div>
+            <h1>Realizar transferência entre contas</h1>
             <form>
-            <section class="vh-100 gradient-custom"
-            <!--<link href="./transferencia.css" rel="stylesheet" />-->
+            <section class="vh-100"
             <div class="container h-100">
-            <div class="container text-center">
+            <div class="container text-left">
                 <div class="card text-black" style="border-radius: 0px;">
-                    <div class="row"
-                         <img src="https://uploaddeimagens.com.br/images/004/641/545/original/Design_sem_nome.png?1697751630" class="img-fluid" alt="Logo do Banco" />
-                    </div>
+                    
                      
                 <div class="row justify-content-center">
                     
@@ -53,7 +50,7 @@
                                     <input type="valor" class="form-control" id="inputvalor" aria-describedby="valorhelp">
                                     <div id="valorhelp" class="form-text">Usuário deve digitar sua senha</div>
                                 </div>
-                            <div class="home-container17">
+                            <div class="row container justify-content-center">
                                 <button type="submit" class="btn btn-primary">Enviar</button>
                             </div>
                         </div>
@@ -100,17 +97,13 @@
                                                
                     </div>
                         
-                
-                                    
-                
-                
                 </div>
             
             
         
             </section>
             </form>
-        </div>    
+            
         
         
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"

@@ -51,7 +51,9 @@
                                     <input type="checkbox" class="form-check-input" id="exampleCheck1">
                                     <label class="form-check-label" for="exampleCheck1">Confirmo que as informações prestadas são verdadeiras e que se houver valores distintos o depósito não será realizado.</label>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Enviar</button>
+                                    
+                                    <button type="submit" class="btn btn-primary">Enviar</button>
+                                   
                                 </form>
                             </div>
                         </div>
