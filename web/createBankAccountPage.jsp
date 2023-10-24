@@ -1,11 +1,11 @@
-<%-- Document : createBankAccount Created on : 19 de out. de 2023, 18:19:17 Author : Lucas Magalhães --%> <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
-        <!-- Required meta tags -->
+
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <!-- Bootstrap CSS -->
+
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
         <link href="./formsStyle.css" rel="stylesheet" />
         <title>Criar Conta</title>
@@ -26,14 +26,14 @@
                                             <div class="d-flex flex-row align-items-center mb-4">
                                                 <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
                                                 <div class="form-outline flex-fill mb-0">
-                                                    <input type="email" id="" class="form-control" placeholder="Insira a agência" />
+                                                    <input type="email" class="form-control" placeholder="Insira a agência" />
                                                     <label class="form-label">Agência</label>
                                                 </div>
                                             </div>
                                             <div class="d-flex flex-row align-items-center mb-4">
                                                 <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
                                                 <div class="form-outline flex-fill mb-0">
-                                                    <input type="email" id="" class="form-control" placeholder="Insira a Conta" />
+                                                    <input type="email" class="form-control" placeholder="Insira a Conta" />
                                                     <label class="form-label">Conta</label>
                                                 </div>
                                             </div>
