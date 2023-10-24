@@ -22,23 +22,23 @@
                                     <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
                                         <img src="https://uploaddeimagens.com.br/images/004/641/545/original/Design_sem_nome.png?1697751630" class="img-fluid" alt="Logo do Banco" />
                                         <p class="text-center h1 mb-5 mx-1 mx-md-4 mt-4 fw-normal">Criar Conta Bancária</p>
-                                        <form class="mx-1 mx-md-4">
+                                        <form class="mx-1 mx-md-4" action="" method="get">
                                             <div class="d-flex flex-row align-items-center mb-4">
                                                 <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
                                                 <div class="form-outline flex-fill mb-0">
-                                                    <input type="email" class="form-control" placeholder="Insira a agência" />
+                                                    <input class="form-control" name="agenciaInput" placeholder="Insira a agência" />
                                                     <label class="form-label">Agência</label>
                                                 </div>
                                             </div>
                                             <div class="d-flex flex-row align-items-center mb-4">
                                                 <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
                                                 <div class="form-outline flex-fill mb-0">
-                                                    <input type="email" class="form-control" placeholder="Insira a Conta" />
+                                                    <input  class="form-control" name="contaInput" placeholder="Insira a Conta" />
                                                     <label class="form-label">Conta</label>
                                                 </div>
                                             </div>
                                             <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                                                <button type="button" class="btn btn-primary btn-lg">Criar Conta</button>
+                                                <button type="submit" class="btn btn-primary btn-lg" name="createAccount" value="insert">Criar Conta</button>
                                             </div>
                                         </form>
                                     </div>

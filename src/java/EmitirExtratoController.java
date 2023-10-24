@@ -21,9 +21,9 @@ public class EmitirExtratoController extends HttpServlet {
 
         if (emitirExtrato != null && emitirExtrato.equals("true")) {
             List<Transacao> transacoes = new ArrayList<Transacao>();
-            transacoes.add(new Transacao("000001", "Lucas Magalhães", "100.00", "0.00"));
-            transacoes.add(new Transacao("000002", "Jacob", "50.00", "0.00"));
-            transacoes.add(new Transacao("000003", "Larry the Bird", "0.00", "25.00"));
+            transacoes.add(new Transacao("000001", "Lucas Magalhães", "R$ 100,00", "R$ 0,00"));
+            transacoes.add(new Transacao("000002", "João Pedro", "R$ 50,00", "R$ 0,00"));
+            transacoes.add(new Transacao("000003", "Gabriel Barbosa", "R$ 0,00", "R$ 25,00"));
             sessao.setAttribute("transacoes", transacoes);
             sessao.setAttribute("mostrarTabela", true);
             System.out.println("Valor de transacoes: " + transacoes);

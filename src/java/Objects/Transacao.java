@@ -21,7 +21,7 @@ public class Transacao {
         this.id = id;
     }
 
-    public String getDoadorFavorecido() {
+    public String getNome() {
         return doadorFavorecido;
     }
 
