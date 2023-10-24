@@ -1,12 +1,10 @@
 <%-- 
     Document   : loginJSP
     Created on : 17 de out. de 2023, 23:22:53
-    Author     : João
+    Author     : Joï¿½o
 --%>
-
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-         pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -22,12 +20,12 @@
                     <div class="card shadow border">
                         <div class="card-body d-flex flex-column align-items-center">
                             <div class="col d-flex justify-content-center">
-                                <img class="mb-4" src="https://i.imgur.com/kBOkecM.png" alt="" height="57">
+                                <img class="mb-4" src="https://uploaddeimagens.com.br/images/004/641/545/original/Design_sem_nome.png?1697751630" alt="Logo do banco" height="57">
                             </div>
                             <h1>Entrar</h1>
                             <form>
                                 <div class="form-group row">
-                                    <label for="agencia">Agência</label>
+                                    <label for="agencia">AgÃªncia</label>
                                     <input type="text" pattern="\d*" maxlength="4" class="form-control" id="agencia" placeholder="">
                                 </div>
                                 <div class="form-group row">
@@ -39,7 +37,7 @@
                                     <input type="password" class="form-control" id="senha" placeholder="">
                                 </div>
 
-                                <button class="btn btn-primary w-100 py-2" style="margin-top: 10px" type="submit">Sign in</button>
+                                <button class="btn btn-primary w-100 py-2" style="margin-top: 10px" type="submit">Fazer Login</button>
                             </form>
                         </div>
                     </div>
