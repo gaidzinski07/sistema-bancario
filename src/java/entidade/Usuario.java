@@ -5,17 +5,10 @@ public class Usuario {
     private int id;
     private String nome;
     private String cpf;
-    private String endereco;
     private String senha;
 
-    public Usuario(String nome, String cpf, String endereco, String senha) {
+    public Usuario(String nome, String cpf, String senha) {
         this.nome = nome;
-        this.cpf = cpf;
-        this.endereco = endereco;
-        this.senha = senha;
-    }
-
-    public Usuario(String cpf, String senha) {
         this.cpf = cpf;
         this.senha = senha;
     }
@@ -24,7 +17,6 @@ public class Usuario {
         this.id = 0;
         this.nome = "";
         this.cpf = "";
-        this.endereco = "";
         this.senha = "";
     }
 
@@ -50,14 +42,6 @@ public class Usuario {
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
-    }
-
-    public String getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
     }
 
     public String getSenha() {

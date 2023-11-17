@@ -1,15 +1,26 @@
-INSERT INTO mysql.contas (tipo, descricao) 
-	VALUES (1, 'CONTA CORRENTE');
-INSERT INTO mysql.contas (tipo, descricao) 
-	VALUES (2, 'CONTA POUPANÇA');
-INSERT INTO mysql.contas (tipo, descricao) 
-	VALUES (3, 'CONTA INVESTIMENTO');
+INSERT INTO mysql.Agencia (endereco) 
+	VALUES ('Niterói');
 
 DELETE FROM usuarios;
-INSERT INTO mysql.usuarios (nome, cpf, senha, endereco) 
-	VALUES ('Luiz Gustavo', '008580', '123', 'rua a');
+INSERT INTO mysql.usuarios (nome, cpf, senha) 
+	VALUES ('LuizGustavo', '00858', '123');
+INSERT INTO mysql.usuarios (nome, cpf, senha) 
+	VALUES ('Joao', '00555', '123');
+INSERT INTO mysql.usuarios (nome, cpf, senha) 
+	VALUES ('Lucas', '00777', '123');
+INSERT INTO mysql.usuarios (nome, cpf, senha) 
+	VALUES ('usuario', '00111', '123');
+INSERT INTO mysql.usuarios (nome, cpf, senha) 
+	VALUES ('usuario', '00111', '123');
 
-DELETE FROM contasusuario;
-INSERT INTO mysql.contasusuario (id_user, tipoconta, agencia, conta, saldo) 
-	VALUES (1, 1, 2020, 1317, 1000.0);  --verificar
+INSERT INTO mysql.administrador (id_usuario, tipo_administrador) 
+	VALUES (1, 'cadastrador');
+INSERT INTO mysql.administrador (id_usuario, tipo_administrador) 
+	VALUES (2, 'cadastrador');
+INSERT INTO mysql.administrador (id_usuario, tipo_administrador) 
+	VALUES (3, 'cadastrador');
 
+INSERT INTO mysql.cliente (id_usuario, tipo_cliente) 
+	VALUES (1, 'Correntista');
+INSERT INTO mysql.cliente (id_usuario, tipo_cliente) 
+	VALUES (4, 'Correntista');
