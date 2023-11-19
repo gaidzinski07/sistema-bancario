@@ -1,4 +1,4 @@
-package Objects;
+package entidade;
 
 public class Transacao {
     private String id;
