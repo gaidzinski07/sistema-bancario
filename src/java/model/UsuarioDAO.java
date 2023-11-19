@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import entidade.Usuario;
+import entidade.Cliente;
 
 /*
 -- Estrutura da tabela `usuarios`
@@ -134,6 +135,46 @@ public class UsuarioDAO {
                 }
             }
             return usuarioObtido;
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            throw new RuntimeException("Query de select (get) incorreta");
+        } finally {
+            conexao.closeConexao();
+        }
+    }
+    
+    public Usuario LogarContaCorrente(Integer ContaCorrente) throws Exception {
+        Conexao conexao = new Conexao();
+        int idusuario;
+        try {
+            PreparedStatement sql = conexao.getConexao().prepareStatement("SELECT * contasbancaria c JOIN cliente cli on c.id_cliente = cli.id where c.conta_corrente = ? ");
+            sql.setInt(1, ContaCorrente);
+            ResultSet resultado1 = sql.executeQuery();
+            Cliente clienteObtido = new Cliente();
+             if (resultado1 != null) {
+                while (resultado1.next()) {
+                    clienteObtido.setId(Integer.parseInt(resultado1.getString("ID")));
+                    clienteObtido.setId_usuario(Integer.parseInt(resultado1.getString("ID_USUARIO")));
+                    clienteObtido.setTipo_Cliente(resultado1.getString("TIPO_CLIENTE"));
+                }
+             }
+            idusuario = clienteObtido.getId_usuario();
+            
+            PreparedStatement sql2 = conexao.getConexao().prepareStatement("SELECT * FROM usuarios WHERE id=? LIMIT 1");
+            sql2.setInt(1, idusuario);
+            ResultSet resultado2 = sql2.executeQuery();
+            Usuario usuarioObtido = new Usuario();
+            if (resultado2 != null) {
+                while (resultado2.next()) {
+                    usuarioObtido.setId(Integer.parseInt(resultado2.getString("ID")));
+                    usuarioObtido.setNome(resultado2.getString("NOME"));
+                    usuarioObtido.setCpf(resultado2.getString("CPF"));
+                    usuarioObtido.setSenha(resultado2.getString("SENHA"));
+                }
+            }        
+            return usuarioObtido;
+        
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
