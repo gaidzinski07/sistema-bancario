@@ -151,7 +151,8 @@ CREATE TABLE IF NOT EXISTS `Investimento` (
   `vr_investido` float NOT NULL,
   `qtd_cotas` float NOT NULL,
    PRIMARY KEY (`id_investimento`),
-   KEY `FK_user_inv` (`id_cliente`) 
+   KEY `FK_user_inv` (`id_cliente`), 
+   KEY `FK_fundo` (id_fundo)
    ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 --
 -- Restrições para despejos de tabelas
@@ -182,7 +183,8 @@ ALTER TABLE `Transferencia`
   ADD CONSTRAINT `FK_user_d` FOREIGN KEY (`id_usuario_destino`) REFERENCES `Usuarios` (`id`);
 COMMIT;
 ALTER TABLE `Investimento`
-  ADD CONSTRAINT `FK_user_inv` FOREIGN KEY (`id_cliente`) REFERENCES `Usuarios` (`id`) ;
+  ADD CONSTRAINT `FK_user_inv` FOREIGN KEY (`id_cliente`) REFERENCES `Usuarios` (`id`) ,
+  ADD CONSTRAINT `FK_fundo` FOREIGN KEY (`id_fundo`) REFERENCES `Fundo` (`id_fundo`) ;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
