@@ -12,88 +12,93 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
         <link href="./formsStyle.css" rel="stylesheet" />
-        <title>Realizar Investimento</title>
+        <title>Meus Investimentos</title>
     </head>
     <body style="background-color: #0156a5">
         <jsp:include page="HeaderComponent.html"/>
-        <h1>Meus Investimentos</h1>
         <div class="container">
             <div class="row align-items-center vh-100">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Cód.</th>
-                            <th scope="col">Nome</th>
-                            <th scope="col">Data Inicial</th>
-                            <th scope="col">Qtd. Cotas</th>
-                            <th scope="col">Valor Inicial (R$)</th>
-                            <th scope="col">Valor Atual (R$)</th>
-                            <th scope="col"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">0001</th>
-                            <td>Lojas Americanas</td>
-                            <td>21/02/2023</td>
-                            <td>200,00</td>
-                            <td>1000,00</td>
-                            <td style="color: green"><b>1500,00</b></td>
-                            <td>
-                                <div class="btn-group">
-                                    <button
-                                        type="button"
-                                        class="btn btn-primary"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#exampleModalCenter"
-                                        onclick="popularModal('0001 - Lojas Americanas', 1500)">
-                                        Resgatar
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">0002</th>
-                            <td>777 Partners Investimentos Desportivos</td>
-                            <td>30/09/2023</td>
-                            <td>1000,00</td>
-                            <td>1000,00</td>
-                            <td><b>1000,00</b></td>
-                            <td>
-                                <div class="btn-group">
-                                    <button
-                                        type="button"
-                                        class="btn btn-primary"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#exampleModalCenter"
-                                        onclick="popularModal('0002 - 777 Partners Investimentos Desportivos', 1000)">
-                                        Resgatar
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">0003</th>
-                            <td>LG Tecnologia</td>
-                            <td>01/02/2022</td>
-                            <td>1942,00</td>
-                            <td>500,00</td>
-                            <td style="color: red"><b>393,00</b></td>
-                            <td>
-                                <div class="btn-group">
-                                    <button
-                                        type="button"
-                                        class="btn btn-primary"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#exampleModalCenter"
-                                        onclick="popularModal('0003 - LG Tecnologia', 393)">
-                                        Resgatar
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Meus Investimentos</h5>
+                        <p class="card-text">Visualize e gerencie seus investimentos</p>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Cód.</th>
+                                    <th scope="col">Nome</th>
+                                    <th scope="col">Data Inicial</th>
+                                    <th scope="col">Qtd. Cotas</th>
+                                    <th scope="col">Valor Inicial (R$)</th>
+                                    <th scope="col">Valor Atual (R$)</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">0001</th>
+                                    <td>Lojas Americanas</td>
+                                    <td>21/02/2023</td>
+                                    <td>200,00</td>
+                                    <td>1000,00</td>
+                                    <td style="color: green"><b>1500,00</b></td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button
+                                                type="button"
+                                                class="btn btn-primary"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#exampleModalCenter"
+                                                onclick="popularModal('0001 - Lojas Americanas', 1500)">
+                                                Resgatar
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">0002</th>
+                                    <td>777 Partners Investimentos Desportivos</td>
+                                    <td>30/09/2023</td>
+                                    <td>1000,00</td>
+                                    <td>1000,00</td>
+                                    <td><b>1000,00</b></td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button
+                                                type="button"
+                                                class="btn btn-primary"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#exampleModalCenter"
+                                                onclick="popularModal('0002 - 777 Partners Investimentos Desportivos', 1000)">
+                                                Resgatar
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">0003</th>
+                                    <td>LG Tecnologia</td>
+                                    <td>01/02/2022</td>
+                                    <td>1942,00</td>
+                                    <td>500,00</td>
+                                    <td style="color: red"><b>393,00</b></td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button
+                                                type="button"
+                                                class="btn btn-primary"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#exampleModalCenter"
+                                                onclick="popularModal('0003 - LG Tecnologia', 393)">
+                                                Resgatar
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- Modal -->
