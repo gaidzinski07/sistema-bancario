@@ -4,7 +4,9 @@
  */
 
 import entidade.Deposito;
-import java.awt.BorderLayout;
+import entidade.Investimento;
+import entidade.Saque;
+import entidade.Transferencia;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -14,6 +16,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.DepositoDAO;
+import model.InvestimentoDAO;
+import model.SaqueDAO;
+import model.TransferenciaDAO;
 
 /**
  *
@@ -36,9 +41,49 @@ public class TesteDAOs extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            DepositoDAO dao = new DepositoDAO();
-            ArrayList<Deposito> depositos = dao.getAll();
-            System.out.println("TESTE TESTE TESTE"+ depositos.toString());
+            DepositoDAO depositoDao = new DepositoDAO();
+            SaqueDAO saqueDao = new SaqueDAO();
+            TransferenciaDAO transfDao = new TransferenciaDAO();
+            InvestimentoDAO investDao = new InvestimentoDAO();
+            
+            ArrayList<Deposito> depositos = depositoDao.getAll();
+            ArrayList<Saque> saques = saqueDao.getAll();
+            ArrayList<Transferencia> transferencias = transfDao.getAll();
+            ArrayList<Investimento> investimentos = investDao.getAll();
+            
+            
+            System.out.println("\n\n\n>>> DEPÓSITOS:");
+            depositos.stream().forEach(d -> {
+                System.out.println("Depósito Id: " + d.getId());
+                System.out.println(d.getDataDeposito().toString());
+                System.out.println(d.getValor());
+            });
+            
+            
+            System.out.println("\n\n\n>>> SAQUES:");
+            saques.stream().forEach(s -> {
+                System.out.println("Saque Id: " + s.getIdSaque());
+                System.out.println(s.getData().toString());
+                System.out.println(s.getValor());
+            });
+            
+            System.out.println("\n\n\n>>> TRANSFERÊNCIAS:");
+            transferencias.stream().forEach(t -> {
+                System.out.println("Transferência Id: " + t.getIdTransferencia());
+                System.out.println(t.getData().toString());
+                System.out.println(t.getValor());
+            });
+            
+            
+            System.out.println("\n\n\n>>> INVESTIMENTOS:");
+            investimentos.stream().forEach(t -> {
+                System.out.println("Investimento Id: " + t.getIdInvestimento());
+                System.out.println(t.getIdCliente());
+                System.out.println(t.getIdFundo());
+                System.out.println(t.getQtdCotas());
+                System.out.println(t.getVrInvestido());
+            });
+            
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
