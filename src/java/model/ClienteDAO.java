@@ -69,7 +69,7 @@ public class ClienteDAO implements Dao<Cliente> {
         try {
             PreparedStatement sql = conexao.getConexao().prepareStatement("UPDATE Administrador SET id_usuario = ?, tipo_administrador = ?  WHERE ID_USUARIO = ? ");
             sql.setInt(1, (t.getId_usuario()));
-            sql.setString(2, (t.getTipo_Cliente()));                       
+            sql.setString(2, (t.getTipo_Cliente()));
             sql.executeUpdate();
 
         } catch (SQLException e) {
@@ -96,29 +96,28 @@ public class ClienteDAO implements Dao<Cliente> {
 
     @Override
     public ArrayList<Cliente> getAll() {
-
-        ArrayList<Cliente> meusclientes = new ArrayList();
+        ArrayList<Cliente> clientes = new ArrayList<>();
         Conexao conexao = new Conexao();
         try {
-            String selectSQL = "SELECT * FROM Administrador";
-            PreparedStatement preparedStatement;
-            preparedStatement = conexao.getConexao().prepareStatement(selectSQL);
+            String selectSQL = "SELECT * FROM Cliente";
+            PreparedStatement preparedStatement = conexao.getConexao().prepareStatement(selectSQL);
             ResultSet resultado = preparedStatement.executeQuery();
-            if (resultado != null) {
-                while (resultado.next()) {
-                    Cliente cliente = new Cliente(
-                            Integer.parseInt(resultado.getString("id_usuario")),
-                            String.valueOf(resultado.getString("tipo_cliente"))
-                    );
-                    //administrador.setId(Integer.parseInt(resultado.getString("id")));
-                    meusclientes.add(cliente);
-                }
+
+            while (resultado.next()) {
+                Cliente cliente = new Cliente();
+
+                cliente.setId(Integer.parseInt(resultado.getString("id")));
+                cliente.setId_usuario(Integer.parseInt(resultado.getString("id_usuario")));
+                cliente.setTipo_Cliente(resultado.getString("tipo_cliente"));
+
+                clientes.add(cliente);
             }
         } catch (SQLException e) {
             System.err.println("Query de select (GetAll - ContasUsuario) incorreta");
         } finally {
             conexao.closeConexao();
         }
-        return meusclientes;
+        return clientes;
     }
+
 }

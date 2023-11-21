@@ -10,20 +10,19 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import entidade.ContaBancaria;
 
-public class ContaBancariaDAO implements Dao<ContaBancaria> {
+public class ContasBancariaDAO implements Dao<ContaBancaria> {
 
     @Override
     public ContaBancaria get(int contaCorrente) {
         Conexao conexao = new Conexao();
         ContaBancaria contaBancaria = new ContaBancaria();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("SELECT * FROM Contasbancaria WHERE conta_corrente = ?");
+            PreparedStatement sql = conexao.getConexao().prepareStatement("SELECT * FROM contasbancaria WHERE conta_corrente = ?");
             sql.setInt(1, contaCorrente);
             ResultSet resultado = sql.executeQuery();
 
             if (resultado != null) {
                 while (resultado.next()) {
-                    contaBancaria.setId(Integer.parseInt(resultado.getString("id")));
                     contaBancaria.setContaCorrente(Integer.parseInt(resultado.getString("conta_corrente")));
                     contaBancaria.setContaPoupanca(Integer.parseInt(resultado.getString("conta_poupanca")));
                     contaBancaria.setIdCliente(Integer.parseInt(resultado.getString("id_cliente")));
@@ -62,7 +61,7 @@ public class ContaBancariaDAO implements Dao<ContaBancaria> {
     public void update(ContaBancaria contaBancaria) {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("UPDATE Contasbancaria SET conta_poupanca = ?, id_cliente = ?, saldo_atual = ?, id_agencia = ? WHERE conta_corrente = ?");
+            PreparedStatement sql = conexao.getConexao().prepareStatement("UPDATE contasbancaria SET conta_poupanca = ?, id_cliente = ?, saldo_atual = ?, id_agencia = ? WHERE conta_corrente = ?");
             sql.setInt(1, contaBancaria.getContaPoupanca());
             sql.setInt(2, contaBancaria.getIdCliente());
             sql.setFloat(3, contaBancaria.getSaldoAtual());
@@ -81,7 +80,7 @@ public class ContaBancariaDAO implements Dao<ContaBancaria> {
     public void delete(int contaCorrente) {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("DELETE FROM Contasbancaria WHERE conta_corrente = ?");
+            PreparedStatement sql = conexao.getConexao().prepareStatement("DELETE FROM contasbancaria WHERE conta_corrente = ?");
             sql.setInt(1, contaCorrente);
             sql.executeUpdate();
 
@@ -97,14 +96,13 @@ public class ContaBancariaDAO implements Dao<ContaBancaria> {
         ArrayList<ContaBancaria> contasBancarias = new ArrayList<>();
         Conexao conexao = new Conexao();
         try {
-            String selectSQL = "SELECT * FROM Contasbancaria";
+            String selectSQL = "SELECT * FROM mysql.contasbancaria";
             PreparedStatement preparedStatement;
             preparedStatement = conexao.getConexao().prepareStatement(selectSQL);
             ResultSet resultado = preparedStatement.executeQuery();
             if (resultado != null) {
                 while (resultado.next()) {
                     ContaBancaria contaBancaria = new ContaBancaria(
-                            Integer.parseInt(resultado.getString("id")),
                             Integer.parseInt(resultado.getString("conta_corrente")),
                             Integer.parseInt(resultado.getString("conta_poupanca")),
                             Integer.parseInt(resultado.getString("id_cliente")),

@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package entidade;
 
 /**
@@ -10,8 +7,7 @@ package entidade;
  * 
  */
 public class ContaBancaria {
-
-    private int id;
+    
     private int contaCorrente;
     private int contaPoupanca;
     private int idCliente;
@@ -21,17 +17,12 @@ public class ContaBancaria {
     public ContaBancaria() {
     }
 
-    public ContaBancaria(int id, int contaCorrente, int contaPoupanca, int idCliente, float saldoAtual, int idAgencia) {
-        this.id = id;
+    public ContaBancaria(int contaCorrente, int contaPoupanca, int idCliente, float saldoAtual, int idAgencia) {
         this.contaCorrente = contaCorrente;
         this.contaPoupanca = contaPoupanca;
         this.idCliente = idCliente;
         this.saldoAtual = saldoAtual;
         this.idAgencia = idAgencia;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public void setContaCorrente(int contaCorrente) {
@@ -52,11 +43,6 @@ public class ContaBancaria {
 
     public void setIdAgencia(int idAgencia) {
         this.idAgencia = idAgencia;
-    }
-
-
-    public int getId() {
-        return id;
     }
 
     public int getContaCorrente() {
