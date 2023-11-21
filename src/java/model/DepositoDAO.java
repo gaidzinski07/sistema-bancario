@@ -7,7 +7,7 @@ package model;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import entidade.Deposito;
-import java.sql.Timestamp;    
+import java.sql.Timestamp;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,8 +17,7 @@ import java.util.Locale;
  *
  * @author João
  */
-public class DepositoDAO implements Dao<Deposito>
-{
+public class DepositoDAO implements Dao<Deposito> {
 
     @Override
     public Deposito get(int id) {
@@ -69,9 +68,9 @@ public class DepositoDAO implements Dao<Deposito>
         Conexao conexao = new Conexao();
         try {
             PreparedStatement sql = conexao.getConexao().prepareStatement("INSERT INTO Deposito (id_usuario_destino, data, local, id_agencia, valor) VALUES (?,?,?,?,?)");
-            sql.setInt(1, deposito.getId());
-            sql.setInt(2, deposito.getUsuarioDestino());
-            sql.setTimestamp(3, new Timestamp(deposito.getDataDeposito().getTime()));
+            sql.setInt(1, deposito.getUsuarioDestino());
+            sql.setTimestamp(2, new Timestamp(deposito.getDataDeposito().getTime()));
+            sql.setString(3, deposito.getLocal());
             sql.setInt(4, deposito.getIdAgencia());
             sql.setFloat(5, deposito.getValor());
             sql.executeUpdate();
@@ -85,18 +84,43 @@ public class DepositoDAO implements Dao<Deposito>
     }
 
     @Override
-    public void update(Deposito t) {
+    public void update(Deposito deposito) {
+        Conexao conexao = new Conexao();
+        try {
+            PreparedStatement sql = conexao.getConexao().prepareStatement("UPDATE Deposito SET id_usuario_destino = ?, data = ?, local = ?, id_agencia = ?, valor = ? WHERE id_deposito = ?");
+            sql.setInt(1, deposito.getUsuarioDestino());
+            sql.setTimestamp(2, new Timestamp(deposito.getDataDeposito().getTime()));
+            sql.setString(3, deposito.getLocal());
+            sql.setInt(4, deposito.getIdAgencia());
+            sql.setFloat(5, deposito.getValor());
+            sql.setInt(6, deposito.getId());
+            sql.executeUpdate();
 
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        } finally {
+            conexao.closeConexao();
+        }
     }
 
     @Override
     public void delete(int id) {
+        Conexao conexao = new Conexao();
+        try {
+            PreparedStatement sql = conexao.getConexao().prepareStatement("DELETE FROM Deposito WHERE id_deposito = ?");
+            sql.setInt(1, id);
+            sql.executeUpdate();
 
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        } finally {
+            conexao.closeConexao();
+        }
     }
-    
-    private Deposito createFromResultSet(ResultSet resultado){
+
+    private Deposito createFromResultSet(ResultSet resultado) {
         Deposito deposito = new Deposito();
-        try{
+        try {
             deposito.setId(Integer.parseInt(resultado.getString("id_deposito")));
             deposito.setUsuarioDestino(Integer.parseInt(resultado.getString("id_usuario_destino")));
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
@@ -104,11 +128,11 @@ public class DepositoDAO implements Dao<Deposito>
             deposito.setLocal(resultado.getString("local"));
             deposito.setIdAgencia(Integer.parseInt(resultado.getString("id_agencia")));
             deposito.setValor(Float.parseFloat(resultado.getString("valor")));
-        } catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return deposito;
 
     }
-    
+
 }
