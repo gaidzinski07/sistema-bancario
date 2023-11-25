@@ -54,34 +54,34 @@ public class TesteDAOs extends HttpServlet {
             
             System.out.println("\n\n\n>>> DEPÓSITOS:");
             depositos.stream().forEach(d -> {
-                System.out.println("Depósito Id: " + d.getId());
-                System.out.println(d.getDataDeposito().toString());
-                System.out.println(d.getValor());
+                System.out.println("\n>>Depósito Id: " + d.getId());
+                System.out.println(">Data deposito: " + d.getDataDeposito().toString());
+                System.out.println(">Valor Depósito: " + d.getValor());
             });
             
             
             System.out.println("\n\n\n>>> SAQUES:");
             saques.stream().forEach(s -> {
-                System.out.println("Saque Id: " + s.getIdSaque());
-                System.out.println(s.getData().toString());
-                System.out.println(s.getValor());
+                System.out.println("\n>>Saque Id: " + s.getIdSaque());
+                System.out.println(">Data saque: " + s.getData().toString());
+                System.out.println(">Valor saquei: "+ s.getValor());
             });
             
             System.out.println("\n\n\n>>> TRANSFERÊNCIAS:");
             transferencias.stream().forEach(t -> {
-                System.out.println("Transferência Id: " + t.getIdTransferencia());
-                System.out.println(t.getData().toString());
-                System.out.println(t.getValor());
+                System.out.println("\n>>Transferência Id: " + t.getIdTransferencia());
+                System.out.println(">Data Transferência: "+t.getData().toString());
+                System.out.println(">Valor Transferência: "+t.getValor());
             });
             
             
             System.out.println("\n\n\n>>> INVESTIMENTOS:");
             investimentos.stream().forEach(t -> {
-                System.out.println("Investimento Id: " + t.getIdInvestimento());
-                System.out.println(t.getIdCliente());
-                System.out.println(t.getIdFundo());
-                System.out.println(t.getQtdCotas());
-                System.out.println(t.getVrInvestido());
+                System.out.println("\n>>Investimento Id: " + t.getIdInvestimento());
+                System.out.println(">Cliente Id: "+t.getIdCliente());
+                System.out.println(">Fundo Id: "+t.getIdFundo());
+                System.out.println(">Qtd Cotas: "+t.getQtdCotas());
+                System.out.println(">Valor Investido: " + t.getVrInvestido());
             });
             
             out.println("<!DOCTYPE html>");
