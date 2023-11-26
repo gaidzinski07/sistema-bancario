@@ -127,7 +127,7 @@ public class TransferenciaDAO implements Dao<Transferencia> {
             transferencia.setContaBancariaOrigem(Integer.parseInt(resultado.getString("conta_bancaria_origem")));
             transferencia.setContaBancariaDestino(Integer.parseInt(resultado.getString("conta_bancaria_destino")));
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-            transferencia.setData(formatter.parse(resultado.getString("ts_deposito")));
+            transferencia.setData(formatter.parse(resultado.getString("ts_transferencia")));
             transferencia.setValor(Float.parseFloat(resultado.getString("valor")));
         } catch (Exception e) {
             e.printStackTrace();
