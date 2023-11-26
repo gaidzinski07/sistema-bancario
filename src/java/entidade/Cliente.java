@@ -2,45 +2,40 @@ package entidade;
 
 public class Cliente {
 
-    private int id;
-    private int id_usuario;
-    private String tipo_cliente;
-    
+    private int idUsuario;
+    private String tipoCliente;
+    private int contaBancaria;
+
     public Cliente() {
-        this.id_usuario = 0;
-        this.tipo_cliente = "";
     }
 
-    public Cliente(int id_usuario, String tipo_cliente) {
-        this.id_usuario = id_usuario;
-        this.tipo_cliente = tipo_cliente;
+    public Cliente(int idUsuario, String tipoCliente, int contaBancaria) {
+        this.idUsuario = idUsuario;
+        this.tipoCliente = tipoCliente;
+        this.contaBancaria = contaBancaria;
     }
 
-    public int getId() {
-        return id;
+    public int getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-    
-    public int getId_usuario() {
-        return id_usuario;
-    }
-    
-    public void setId_usuario(int id_usuario) {
-        this.id_usuario = id_usuario;
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
-    public void setTipo_Cliente(int id_usuario) {
-        this.id_usuario = id_usuario;
+    public String getTipoCliente() {
+        return tipoCliente;
     }
 
-    public String getTipo_Cliente() {
-        return tipo_cliente;
+    public void setTipoCliente(String tipoCliente) {
+        this.tipoCliente = tipoCliente;
     }
 
-    public void setTipo_Cliente(String tipo_cliente) {
-        this.tipo_cliente = tipo_cliente;
+    public int getContaBancaria() {
+        return contaBancaria;
+    }
+
+    public void setContaBancaria(int contaBancaria) {
+        this.contaBancaria = contaBancaria;
     }
 }

@@ -9,8 +9,8 @@ package entidade;
  * @author João
  */
 public class Investimento {
-    private int idInvestimento;
-    private int idCliente;
+    private int id;
+    private int contaBancaria;
     private int idFundo;
     private float vrCotaInicio;
     private float vrInvestido;
@@ -19,29 +19,29 @@ public class Investimento {
     public Investimento() {
     }
 
-    public Investimento(int id_investimento, int id_cliente, int id_fundo, float vrCotaInicio, float vrInvestido, float qtdCotas) {
-        this.idInvestimento = id_investimento;
-        this.idCliente = id_cliente;
+    public Investimento(int id, int contaBancaria, int id_fundo, float vrCotaInicio, float vrInvestido, float qtdCotas) {
+        this.id = id;
+        this.contaBancaria = contaBancaria;
         this.idFundo = id_fundo;
         this.vrCotaInicio = vrCotaInicio;
         this.vrInvestido = vrInvestido;
         this.qtdCotas = qtdCotas;
     }
 
-    public int getIdInvestimento() {
-        return idInvestimento;
+    public int getId() {
+        return id;
     }
 
-    public void setIdInvestimento(int idInvestimento) {
-        this.idInvestimento = idInvestimento;
+    public void setId(int idInvestimento) {
+        this.id = idInvestimento;
     }
 
-    public int getIdCliente() {
-        return idCliente;
+    public int getContaBancaria() {
+        return contaBancaria;
     }
 
-    public void setIdCliente(int idCliente) {
-        this.idCliente = idCliente;
+    public void setContaBancaria(int contaBancaria) {
+        this.contaBancaria = contaBancaria;
     }
 
     public int getIdFundo() {

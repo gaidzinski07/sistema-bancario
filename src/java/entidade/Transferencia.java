@@ -16,45 +16,45 @@ import java.util.ArrayList;
  * @author João
  */
 public class Transferencia {
-    private int idTransferencia;
-    private int idUsuarioOrigem;
-    private int idUsuarioDestino;
+    private int id;
+    private int contaBancariaOrigem;
+    private int contaBancariaDestino;
     private Date data;
     private float valor;
 
     public Transferencia() {
     }
 
-    public Transferencia(int id_transferencia, int id_usuario_origem, int id_usuario_destino, Date data, float valor) {
-        this.idTransferencia = id_transferencia;
-        this.idUsuarioOrigem = id_usuario_origem;
-        this.idUsuarioDestino = id_usuario_destino;
+    public Transferencia(int id, int contaBancariaOrigem, int contaBancariaDestino, Date data, float valor) {
+        this.id = id;
+        this.contaBancariaOrigem = contaBancariaOrigem;
+        this.contaBancariaDestino = contaBancariaDestino;
         this.data = data;
         this.valor = valor;
     }
 
-    public int getIdTransferencia() {
-        return idTransferencia;
+    public int getId() {
+        return id;
     }
 
-    public void setIdTransferencia(int idTransferencia) {
-        this.idTransferencia = idTransferencia;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public int getIdUsuarioOrigem() {
-        return idUsuarioOrigem;
+    public int getContaBancariaOrigem() {
+        return contaBancariaOrigem;
     }
 
-    public void setIdUsuarioOrigem(int idUsuarioOrigem) {
-        this.idUsuarioOrigem = idUsuarioOrigem;
+    public void setContaBancariaOrigem(int contaBancariaOrigem) {
+        this.contaBancariaOrigem = contaBancariaOrigem;
     }
 
-    public int getIdUsuarioDestino() {
-        return idUsuarioDestino;
+    public int getContaBancariaDestino() {
+        return contaBancariaDestino;
     }
 
-    public void setIdUsuarioDestino(int idUsuarioDestino) {
-        this.idUsuarioDestino = idUsuarioDestino;
+    public void setContaBancariaDestino(int contaBancariaDestino) {
+        this.contaBancariaDestino = contaBancariaDestino;
     }
 
     public Date getData() {

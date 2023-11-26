@@ -24,7 +24,7 @@ public class DepositoDAO implements Dao<Deposito> {
         Conexao conexao = new Conexao();
         Deposito deposito = new Deposito();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("SELECT * FROM Deposito WHERE id_deposito = ?");
+            PreparedStatement sql = conexao.getConexao().prepareStatement("SELECT * FROM Deposito WHERE id = ?");
             sql.setInt(1, id);
             ResultSet resultado = sql.executeQuery();
 
@@ -67,12 +67,11 @@ public class DepositoDAO implements Dao<Deposito> {
     public void insert(Deposito deposito) {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("INSERT INTO Deposito (id_usuario_destino, data, local, id_agencia, valor) VALUES (?,?,?,?,?)");
-            sql.setInt(1, deposito.getUsuarioDestino());
-            sql.setTimestamp(2, new Timestamp(deposito.getDataDeposito().getTime()));
-            sql.setString(3, deposito.getLocal());
-            sql.setInt(4, deposito.getIdAgencia());
-            sql.setFloat(5, deposito.getValor());
+            PreparedStatement sql = conexao.getConexao().prepareStatement("INSERT INTO Deposito (conta_bancaria, id_agencia, ts_saque, valor) VALUES (?,?,?,?)");
+            sql.setInt(1, deposito.getContaBancaria());
+            sql.setInt(2, deposito.getIdAgencia());
+            sql.setTimestamp(3, new Timestamp(deposito.getDataDeposito().getTime()));
+            sql.setFloat(4, deposito.getValor());
             sql.executeUpdate();
 
         } catch (SQLException e) {
@@ -87,13 +86,12 @@ public class DepositoDAO implements Dao<Deposito> {
     public void update(Deposito deposito) {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("UPDATE Deposito SET id_usuario_destino = ?, data = ?, local = ?, id_agencia = ?, valor = ? WHERE id_deposito = ?");
-            sql.setInt(1, deposito.getUsuarioDestino());
-            sql.setTimestamp(2, new Timestamp(deposito.getDataDeposito().getTime()));
-            sql.setString(3, deposito.getLocal());
-            sql.setInt(4, deposito.getIdAgencia());
-            sql.setFloat(5, deposito.getValor());
-            sql.setInt(6, deposito.getId());
+            PreparedStatement sql = conexao.getConexao().prepareStatement("UPDATE Deposito SET conta_bancaria = ?, id_agencia = ?, ts_saque = ?, valor = ? WHERE id = ?");
+            sql.setInt(1, deposito.getContaBancaria());
+            sql.setInt(2, deposito.getIdAgencia());
+            sql.setTimestamp(3, new Timestamp(deposito.getDataDeposito().getTime()));
+            sql.setFloat(4, deposito.getValor());
+            sql.setInt(5, deposito.getId());
             sql.executeUpdate();
 
         } catch (SQLException e) {
@@ -107,7 +105,7 @@ public class DepositoDAO implements Dao<Deposito> {
     public void delete(int id) {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("DELETE FROM Deposito WHERE id_deposito = ?");
+            PreparedStatement sql = conexao.getConexao().prepareStatement("DELETE FROM Deposito WHERE id = ?");
             sql.setInt(1, id);
             sql.executeUpdate();
 
@@ -121,11 +119,10 @@ public class DepositoDAO implements Dao<Deposito> {
     private Deposito createFromResultSet(ResultSet resultado) {
         Deposito deposito = new Deposito();
         try {
-            deposito.setId(Integer.parseInt(resultado.getString("id_deposito")));
-            deposito.setUsuarioDestino(Integer.parseInt(resultado.getString("id_usuario_destino")));
+            deposito.setId(Integer.parseInt(resultado.getString("id")));
+            deposito.setContaBancaria(Integer.parseInt(resultado.getString("conta_bancaria")));
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-            deposito.setDataDeposito(formatter.parse(resultado.getString("data")));
-            deposito.setLocal(resultado.getString("local"));
+            deposito.setDataDeposito(formatter.parse(resultado.getString("ts_deposito")));
             deposito.setIdAgencia(Integer.parseInt(resultado.getString("id_agencia")));
             deposito.setValor(Float.parseFloat(resultado.getString("valor")));
         } catch (Exception e) {

@@ -6,11 +6,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import entidade.Usuario;
 import entidade.Cliente;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /*
--- Estrutura da tabela `usuarios`
+-- Estrutura da tabela `USUARIO`
 
-CREATE TABLE IF NOT EXISTS `usuarios` (
+CREATE TABLE IF NOT EXISTS `USUARIO` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nome` varchar(40) NOT NULL,
   `cpf` varchar(14) NOT NULL,
@@ -21,14 +27,16 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
  */
 public class UsuarioDAO {
 
-    public void Inserir(Usuario usuario) throws Exception {
+    public void inserir(Usuario usuario) throws Exception {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("INSERT INTO usuarios (nome, cpf, senha)"
-                    + " VALUES (?,?,?,?)");
+            PreparedStatement sql = conexao.getConexao().prepareStatement("INSERT INTO USUARIO (nome, cpf, endereco, data_nascimento, senha)"
+                    + " VALUES (?,?,?,?,?)");
             sql.setString(1, usuario.getNome());
             sql.setString(2, usuario.getCpf());
-            sql.setString(3, usuario.getSenha());
+            sql.setString(3, usuario.getEndereco());
+            sql.setTimestamp(4, new Timestamp(usuario.getDataNascimento().getTime()));
+            sql.setString(5, usuario.getSenha());
             sql.executeUpdate();
 
         } catch (SQLException e) {
@@ -42,7 +50,7 @@ public class UsuarioDAO {
         Conexao conexao = new Conexao();
         try {
             Usuario usuario = new Usuario();
-            PreparedStatement sql = conexao.getConexao().prepareStatement("SELECT * FROM usuarios WHERE ID = ? ");
+            PreparedStatement sql = conexao.getConexao().prepareStatement("SELECT * FROM USUARIO WHERE ID = ? ");
             sql.setInt(1, id);
             ResultSet resultado = sql.executeQuery();
             if (resultado != null) {
@@ -50,6 +58,9 @@ public class UsuarioDAO {
                     usuario.setId(Integer.parseInt(resultado.getString("ID")));
                     usuario.setNome(resultado.getString("NOME"));
                     usuario.setCpf(resultado.getString("CPF"));
+                    usuario.setEndereco(resultado.getString("endereco"));
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                    usuario.setDataNascimento(formatter.parse(resultado.getString("ts_deposito")));
                     usuario.setSenha(resultado.getString("SENHA"));
                 }
             }
@@ -62,14 +73,16 @@ public class UsuarioDAO {
         }
     }
 
-    public void Alterar(Usuario Usuario) throws Exception {
+    public void alterar(Usuario usuario) throws Exception {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("UPDATE usuarios SET nome = ?, cpf = ?, senha = ?  WHERE ID = ? ");
-            sql.setString(1, Usuario.getNome());
-            sql.setString(2, Usuario.getCpf());
-            sql.setString(3, Usuario.getSenha());
-            sql.setInt(4, Usuario.getId());
+            PreparedStatement sql = conexao.getConexao().prepareStatement("UPDATE USUARIO SET nome = ?, cpf = ?, endereco = ?, data_nascimento = ?, senha = ?  WHERE ID = ? ");
+            sql.setString(1, usuario.getNome());
+            sql.setString(2, usuario.getCpf());
+            sql.setString(3, usuario.getEndereco());
+            sql.setTimestamp(4, new Timestamp(usuario.getDataNascimento().getTime()));
+            sql.setString(5, usuario.getSenha());
+            sql.setInt(6, usuario.getId());
             sql.executeUpdate();
 
         } catch (SQLException e) {
@@ -79,11 +92,11 @@ public class UsuarioDAO {
         }
     }
 
-    public void Excluir(Usuario Usuario) throws Exception {
+    public void excluir(Usuario usuario) throws Exception {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("DELETE FROM usuarios WHERE ID = ? ");
-            sql.setInt(1, Usuario.getId());
+            PreparedStatement sql = conexao.getConexao().prepareStatement("DELETE FROM USUARIO WHERE ID = ? ");
+            sql.setInt(1, usuario.getId());
             sql.executeUpdate();
 
         } catch (SQLException e) {
@@ -93,35 +106,41 @@ public class UsuarioDAO {
         }
     }
 
-    public ArrayList<Usuario> ListaDeUsuarios() {
+    public ArrayList<Usuario> listaDeUsuarios() {
         ArrayList<Usuario> meusUsuarios = new ArrayList();
         Conexao conexao = new Conexao();
         try {
-            String selectSQL = "SELECT * FROM usuarios order by nome";
+            String selectSQL = "SELECT * FROM USUARIO order by nome";
             PreparedStatement preparedStatement;
             preparedStatement = conexao.getConexao().prepareStatement(selectSQL);
             ResultSet resultado = preparedStatement.executeQuery();
             if (resultado != null) {
                 while (resultado.next()) {
-                    Usuario usuario = new Usuario(resultado.getString("NOME"),
-                            resultado.getString("CPF"),
-                            resultado.getString("SENHA"));
-                    usuario.setId(Integer.parseInt(resultado.getString("id")));
+                    Usuario usuario = new Usuario();
+                    usuario.setId(Integer.parseInt(resultado.getString("ID")));
+                    usuario.setNome(resultado.getString("NOME"));
+                    usuario.setCpf(resultado.getString("CPF"));
+                    usuario.setEndereco(resultado.getString("endereco"));
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                    usuario.setDataNascimento(formatter.parse(resultado.getString("ts_deposito")));
+                    usuario.setSenha(resultado.getString("SENHA"));
                     meusUsuarios.add(usuario);
                 }
             }
         } catch (SQLException e) {
             throw new RuntimeException("Query de select (ListaDeUsuarios) incorreta");
+        } catch (ParseException ex) {
+            Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             conexao.closeConexao();
         }
         return meusUsuarios;
     }
 
-    public Usuario Logar(Usuario usuario) throws Exception {
+    public Usuario logar(Usuario usuario) throws Exception {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("SELECT * FROM usuarios WHERE cpf=? and senha =? LIMIT 1");
+            PreparedStatement sql = conexao.getConexao().prepareStatement("SELECT * FROM USUARIO WHERE cpf=? and senha =? LIMIT 1");
             sql.setString(1, usuario.getCpf());
             sql.setString(2, usuario.getSenha());
             ResultSet resultado = sql.executeQuery();
@@ -131,6 +150,9 @@ public class UsuarioDAO {
                     usuarioObtido.setId(Integer.parseInt(resultado.getString("ID")));
                     usuarioObtido.setNome(resultado.getString("NOME"));
                     usuarioObtido.setCpf(resultado.getString("CPF"));
+                    usuarioObtido.setEndereco(resultado.getString("endereco"));
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                    usuarioObtido.setDataNascimento(formatter.parse(resultado.getString("ts_deposito")));
                     usuarioObtido.setSenha(resultado.getString("SENHA"));
                 }
             }
@@ -144,7 +166,7 @@ public class UsuarioDAO {
         }
     }
     
-    public Usuario LogarContaCorrente(Integer ContaCorrente) throws Exception {
+    public Usuario logarContaCorrente(Integer ContaCorrente) throws Exception {
         Conexao conexao = new Conexao();
         int idusuario;
         try {
@@ -154,14 +176,14 @@ public class UsuarioDAO {
             Cliente clienteObtido = new Cliente();
              if (resultado1 != null) {
                 while (resultado1.next()) {
-                    clienteObtido.setId(Integer.parseInt(resultado1.getString("ID")));
-                    clienteObtido.setId_usuario(Integer.parseInt(resultado1.getString("ID_USUARIO")));
-                    clienteObtido.setTipo_Cliente(resultado1.getString("TIPO_CLIENTE"));
+                clienteObtido.setIdUsuario(Integer.parseInt(resultado1.getString("id_usuario")));
+                clienteObtido.setTipoCliente(resultado1.getString("tipo_cliente"));
+                clienteObtido.setContaBancaria(Integer.parseInt(resultado1.getString("conta_bancaria")));
                 }
              }
-            idusuario = clienteObtido.getId_usuario();
+            idusuario = clienteObtido.getIdUsuario();
             
-            PreparedStatement sql2 = conexao.getConexao().prepareStatement("SELECT * FROM usuarios WHERE id=? LIMIT 1");
+            PreparedStatement sql2 = conexao.getConexao().prepareStatement("SELECT * FROM USUARIO WHERE id=? LIMIT 1");
             sql2.setInt(1, idusuario);
             ResultSet resultado2 = sql2.executeQuery();
             Usuario usuarioObtido = new Usuario();
@@ -170,6 +192,9 @@ public class UsuarioDAO {
                     usuarioObtido.setId(Integer.parseInt(resultado2.getString("ID")));
                     usuarioObtido.setNome(resultado2.getString("NOME"));
                     usuarioObtido.setCpf(resultado2.getString("CPF"));
+                    usuarioObtido.setEndereco(resultado2.getString("endereco"));
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                    usuarioObtido.setDataNascimento(formatter.parse(resultado2.getString("ts_deposito")));
                     usuarioObtido.setSenha(resultado2.getString("SENHA"));
                 }
             }        

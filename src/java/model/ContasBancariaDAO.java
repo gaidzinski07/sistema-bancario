@@ -17,16 +17,14 @@ public class ContasBancariaDAO implements Dao<ContaBancaria> {
         Conexao conexao = new Conexao();
         ContaBancaria contaBancaria = new ContaBancaria();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("SELECT * FROM contasbancaria WHERE conta_corrente = ?");
+            PreparedStatement sql = conexao.getConexao().prepareStatement("SELECT * FROM CONTA_BANCARIA WHERE conta_corrente = ?");
             sql.setInt(1, contaCorrente);
             ResultSet resultado = sql.executeQuery();
 
             if (resultado != null) {
                 while (resultado.next()) {
                     contaBancaria.setContaCorrente(Integer.parseInt(resultado.getString("conta_corrente")));
-                    contaBancaria.setContaPoupanca(Integer.parseInt(resultado.getString("conta_poupanca")));
-                    contaBancaria.setIdCliente(Integer.parseInt(resultado.getString("id_cliente")));
-                    contaBancaria.setSaldoAtual(Float.parseFloat(resultado.getString("saldo_atual")));
+                    contaBancaria.setSaldoAtual(Float.parseFloat(resultado.getString("saldo")));
                     contaBancaria.setIdAgencia(Integer.parseInt(resultado.getString("id_agencia")));
                 }
             }
@@ -42,12 +40,10 @@ public class ContasBancariaDAO implements Dao<ContaBancaria> {
     public void insert(ContaBancaria contaBancaria) {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("INSERT INTO Contasbancaria (conta_corrente, conta_poupanca, id_cliente, saldo_atual, id_agencia) VALUES (?,?,?,?,?)");
+            PreparedStatement sql = conexao.getConexao().prepareStatement("INSERT INTO CONTA_BANCARIA (conta_corrente, saldo, id_agencia) VALUES (?,?,?)");
             sql.setInt(1, contaBancaria.getContaCorrente());
-            sql.setInt(2, contaBancaria.getContaPoupanca());
-            sql.setInt(3, contaBancaria.getIdCliente());
-            sql.setFloat(4, contaBancaria.getSaldoAtual());
-            sql.setInt(5, contaBancaria.getIdAgencia());
+            sql.setFloat(2, contaBancaria.getSaldoAtual());
+            sql.setInt(3, contaBancaria.getIdAgencia());
             sql.executeUpdate();
 
         } catch (SQLException e) {
@@ -61,9 +57,7 @@ public class ContasBancariaDAO implements Dao<ContaBancaria> {
     public void update(ContaBancaria contaBancaria) {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("UPDATE contasbancaria SET conta_poupanca = ?, id_cliente = ?, saldo_atual = ?, id_agencia = ? WHERE conta_corrente = ?");
-            sql.setInt(1, contaBancaria.getContaPoupanca());
-            sql.setInt(2, contaBancaria.getIdCliente());
+            PreparedStatement sql = conexao.getConexao().prepareStatement("UPDATE CONTA_BANCARIA saldo = ?, id_agencia = ? WHERE conta_corrente = ?");
             sql.setFloat(3, contaBancaria.getSaldoAtual());
             sql.setInt(4, contaBancaria.getIdAgencia());
             sql.setInt(5, contaBancaria.getContaCorrente());
@@ -80,7 +74,7 @@ public class ContasBancariaDAO implements Dao<ContaBancaria> {
     public void delete(int contaCorrente) {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("DELETE FROM contasbancaria WHERE conta_corrente = ?");
+            PreparedStatement sql = conexao.getConexao().prepareStatement("DELETE FROM CONTA_BANCARIA WHERE conta_corrente = ?");
             sql.setInt(1, contaCorrente);
             sql.executeUpdate();
 
@@ -96,7 +90,7 @@ public class ContasBancariaDAO implements Dao<ContaBancaria> {
         ArrayList<ContaBancaria> contasBancarias = new ArrayList<>();
         Conexao conexao = new Conexao();
         try {
-            String selectSQL = "SELECT * FROM mysql.contasbancaria";
+            String selectSQL = "SELECT * FROM CONTA_BANCARIA";
             PreparedStatement preparedStatement;
             preparedStatement = conexao.getConexao().prepareStatement(selectSQL);
             ResultSet resultado = preparedStatement.executeQuery();
@@ -104,11 +98,8 @@ public class ContasBancariaDAO implements Dao<ContaBancaria> {
                 while (resultado.next()) {
                     ContaBancaria contaBancaria = new ContaBancaria(
                             Integer.parseInt(resultado.getString("conta_corrente")),
-                            Integer.parseInt(resultado.getString("conta_poupanca")),
-                            Integer.parseInt(resultado.getString("id_cliente")),
-                            Float.parseFloat(resultado.getString("saldo_atual")),
-                            Integer.parseInt(resultado.getString("id_agencia"))
-                    );
+                            Integer.parseInt(resultado.getString("id_agencia")),
+                            Float.parseFloat(resultado.getString("saldo_atual")));
                     contasBancarias.add(contaBancaria);
                 }
             }

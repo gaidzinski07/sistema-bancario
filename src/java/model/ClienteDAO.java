@@ -6,21 +6,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import entidade.Cliente;
 
-/*
---
--- Estrutura da tabela `Administrador`
---
-
-CREATE TABLE IF NOT EXISTS `Cliente` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `id_usuario` int NOT NULL,
-  `tipo_cliente` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_user_cli` (`id_usuario`)
-  ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-
- */
 public class ClienteDAO implements Dao<Cliente> {
 
     @Override
@@ -34,8 +19,9 @@ public class ClienteDAO implements Dao<Cliente> {
 
             if (resultado != null) {
                 while (resultado.next()) {
-                    cliente.setId_usuario(Integer.parseInt(resultado.getString("id_usuario")));
-                    cliente.setTipo_Cliente(String.valueOf(resultado.getString("tipo_cliente")));
+                    cliente.setIdUsuario(Integer.parseInt(resultado.getString("id_usuario")));
+                    cliente.setTipoCliente(String.valueOf(resultado.getString("tipo_cliente")));
+                    cliente.setContaBancaria(Integer.parseInt(resultado.getString("conta_bancaria")));
                 }
             }
         } catch (SQLException e) {
@@ -51,9 +37,9 @@ public class ClienteDAO implements Dao<Cliente> {
 
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("INSERT INTO Cliente (id_usuario, tipo_cliente) VALUES (?,?)");
-            sql.setString(1, String.valueOf(t.getId_usuario()));
-            sql.setString(2, String.valueOf(t.getTipo_Cliente()));
+            PreparedStatement sql = conexao.getConexao().prepareStatement("INSERT INTO Cliente (tipo_cliente, conta_bancaria) VALUES (?, ?)");
+            sql.setString(1, String.valueOf(t.getTipoCliente()));
+            sql.setString(2, String.valueOf(t.getContaBancaria()));
             sql.executeUpdate();
 
         } catch (SQLException e) {
@@ -67,9 +53,10 @@ public class ClienteDAO implements Dao<Cliente> {
     public void update(Cliente t) {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("UPDATE Administrador SET id_usuario = ?, tipo_administrador = ?  WHERE ID_USUARIO = ? ");
-            sql.setInt(1, (t.getId_usuario()));
-            sql.setString(2, (t.getTipo_Cliente()));
+            PreparedStatement sql = conexao.getConexao().prepareStatement("UPDATE cliente SET tipo_cliente = ?, conta_bancaria = ?  WHERE ID_USUARIO = ? ");
+            sql.setString(1, t.getTipoCliente());
+            sql.setInt(2, t.getContaBancaria());
+            sql.setInt(3, t.getIdUsuario());
             sql.executeUpdate();
 
         } catch (SQLException e) {
@@ -105,11 +92,9 @@ public class ClienteDAO implements Dao<Cliente> {
 
             while (resultado.next()) {
                 Cliente cliente = new Cliente();
-
-                cliente.setId(Integer.parseInt(resultado.getString("id")));
-                cliente.setId_usuario(Integer.parseInt(resultado.getString("id_usuario")));
-                cliente.setTipo_Cliente(resultado.getString("tipo_cliente"));
-
+                cliente.setIdUsuario(Integer.parseInt(resultado.getString("id_usuario")));
+                cliente.setTipoCliente(resultado.getString("tipo_cliente"));
+                cliente.setContaBancaria(Integer.parseInt(resultado.getString("conta_bancaria")));
                 clientes.add(cliente);
             }
         } catch (SQLException e) {

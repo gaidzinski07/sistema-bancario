@@ -32,8 +32,8 @@ public class AdministradorDAO implements Dao<Administrador> {
 
             if (resultado != null) {
                 while (resultado.next()) {
-                    administrador.setId_usuario(Integer.parseInt(resultado.getString("id_usuario")));
-                    administrador.setTipo_Admin(String.valueOf(resultado.getString("tipo_administrador")));
+                    administrador.setIdUsuario(Integer.parseInt(resultado.getString("id_usuario")));
+                    administrador.setTipoAdministrador(String.valueOf(resultado.getString("tipo_administrador")));
                 }
             }
         } catch (SQLException e) {
@@ -50,8 +50,8 @@ public class AdministradorDAO implements Dao<Administrador> {
         Conexao conexao = new Conexao();
         try {
             PreparedStatement sql = conexao.getConexao().prepareStatement("INSERT INTO Administrador (id_usuario, tipo_administrador) VALUES (?,?)");
-            sql.setString(1, String.valueOf(t.getId_usuario()));
-            sql.setString(2, String.valueOf(t.getTipo_Admin()));
+            sql.setString(1, String.valueOf(t.getIdUsuario()));
+            sql.setString(2, String.valueOf(t.getTipoAdministrador()));
             sql.executeUpdate();
 
         } catch (SQLException e) {
@@ -66,8 +66,8 @@ public class AdministradorDAO implements Dao<Administrador> {
         Conexao conexao = new Conexao();
         try {
             PreparedStatement sql = conexao.getConexao().prepareStatement("UPDATE Administrador SET id_usuario = ?, tipo_administrador = ?  WHERE ID_USUARIO = ? ");
-            sql.setInt(1, (t.getId_usuario()));
-            sql.setString(2, (t.getTipo_Admin()));                       
+            sql.setInt(1, (t.getIdUsuario()));
+            sql.setString(2, (t.getTipoAdministrador()));                       
             sql.executeUpdate();
 
         } catch (SQLException e) {
