@@ -37,32 +37,14 @@
                                             </div>
                                         </div>
                                         <div class="d-flex flex-row align-items-center mb-4">
-                                            <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
-                                            <div class="form-outline flex-fill mb-0">
-                                                <input type="email" class="form-control" name="emailInput" placeholder="Insira seu Email" />
-                                                <label class="form-label">Email</label>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex flex-row align-items-center mb-4">
                                             <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
                                             <div class="form-outline flex-fill mb-0">
                                                 <input type="password" class="form-control" name="senhaInput" placeholder="Insira sua senha" />
                                                 <label class="form-label">Senha</label>
                                             </div>
                                         </div>
-                                        <div class="d-flex flex-row align-items-center mb-4">
-                                            <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
-                                            <div class="mb-3">
-                                                <label class="form-label">Tipo de Usuário</label>
-                                                <select name="userType" class="form-select">
-                                                    <option value="admin">Administrador</option>
-                                                    <option value="op">Operador</option>
-                                                    <option value="client">Cliente</option>
-                                                </select>
-                                            </div>
-                                        </div>
                                         <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                                            <button type="submit" name="createUser" value="true" class="btn btn-primary btn-lg">Cadastrar</button>
+                                            <button type="submit" name="createUser" value="true" class="btn btn-primary btn-lg" disabled>Cadastrar</button>
                                         </div>
                                     </form>
                                 </div>
@@ -73,6 +55,6 @@
             </div>
         </div>
     </section>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>

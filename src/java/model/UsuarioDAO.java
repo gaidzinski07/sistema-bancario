@@ -25,10 +25,11 @@ public class UsuarioDAO {
         Conexao conexao = new Conexao();
         try {
             PreparedStatement sql = conexao.getConexao().prepareStatement("INSERT INTO usuarios (nome, cpf, senha)"
-                    + " VALUES (?,?,?,?)");
+                    + " VALUES (?,?,?)");
             sql.setString(1, usuario.getNome());
             sql.setString(2, usuario.getCpf());
             sql.setString(3, usuario.getSenha());
+            System.out.println("sql: " + sql);
             sql.executeUpdate();
 
         } catch (SQLException e) {

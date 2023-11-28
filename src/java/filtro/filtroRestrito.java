@@ -22,8 +22,8 @@ public class filtroRestrito implements Filter {
 
         Usuario usuario = (Usuario)((HttpServletRequest) request).getSession().getAttribute("usuario");
 
-        if ((usuario != null) && (!((String) usuario.getNome()).isEmpty())) {
-        //if (1 == 1) {
+        //if ((usuario != null) && (!((String) usuario.getNome()).isEmpty())) {
+        if (1 == 1) {
             chain.doFilter(request, response);
         } else {
             ((HttpServletResponse) response).sendRedirect("http://localhost:8080/sistema-bancario/home.jsp?showToast=true");

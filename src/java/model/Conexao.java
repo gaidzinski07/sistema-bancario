@@ -12,7 +12,7 @@ public class Conexao {
                 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver"); //load driver  
-            conexao = DriverManager.getConnection("jdbc:mysql://localhost:3306/dbjava", "root", "root");
+            conexao = DriverManager.getConnection("jdbc:mysql://localhost:3306/MySQL", "root", "123456");
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Nao foi possivel efetuar uma conexao com o BD!");

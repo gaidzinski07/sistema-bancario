@@ -28,7 +28,7 @@ public class ConexaoTesteBD extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
+        System.out.println("Entrei na classe conexão Teste");
         //Declara Lista Agencias
         AgenciaDAO agenciaDAO = new AgenciaDAO();
         ArrayList<Agencia> agencias = new ArrayList<Agencia>();
