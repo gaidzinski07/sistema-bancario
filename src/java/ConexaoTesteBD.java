@@ -83,7 +83,7 @@ public class ConexaoTesteBD extends HttpServlet {
             if (!contas.isEmpty()) {
                 out.println("<ul>");
                 for (ContaBancaria conta : contas) {
-                    out.println("<li>" + "Conta Corrente: " + conta.getContaCorrente() + " Id Cliente: " + conta.getIdCliente() + "</li>");
+                    out.println("<li>" + "Conta Corrente: " + conta.getContaCorrente() + " Id Cliente: " + conta.getContaCorrente() + "</li>");
                 }
                 out.println("</ul>");
             } else {
@@ -94,7 +94,7 @@ public class ConexaoTesteBD extends HttpServlet {
             if (!clientes.isEmpty()) {
                 out.println("<ul>");
                 for (Cliente cliente : clientes) {
-                    out.println("<li>" + "Id Cliente: " + cliente.getId() + " Tipo Cliente: " + cliente.getTipo_Cliente() + " Id Usuario: " + cliente.getId_usuario() + "</li>");
+                    out.println("<li>" + "Id Cliente: " + cliente.getIdUsuario() + " Tipo Cliente: " + cliente.getTipoCliente() + " Id Usuario: " + cliente.getIdUsuario() + "</li>");
                 }
                 out.println("</ul>");
             } else {
@@ -105,7 +105,7 @@ public class ConexaoTesteBD extends HttpServlet {
             if (!fundos.isEmpty()) {
                 out.println("<ul>");
                 for (Fundo fundo : fundos) {
-                    out.println("<li>" + "Id Fundo: " + fundo.getIdFundo() + " Valor Minimo: " + fundo.getValorMinimo() + " Valor Cota: " + fundo.getValorCota()+ "</li>");
+                    out.println("<li>" + "Id Fundo: " + fundo.getId() + " Valor Minimo: " + fundo.getValorMinimo() + " Valor Cota: " + fundo.getValorCota()+ "</li>");
                 }
                 out.println("</ul>");
             } else {

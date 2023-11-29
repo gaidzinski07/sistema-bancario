@@ -24,7 +24,7 @@ public class SaqueDAO implements Dao<Saque> {
         Conexao conexao = new Conexao();
         Saque saque = new Saque();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("SELECT * FROM Saque WHERE id_saque = ?");
+            PreparedStatement sql = conexao.getConexao().prepareStatement("SELECT * FROM Saque WHERE id = ?");
             sql.setInt(1, id);
             ResultSet resultado = sql.executeQuery();
 
@@ -68,12 +68,11 @@ public class SaqueDAO implements Dao<Saque> {
         Conexao conexao = new Conexao();
         try {
             PreparedStatement sql = conexao.getConexao()
-                    .prepareStatement("INSERT INTO Saque (id_usuario, id_agencia, data, local, valor) VALUES (?,?,?,?,?)");
-            sql.setInt(1, saque.getIdUsuario());
+                    .prepareStatement("INSERT INTO Saque (conta_bancaria, id_agencia, ts_saque, valor) VALUES (?,?,?,?)");
+            sql.setInt(1, saque.getContaBancaria());
             sql.setInt(2, saque.getIdAgencia());
             sql.setTimestamp(3, new Timestamp(saque.getData().getTime()));
-            sql.setString(4, saque.getLocal());
-            sql.setFloat(5, saque.getValor());
+            sql.setFloat(4, saque.getValor());
             sql.executeUpdate();
 
         } catch (SQLException e) {
@@ -88,12 +87,12 @@ public class SaqueDAO implements Dao<Saque> {
         Conexao conexao = new Conexao();
         try {
             PreparedStatement sql = conexao.getConexao()
-                    .prepareStatement("UPDATE Saque SET id_usuario=?, id_agencia=?, data=?, local=?, valor=?");
-            sql.setInt(1, saque.getIdUsuario());
+                    .prepareStatement("UPDATE Saque SET conta_bancaria=?, id_agencia=?, ts_saque=?, valor=? WHERE id=?");
+            sql.setInt(1, saque.getContaBancaria());
             sql.setInt(2, saque.getIdAgencia());
             sql.setTimestamp(3, new Timestamp(saque.getData().getTime()));
-            sql.setString(4, saque.getLocal());
-            sql.setFloat(5, saque.getValor());
+            sql.setFloat(4, saque.getValor());
+            sql.setInt(5, saque.getId());
             sql.executeUpdate();
 
         } catch (SQLException e) {
@@ -107,7 +106,7 @@ public class SaqueDAO implements Dao<Saque> {
     public void delete(int id) {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("DELETE FROM Saque WHERE id_saque = ?");
+            PreparedStatement sql = conexao.getConexao().prepareStatement("DELETE FROM Saque WHERE id = ?");
             sql.setInt(1, id);
             sql.executeUpdate();
         } catch (SQLException e) {
@@ -120,11 +119,10 @@ public class SaqueDAO implements Dao<Saque> {
     private Saque createFromResultSet(ResultSet resultado) {
         Saque saque = new Saque();
         try {
-            saque.setIdSaque(Integer.parseInt(resultado.getString("id_saque")));
-            saque.setIdUsuario(Integer.parseInt(resultado.getString("id_usuario")));
+            saque.setId(Integer.parseInt(resultado.getString("id")));
+            saque.setContaBancaria(Integer.parseInt(resultado.getString("conta_bancaria")));
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-            saque.setData(formatter.parse(resultado.getString("data")));
-            saque.setLocal(resultado.getString("local"));
+            saque.setData(formatter.parse(resultado.getString("ts_saque")));
             saque.setIdAgencia(Integer.parseInt(resultado.getString("id_agencia")));
             saque.setValor(Float.parseFloat(resultado.getString("valor")));
         } catch (Exception e) {

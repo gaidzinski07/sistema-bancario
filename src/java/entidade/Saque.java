@@ -12,39 +12,37 @@ import java.util.Date;
  */
 public class Saque {
     
-    private int idSaque;
-    private int idUsuario;
+    private int id;
+    private int contaBancaria;
     private int idAgencia;
     private Date data;
-    private String local;
     private float valor;
 
     public Saque() {
     }
 
-    public Saque(int id_saque, int id_usuario, int id_agencia, Date data, String local, float valor) {
-        this.idSaque = id_saque;
-        this.idUsuario = id_usuario;
-        this.idAgencia = id_agencia;
+    public Saque(int id, int contaBancaria, int idAgencia, Date data, float valor) {
+        this.id = id;
+        this.contaBancaria = contaBancaria;
+        this.idAgencia = idAgencia;
         this.data = data;
-        this.local = local;
         this.valor = valor;
     }
 
-    public int getIdSaque() {
-        return idSaque;
+    public int getId() {
+        return id;
     }
 
-    public void setIdSaque(int idSaque) {
-        this.idSaque = idSaque;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public int getIdUsuario() {
-        return idUsuario;
+    public int getContaBancaria() {
+        return contaBancaria;
     }
 
-    public void setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setContaBancaria(int contaBancaria) {
+        this.contaBancaria = contaBancaria;
     }
 
     public int getIdAgencia() {
@@ -63,14 +61,6 @@ public class Saque {
         this.data = data;
     }
 
-    public String getLocal() {
-        return local;
-    }
-
-    public void setLocal(String local) {
-        this.local = local;
-    }
-
     public float getValor() {
         return valor;
     }
@@ -78,6 +68,5 @@ public class Saque {
     public void setValor(float valor) {
         this.valor = valor;
     }
-    
     
 }

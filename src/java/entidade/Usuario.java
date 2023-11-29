@@ -1,23 +1,26 @@
 package entidade;
 
+import java.util.Date;
+
 public class Usuario {
 
     private int id;
     private String nome;
     private String cpf;
+    private String endereco;
+    private Date dataNascimento;
     private String senha;
 
-    public Usuario(String nome, String cpf, String senha) {
-        this.nome = nome;
-        this.cpf = cpf;
-        this.senha = senha;
+    public Usuario() {
     }
 
-    public Usuario() {
-        this.id = 0;
-        this.nome = "";
-        this.cpf = "";
-        this.senha = "";
+    public Usuario(int id, String nome, String cpf, String endereco, Date dataNascimento, String senha) {
+        this.id = id;
+        this.nome = nome;
+        this.cpf = cpf;
+        this.endereco = endereco;
+        this.dataNascimento = dataNascimento;
+        this.senha = senha;
     }
 
     public int getId() {
@@ -44,6 +47,22 @@ public class Usuario {
         this.cpf = cpf;
     }
 
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
+
+    public Date getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public void setDataNascimento(Date dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
+
     public String getSenha() {
         return senha;
     }
@@ -51,5 +70,5 @@ public class Usuario {
     public void setSenha(String senha) {
         this.senha = senha;
     }
-
+    
 }

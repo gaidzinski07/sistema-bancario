@@ -23,13 +23,14 @@ public class FundoDAO implements Dao<Fundo> {
         Conexao conexao = new Conexao();
         Fundo fundo = new Fundo();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("SELECT * FROM Fundo WHERE id_fundo = ?");
+            PreparedStatement sql = conexao.getConexao().prepareStatement("SELECT * FROM Fundo WHERE id = ?");
             sql.setInt(1, idFundo);
             ResultSet resultado = sql.executeQuery();
 
             if (resultado != null) {
                 while (resultado.next()) {
-                    fundo.setIdFundo(Integer.parseInt(resultado.getString("id_fundo")));
+                    fundo.setIdFundo(Integer.parseInt(resultado.getString("id")));
+                    fundo.setNome(resultado.getString("nome"));
                     fundo.setValorCota(Float.parseFloat(resultado.getString("valor_cota")));
                     fundo.setValorMinimo(Float.parseFloat(resultado.getString("valor_minimo")));
                 }
@@ -46,10 +47,11 @@ public class FundoDAO implements Dao<Fundo> {
     public void insert(Fundo fundo) {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("INSERT INTO Fundo (id_fundo, valor_cota, valor_minimo) VALUES (?,?,?)");
-            sql.setInt(1, fundo.getIdFundo());
-            sql.setFloat(2, fundo.getValorCota());
-            sql.setFloat(3, fundo.getValorMinimo());
+            PreparedStatement sql = conexao.getConexao().prepareStatement("INSERT INTO Fundo (id, nome, valor_cota, valor_minimo) VALUES (?,?,?,?)");
+            sql.setInt(1, fundo.getId());
+            sql.setString(2, fundo.getNome());
+            sql.setFloat(3, fundo.getValorCota());
+            sql.setFloat(42, fundo.getValorMinimo());
             sql.executeUpdate();
 
         } catch (SQLException e) {
@@ -63,10 +65,11 @@ public class FundoDAO implements Dao<Fundo> {
     public void update(Fundo fundo) {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("UPDATE Fundo SET id_fundo = ?, valor_cota = ?, valor_minimo = ? WHERE id_fundo = ?");
-            sql.setInt(1, fundo.getIdFundo());
+            PreparedStatement sql = conexao.getConexao().prepareStatement("UPDATE Fundo SET nome = ?, valor_cota = ?, valor_minimo = ? WHERE id = ?");
+            sql.setString(1, fundo.getNome());
             sql.setFloat(2, fundo.getValorCota());
             sql.setFloat(3, fundo.getValorMinimo());
+            sql.setInt(4, fundo.getId());
             sql.executeUpdate();
 
         } catch (SQLException e) {
@@ -80,7 +83,7 @@ public class FundoDAO implements Dao<Fundo> {
     public void delete(int idFundo) {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("DELETE FROM Fundo WHERE id_fundo = ?");
+            PreparedStatement sql = conexao.getConexao().prepareStatement("DELETE FROM Fundo WHERE id = ?");
             sql.setInt(1, idFundo);
             sql.executeUpdate();
 
@@ -103,7 +106,8 @@ public class FundoDAO implements Dao<Fundo> {
             if (resultado != null) {
                 while (resultado.next()) {
                     Fundo fundo = new Fundo(
-                            Integer.parseInt(resultado.getString("id_fundo")),
+                            Integer.parseInt(resultado.getString("id")),
+                            resultado.getString("nome"),
                             Float.parseFloat(resultado.getString("valor_cota")),
                             Float.parseFloat(resultado.getString("valor_minimo"))
                     );

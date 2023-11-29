@@ -15,6 +15,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.ContasBancariaDAO;
 import model.DepositoDAO;
 import model.InvestimentoDAO;
 import model.SaqueDAO;
@@ -45,11 +46,15 @@ public class TesteDAOs extends HttpServlet {
             SaqueDAO saqueDao = new SaqueDAO();
             TransferenciaDAO transfDao = new TransferenciaDAO();
             InvestimentoDAO investDao = new InvestimentoDAO();
+            ContasBancariaDAO contaDao = new ContasBancariaDAO();
             
             ArrayList<Deposito> depositos = depositoDao.getAll();
             ArrayList<Saque> saques = saqueDao.getAll();
             ArrayList<Transferencia> transferencias = transfDao.getAll();
             ArrayList<Investimento> investimentos = investDao.getAll();
+            contaDao.atualizaSaldoAposOperacao(1, 2000);
+            boolean temSaldo = contaDao.podeFazerOperacaoSaida(1, 1, 210);
+            
             
             
             System.out.println("\n\n\n>>> DEPÓSITOS:");
@@ -62,14 +67,14 @@ public class TesteDAOs extends HttpServlet {
             
             System.out.println("\n\n\n>>> SAQUES:");
             saques.stream().forEach(s -> {
-                System.out.println("\n>>Saque Id: " + s.getIdSaque());
+                System.out.println("\n>>Saque Id: " + s.getId());
                 System.out.println(">Data saque: " + s.getData().toString());
                 System.out.println(">Valor saquei: "+ s.getValor());
             });
             
             System.out.println("\n\n\n>>> TRANSFERÊNCIAS:");
             transferencias.stream().forEach(t -> {
-                System.out.println("\n>>Transferência Id: " + t.getIdTransferencia());
+                System.out.println("\n>>Transferência Id: " + t.getId());
                 System.out.println(">Data Transferência: "+t.getData().toString());
                 System.out.println(">Valor Transferência: "+t.getValor());
             });
@@ -77,12 +82,15 @@ public class TesteDAOs extends HttpServlet {
             
             System.out.println("\n\n\n>>> INVESTIMENTOS:");
             investimentos.stream().forEach(t -> {
-                System.out.println("\n>>Investimento Id: " + t.getIdInvestimento());
-                System.out.println(">Cliente Id: "+t.getIdCliente());
+                System.out.println("\n>>Investimento Id: " + t.getId());
+                System.out.println(">Cliente Id: "+t.getId());
                 System.out.println(">Fundo Id: "+t.getIdFundo());
                 System.out.println(">Qtd Cotas: "+t.getQtdCotas());
                 System.out.println(">Valor Investido: " + t.getVrInvestido());
             });
+            
+            System.out.println(">>> TESTE SALDO CONTA BANCARIA");
+            System.out.println("ESPERADO: FALSE // RESULTADO: " + temSaldo);
             
             out.println("<!DOCTYPE html>");
             out.println("<html>");
