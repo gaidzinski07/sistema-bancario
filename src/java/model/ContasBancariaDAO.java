@@ -4,11 +4,13 @@
  */
 package model;
 
+import dto.TransacaoDTO;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import entidade.ContaBancaria;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -134,6 +136,8 @@ public class ContasBancariaDAO implements Dao<ContaBancaria> {
             return false;
         } catch (SQLException ex) {
             Logger.getLogger(ContasBancariaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            conexao.closeConexao();
         }
         return false;
     }
@@ -141,7 +145,47 @@ public class ContasBancariaDAO implements Dao<ContaBancaria> {
     public void atualizaSaldoAposOperacao(int conta, float valorOperacao) {
         ContaBancaria contaBancaria = get(conta);
         contaBancaria.setSaldoAtual(contaBancaria.getSaldoAtual() + valorOperacao);
-        System.out.println(contaBancaria.getSaldoAtual());
         update(contaBancaria);
+    }
+
+    public List<TransacaoDTO> getExtrato(ContaBancaria conta) {
+        Conexao conexao = new Conexao();
+
+        try {
+            String sql = "(select 'TRANSFERENCIA ENVIADA' tipo, t.id id, t.ts_transferencia dt, t.valor vr from transferencia t where t.conta_bancaria_origem = ? "
+                    + "union all "
+                    + "select 'SAQUE' tipo, s.id id, s.ts_saque dt, s.valor vr from saque s where s.conta_bancaria = ? "
+                    + "union all "
+                    + "select 'INVESTIMENTO' tipo, i.id id, i.ts_investimento dt, i.vr_investido vr from investimento i where i.conta_bancaria = ? "
+                    + "union all "
+                    + "select 'TRANSFERENCIA RECEBIDA' tipo, t2.id id, t2.ts_transferencia dt, t2.valor vr from transferencia t2 where t2.conta_bancaria_destino = ? "
+                    + "union all "
+                    + "select 'DEPOSITO' tipo, d.id id, d.ts_deposito dt, d.valor vr from deposito d where d.conta_bancaria = ?) "
+                    + "order by dt asc; ";
+            PreparedStatement preparedStatement = conexao.getConexao().prepareStatement(sql);
+            preparedStatement.setInt(1, conta.getContaCorrente());
+            preparedStatement.setInt(2, conta.getContaCorrente());
+            preparedStatement.setInt(3, conta.getContaCorrente());
+            preparedStatement.setInt(4, conta.getContaCorrente());
+            preparedStatement.setInt(5, conta.getContaCorrente());
+            ResultSet result = preparedStatement.executeQuery();
+            List<TransacaoDTO> transacoes = new ArrayList<TransacaoDTO>();
+            if(result != null){
+                while(result.next()){
+                    TransacaoDTO dto = new TransacaoDTO();
+                    dto.setTipo(result.getString("tipo"));
+                    dto.setData(result.getTimestamp("dt"));
+                    dto.setId(result.getInt("id"));
+                    dto.setValor(result.getFloat("vr"));
+                    transacoes.add(dto);
+                }
+            }
+            return transacoes;
+        } catch (SQLException ex) {
+            Logger.getLogger(ContasBancariaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            conexao.closeConexao();
+        }
+        return new ArrayList<TransacaoDTO>();
     }
 }

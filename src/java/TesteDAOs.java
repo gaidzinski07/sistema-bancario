@@ -3,6 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
+import dto.TransacaoDTO;
+import entidade.ContaBancaria;
 import entidade.Deposito;
 import entidade.Investimento;
 import entidade.Saque;
@@ -10,6 +12,7 @@ import entidade.Transferencia;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -52,8 +55,11 @@ public class TesteDAOs extends HttpServlet {
             ArrayList<Saque> saques = saqueDao.getAll();
             ArrayList<Transferencia> transferencias = transfDao.getAll();
             ArrayList<Investimento> investimentos = investDao.getAll();
-            contaDao.atualizaSaldoAposOperacao(1, 2000);
+            contaDao.atualizaSaldoAposOperacao(2, 2000);
             boolean temSaldo = contaDao.podeFazerOperacaoSaida(1, 1, 210);
+            ContaBancaria conta = new ContaBancaria();
+            conta.setContaCorrente(2);
+            List<TransacaoDTO> extrato = contaDao.getExtrato(conta);
             
             
             
@@ -89,8 +95,14 @@ public class TesteDAOs extends HttpServlet {
                 System.out.println(">Valor Investido: " + t.getVrInvestido());
             });
             
-            System.out.println(">>> TESTE SALDO CONTA BANCARIA");
-            System.out.println("ESPERADO: FALSE // RESULTADO: " + temSaldo);
+            System.out.println("\n\n\n>>> EXTRATO:");
+            extrato.stream().forEach(e -> {
+                System.out.println("----------------------");
+                System.out.println("\n>>Transacao Id: " + e.getId());
+                System.out.println(">Tipo transacao: "+e.getTipo());
+                System.out.println(">Data transacao: "+e.getData().toString());
+                System.out.println(">Valor: "+e.getValor());
+            });
             
             out.println("<!DOCTYPE html>");
             out.println("<html>");
