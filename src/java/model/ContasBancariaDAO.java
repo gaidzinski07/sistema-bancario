@@ -9,6 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import entidade.ContaBancaria;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ContasBancariaDAO implements Dao<ContaBancaria> {
 
@@ -19,6 +21,7 @@ public class ContasBancariaDAO implements Dao<ContaBancaria> {
         try {
             PreparedStatement sql = conexao.getConexao().prepareStatement("SELECT * FROM CONTA_BANCARIA WHERE conta_corrente = ?");
             sql.setInt(1, contaCorrente);
+
             ResultSet resultado = sql.executeQuery();
 
             if (resultado != null) {
@@ -57,10 +60,10 @@ public class ContasBancariaDAO implements Dao<ContaBancaria> {
     public void update(ContaBancaria contaBancaria) {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("UPDATE CONTA_BANCARIA saldo = ?, id_agencia = ? WHERE conta_corrente = ?");
-            sql.setFloat(3, contaBancaria.getSaldoAtual());
-            sql.setInt(4, contaBancaria.getIdAgencia());
-            sql.setInt(5, contaBancaria.getContaCorrente());
+            PreparedStatement sql = conexao.getConexao().prepareStatement("UPDATE CONTA_BANCARIA SET saldo = ?, id_agencia = ? WHERE conta_corrente = ?");
+            sql.setFloat(1, contaBancaria.getSaldoAtual());
+            sql.setInt(2, contaBancaria.getIdAgencia());
+            sql.setInt(3, contaBancaria.getContaCorrente());
             sql.executeUpdate();
 
         } catch (SQLException e) {
@@ -109,5 +112,36 @@ public class ContasBancariaDAO implements Dao<ContaBancaria> {
             conexao.closeConexao();
         }
         return contasBancarias;
+    }
+
+    public boolean podeFazerOperacaoSaida(int conta, int agencia, float valor) {
+        Conexao conexao = new Conexao();
+        try {
+            String sql = "select (cb.saldo >= ?) tem_saldo "
+                    + "from conta_bancaria cb "
+                    + "where cb.conta_corrente  = ? and id_agencia = ? ";
+            PreparedStatement preparedStatement;
+            preparedStatement = conexao.getConexao().prepareStatement(sql);
+            preparedStatement.setFloat(1, valor);
+            preparedStatement.setFloat(2, conta);
+            preparedStatement.setFloat(3, agencia);
+            ResultSet resultado = preparedStatement.executeQuery();
+            if (resultado != null) {
+                while (resultado.next()) {
+                    return resultado.getInt("tem_saldo") == 1;
+                }
+            }
+            return false;
+        } catch (SQLException ex) {
+            Logger.getLogger(ContasBancariaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    public void atualizaSaldoAposOperacao(int conta, float valorOperacao) {
+        ContaBancaria contaBancaria = get(conta);
+        contaBancaria.setSaldoAtual(contaBancaria.getSaldoAtual() + valorOperacao);
+        System.out.println(contaBancaria.getSaldoAtual());
+        update(contaBancaria);
     }
 }

@@ -15,6 +15,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.ContasBancariaDAO;
 import model.DepositoDAO;
 import model.InvestimentoDAO;
 import model.SaqueDAO;
@@ -45,11 +46,15 @@ public class TesteDAOs extends HttpServlet {
             SaqueDAO saqueDao = new SaqueDAO();
             TransferenciaDAO transfDao = new TransferenciaDAO();
             InvestimentoDAO investDao = new InvestimentoDAO();
+            ContasBancariaDAO contaDao = new ContasBancariaDAO();
             
             ArrayList<Deposito> depositos = depositoDao.getAll();
             ArrayList<Saque> saques = saqueDao.getAll();
             ArrayList<Transferencia> transferencias = transfDao.getAll();
             ArrayList<Investimento> investimentos = investDao.getAll();
+            contaDao.atualizaSaldoAposOperacao(1, 2000);
+            boolean temSaldo = contaDao.podeFazerOperacaoSaida(1, 1, 210);
+            
             
             
             System.out.println("\n\n\n>>> DEPÓSITOS:");
@@ -83,6 +88,9 @@ public class TesteDAOs extends HttpServlet {
                 System.out.println(">Qtd Cotas: "+t.getQtdCotas());
                 System.out.println(">Valor Investido: " + t.getVrInvestido());
             });
+            
+            System.out.println(">>> TESTE SALDO CONTA BANCARIA");
+            System.out.println("ESPERADO: FALSE // RESULTADO: " + temSaldo);
             
             out.println("<!DOCTYPE html>");
             out.println("<html>");
