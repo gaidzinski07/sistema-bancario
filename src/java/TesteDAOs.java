@@ -3,10 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
+import dto.InvestimentoDTO;
 import dto.TransacaoDTO;
 import entidade.ContaBancaria;
 import entidade.Deposito;
-import entidade.Investimento;
 import entidade.Saque;
 import entidade.Transferencia;
 import java.io.IOException;
@@ -54,11 +54,9 @@ public class TesteDAOs extends HttpServlet {
             ArrayList<Deposito> depositos = depositoDao.getAll();
             ArrayList<Saque> saques = saqueDao.getAll();
             ArrayList<Transferencia> transferencias = transfDao.getAll();
-            ArrayList<Investimento> investimentos = investDao.getAll();
-            contaDao.atualizaSaldoAposOperacao(2, 2000);
-            boolean temSaldo = contaDao.podeFazerOperacaoSaida(1, 1, 210);
+            List<InvestimentoDTO> investimentos = investDao.getInvestimentosDoCliente(1);
             ContaBancaria conta = new ContaBancaria();
-            conta.setContaCorrente(2);
+            conta.setContaCorrente(1);
             List<TransacaoDTO> extrato = contaDao.getExtrato(conta);
             
             
@@ -88,12 +86,12 @@ public class TesteDAOs extends HttpServlet {
             
             System.out.println("\n\n\n>>> INVESTIMENTOS:");
             investimentos.stream().forEach(t -> {
-                System.out.println("\n>>Investimento Id: " + t.getId());
-                System.out.println(">Cliente Id: "+t.getId());
-                System.out.println(">Fundo Id: "+t.getIdFundo());
-                System.out.println(">Qtd Cotas: "+t.getQtdCotas());
-                System.out.println(">Data: "+t.getData().toString());
-                System.out.println(">Valor Investido: " + t.getVrInvestido());
+                System.out.println("\n>>Investimento Id: " + t.getInvestimento().getId());
+                System.out.println(">Fundo: "+t.getFundo().getNome());
+                System.out.println(">Qtd Cotas: "+t.getInvestimento().getQtdCotas());
+                System.out.println(">Data: "+t.getInvestimento().getData().toString());
+                System.out.println(">Valor Investido: " + t.getInvestimento().getVrInvestido());
+                System.out.println(">Valor atual: "+t.getRendimentos() * t.getInvestimento().getVrInvestido());
             });
             
             System.out.println("\n\n\n>>> EXTRATO:");

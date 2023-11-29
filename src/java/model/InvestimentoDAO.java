@@ -4,11 +4,16 @@
  */
 package model;
 
+import dto.InvestimentoDTO;
+import entidade.Fundo;
 import entidade.Investimento;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -72,7 +77,10 @@ public class InvestimentoDAO implements Dao<Investimento> {
             sql.setFloat(4, investimento.getVrInvestido());
             sql.setFloat(5, investimento.getQtdCotas());
             sql.setTimestamp(6, investimento.getData());
-            sql.executeUpdate();
+            ContasBancariaDAO contaDao = new ContasBancariaDAO();
+            if(contaDao.podeFazerOperacaoSaida(investimento.getContaBancaria(), 0, investimento.getVrInvestido())){
+                sql.executeUpdate();
+            }
 
         } catch (SQLException e) {
             System.err.println(e.getMessage());
@@ -133,6 +141,48 @@ public class InvestimentoDAO implements Dao<Investimento> {
             e.printStackTrace();
         }
         return investimento;
+    }
+
+    public List<InvestimentoDTO> getInvestimentosDoCliente(int contaBancaria) {
+        Conexao conexao = new Conexao();
+        ArrayList<InvestimentoDTO> investimentos = new ArrayList<InvestimentoDTO>();
+        try {
+            String sql = "select "
+                    + "i.id id, "
+                    + "i.conta_bancaria conta_bancaria, "
+                    + "i.id_fundo id_fundo, "
+                    + "i.vr_cota_inicio vr_cota_inicio, "
+                    + "i.vr_investido vr_investido, "
+                    + "i.qtd_cotas qtd_cotas, "
+                    + "i.ts_investimento ts_investimento, "
+                    + "f.nome nome_fundo, "
+                    + "f.vr_cota vr_cota_fundo "
+                    + "from "
+                    + "investimento i "
+                    + "join fundo f "
+                    + "on "
+                    + "f.id = i.id_fundo "
+                    + "where "
+                    + "i.conta_bancaria = ? ";
+            PreparedStatement ps = conexao.getConexao().prepareStatement(sql);
+            ps.setInt(1, contaBancaria);
+            ResultSet result = ps.executeQuery();
+            if(result != null){
+                while(result.next()){
+                    Investimento invest = createFromResultSet(result);
+                    Fundo fundo = new Fundo();
+                    fundo.setNome(result.getString("nome_fundo"));
+                    fundo.setValorCota(result.getFloat("vr_cota_fundo"));
+                    InvestimentoDTO dto = new InvestimentoDTO(fundo, invest);
+                    investimentos.add(dto);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(InvestimentoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            conexao.closeConexao();
+        }
+        return investimentos;
     }
 
 }
