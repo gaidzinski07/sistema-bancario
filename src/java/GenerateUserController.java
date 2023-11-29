@@ -45,7 +45,7 @@ public class GenerateUserController extends HttpServlet {
             System.out.println("getCpf: " + newUser.getCpf());
             System.out.println("getNome: " + newUser.getNome());
             System.out.println("getSenha: " + newUser.getSenha());
-            userDao.Inserir(newUser);
+            userDao.inserir(newUser);
         } catch (Exception ex) {
             Logger.getLogger(GenerateUserController.class.getName()).log(Level.SEVERE, null, ex);
         }
