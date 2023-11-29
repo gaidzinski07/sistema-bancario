@@ -92,6 +92,7 @@ public class TesteDAOs extends HttpServlet {
                 System.out.println(">Cliente Id: "+t.getId());
                 System.out.println(">Fundo Id: "+t.getIdFundo());
                 System.out.println(">Qtd Cotas: "+t.getQtdCotas());
+                System.out.println(">Data: "+t.getData().toString());
                 System.out.println(">Valor Investido: " + t.getVrInvestido());
             });
             

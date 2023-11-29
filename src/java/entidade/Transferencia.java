@@ -5,11 +5,7 @@
 package entidade;
 
 import java.util.Date;
-import entidade.Transferencia;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
+import java.sql.Timestamp;
 
 /**
  *
@@ -19,13 +15,13 @@ public class Transferencia {
     private int id;
     private int contaBancariaOrigem;
     private int contaBancariaDestino;
-    private Date data;
+    private Timestamp data;
     private float valor;
 
     public Transferencia() {
     }
 
-    public Transferencia(int id, int contaBancariaOrigem, int contaBancariaDestino, Date data, float valor) {
+    public Transferencia(int id, int contaBancariaOrigem, int contaBancariaDestino, Timestamp data, float valor) {
         this.id = id;
         this.contaBancariaOrigem = contaBancariaOrigem;
         this.contaBancariaDestino = contaBancariaDestino;
@@ -57,11 +53,11 @@ public class Transferencia {
         this.contaBancariaDestino = contaBancariaDestino;
     }
 
-    public Date getData() {
+    public Timestamp getData() {
         return data;
     }
 
-    public void setData(Date data) {
+    public void setData(Timestamp data) {
         this.data = data;
     }
 

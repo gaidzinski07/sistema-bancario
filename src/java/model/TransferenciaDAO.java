@@ -73,7 +73,7 @@ public class TransferenciaDAO implements Dao<Transferencia> {
                     .prepareStatement("INSERT INTO Transferencia (conta_bancaria_origem, conta_bancaria_destino, ts_deposito, valor) VALUES (?,?,?,?)");
             sql.setInt(1, transferencia.getContaBancariaOrigem());
             sql.setInt(2, transferencia.getContaBancariaDestino());
-            sql.setTimestamp(3, new Timestamp(transferencia.getData().getTime()));
+            sql.setTimestamp(3, transferencia.getData());
             sql.setFloat(4, transferencia.getValor());
             sql.executeUpdate();
 
@@ -92,7 +92,7 @@ public class TransferenciaDAO implements Dao<Transferencia> {
                     .prepareStatement("UPDATE Transferencia SET conta_bancaria_origem=?, conta_bancaria_destino=?, ts_deposito=?, valor=? WHERE id=?");
             sql.setInt(1, transferencia.getContaBancariaOrigem());
             sql.setInt(2, transferencia.getContaBancariaDestino());
-            sql.setTimestamp(3, new Timestamp(transferencia.getData().getTime()));
+            sql.setTimestamp(3, transferencia.getData());
             sql.setFloat(4, transferencia.getValor());
             sql.setInt(5, transferencia.getId());
             sql.executeUpdate();
@@ -126,8 +126,7 @@ public class TransferenciaDAO implements Dao<Transferencia> {
             transferencia.setId(Integer.parseInt(resultado.getString("id")));
             transferencia.setContaBancariaOrigem(Integer.parseInt(resultado.getString("conta_bancaria_origem")));
             transferencia.setContaBancariaDestino(Integer.parseInt(resultado.getString("conta_bancaria_destino")));
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-            transferencia.setData(formatter.parse(resultado.getString("ts_transferencia")));
+            transferencia.setData(resultado.getTimestamp("ts_transferencia"));
             transferencia.setValor(Float.parseFloat(resultado.getString("valor")));
         } catch (Exception e) {
             e.printStackTrace();

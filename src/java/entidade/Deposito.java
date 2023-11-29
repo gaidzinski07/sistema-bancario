@@ -5,6 +5,7 @@
 package entidade;
 
 import java.util.Date;
+import java.sql.Timestamp;
 
 /**
  *
@@ -14,14 +15,14 @@ public class Deposito {
     
     private int id;
     private int contaBancaria;
-    private Date dataDeposito;
+    private Timestamp dataDeposito;
     private int idAgencia;
     private float valor;
 
     public Deposito() {
     }
 
-    public Deposito(int id, int contaBancaria, Date dataDeposito, int idAgencia, float valor) {
+    public Deposito(int id, int contaBancaria, Timestamp dataDeposito, int idAgencia, float valor) {
         this.id = id;
         this.contaBancaria = contaBancaria;
         this.dataDeposito = dataDeposito;
@@ -45,11 +46,11 @@ public class Deposito {
         this.contaBancaria = contaBancaria;
     }
 
-    public Date getDataDeposito() {
+    public Timestamp getDataDeposito() {
         return dataDeposito;
     }
 
-    public void setDataDeposito(Date dataDeposito) {
+    public void setDataDeposito(Timestamp dataDeposito) {
         this.dataDeposito = dataDeposito;
     }
 

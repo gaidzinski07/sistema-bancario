@@ -70,7 +70,7 @@ public class DepositoDAO implements Dao<Deposito> {
             PreparedStatement sql = conexao.getConexao().prepareStatement("INSERT INTO Deposito (conta_bancaria, id_agencia, ts_saque, valor) VALUES (?,?,?,?)");
             sql.setInt(1, deposito.getContaBancaria());
             sql.setInt(2, deposito.getIdAgencia());
-            sql.setTimestamp(3, new Timestamp(deposito.getDataDeposito().getTime()));
+            sql.setTimestamp(3, deposito.getDataDeposito());
             sql.setFloat(4, deposito.getValor());
             sql.executeUpdate();
 
@@ -89,7 +89,7 @@ public class DepositoDAO implements Dao<Deposito> {
             PreparedStatement sql = conexao.getConexao().prepareStatement("UPDATE Deposito SET conta_bancaria = ?, id_agencia = ?, ts_saque = ?, valor = ? WHERE id = ?");
             sql.setInt(1, deposito.getContaBancaria());
             sql.setInt(2, deposito.getIdAgencia());
-            sql.setTimestamp(3, new Timestamp(deposito.getDataDeposito().getTime()));
+            sql.setTimestamp(3, deposito.getDataDeposito());
             sql.setFloat(4, deposito.getValor());
             sql.setInt(5, deposito.getId());
             sql.executeUpdate();
@@ -121,8 +121,7 @@ public class DepositoDAO implements Dao<Deposito> {
         try {
             deposito.setId(Integer.parseInt(resultado.getString("id")));
             deposito.setContaBancaria(Integer.parseInt(resultado.getString("conta_bancaria")));
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-            deposito.setDataDeposito(formatter.parse(resultado.getString("ts_deposito")));
+            deposito.setDataDeposito(resultado.getTimestamp("ts_deposito"));
             deposito.setIdAgencia(Integer.parseInt(resultado.getString("id_agencia")));
             deposito.setValor(Float.parseFloat(resultado.getString("valor")));
         } catch (Exception e) {

@@ -71,7 +71,7 @@ public class SaqueDAO implements Dao<Saque> {
                     .prepareStatement("INSERT INTO Saque (conta_bancaria, id_agencia, ts_saque, valor) VALUES (?,?,?,?)");
             sql.setInt(1, saque.getContaBancaria());
             sql.setInt(2, saque.getIdAgencia());
-            sql.setTimestamp(3, new Timestamp(saque.getData().getTime()));
+            sql.setTimestamp(3, saque.getData());
             sql.setFloat(4, saque.getValor());
             sql.executeUpdate();
 
@@ -121,8 +121,7 @@ public class SaqueDAO implements Dao<Saque> {
         try {
             saque.setId(Integer.parseInt(resultado.getString("id")));
             saque.setContaBancaria(Integer.parseInt(resultado.getString("conta_bancaria")));
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-            saque.setData(formatter.parse(resultado.getString("ts_saque")));
+            saque.setData(resultado.getTimestamp("ts_saque"));
             saque.setIdAgencia(Integer.parseInt(resultado.getString("id_agencia")));
             saque.setValor(Float.parseFloat(resultado.getString("valor")));
         } catch (Exception e) {

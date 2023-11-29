@@ -5,6 +5,7 @@
 package entidade;
 
 import java.util.Date;
+import java.sql.Timestamp;
 
 /**
  *
@@ -15,13 +16,13 @@ public class Saque {
     private int id;
     private int contaBancaria;
     private int idAgencia;
-    private Date data;
+    private Timestamp data;
     private float valor;
 
     public Saque() {
     }
 
-    public Saque(int id, int contaBancaria, int idAgencia, Date data, float valor) {
+    public Saque(int id, int contaBancaria, int idAgencia, Timestamp data, float valor) {
         this.id = id;
         this.contaBancaria = contaBancaria;
         this.idAgencia = idAgencia;
@@ -53,11 +54,11 @@ public class Saque {
         this.idAgencia = idAgencia;
     }
 
-    public Date getData() {
+    public Timestamp getData() {
         return data;
     }
 
-    public void setData(Date data) {
+    public void setData(Timestamp data) {
         this.data = data;
     }
 

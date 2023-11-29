@@ -4,6 +4,8 @@
  */
 package entidade;
 
+import java.sql.Timestamp;
+
 /**
  *
  * @author João
@@ -15,19 +17,21 @@ public class Investimento {
     private float vrCotaInicio;
     private float vrInvestido;
     private float qtdCotas;
+    private Timestamp data;
 
     public Investimento() {
     }
 
-    public Investimento(int id, int contaBancaria, int id_fundo, float vrCotaInicio, float vrInvestido, float qtdCotas) {
+    public Investimento(int id, int contaBancaria, int idFundo, float vrCotaInicio, float vrInvestido, float qtdCotas, Timestamp data) {
         this.id = id;
         this.contaBancaria = contaBancaria;
-        this.idFundo = id_fundo;
+        this.idFundo = idFundo;
         this.vrCotaInicio = vrCotaInicio;
         this.vrInvestido = vrInvestido;
         this.qtdCotas = qtdCotas;
+        this.data = data;
     }
-
+    
     public int getId() {
         return id;
     }
@@ -74,6 +78,14 @@ public class Investimento {
 
     public void setQtdCotas(float qtdCotas) {
         this.qtdCotas = qtdCotas;
+    }
+
+    public Timestamp getData() {
+        return data;
+    }
+
+    public void setData(Timestamp data) {
+        this.data = data;
     }
     
 }
