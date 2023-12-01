@@ -3,10 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/projetos/intro-dev-web/sistema-bancario/src/java/model/Conexao.java</file>
-            <file>file:/E:/projetos/intro-dev-web/sistema-bancario/src/java/model/ContasBancariaDAO.java</file>
-            <file>file:/E:/projetos/intro-dev-web/sistema-bancario/src/java/dto/TransacaoDTO.java</file>
-            <file>file:/E:/projetos/intro-dev-web/sistema-bancario/src/java/TesteDAOs.java</file>
+            <file>file:/C:/Users/fifap/OneDrive/Documents/GitHub/sistema-bancario/src/java/model/UsuarioDAO.java</file>
+            <file>file:/C:/Users/fifap/OneDrive/Documents/GitHub/sistema-bancario/sql/dadosiniciais.sql</file>
+            <file>file:/C:/Users/fifap/OneDrive/Documents/GitHub/sistema-bancario/sql/dbjava.sql</file>
+            <file>file:/C:/Users/fifap/OneDrive/Documents/GitHub/sistema-bancario/src/java/model/ClienteDAO.java</file>
+            <file>file:/C:/Users/fifap/OneDrive/Documents/GitHub/sistema-bancario/src/java/model/AdministradorDAO.java</file>
+            <file>file:/C:/Users/fifap/OneDrive/Documents/GitHub/sistema-bancario/src/java/model/Conexao.java</file>
         </group>
     </open-files>
 </project-private>
