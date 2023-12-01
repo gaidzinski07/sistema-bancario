@@ -45,7 +45,7 @@
                                     <td><%= i.getInvestimento().getData().toString() %></td>
                                     <td><%= i.getInvestimento().getQtdCotas() %></td>
                                     <td><%= i.getInvestimento().getVrInvestido() %></td>
-                                    <td style="color: green"><b><%= i.getInvestimento().getVrInvestido() * i.getRendimentos() %></b></td>
+                                    <td style="color: <%=i.getRendimentos() >= 1 ? "green" : "red"%>"><b><%= i.getInvestimento().getVrInvestido() * i.getRendimentos() %></b></td>
                                     <td>
                                         <div class="btn-group">
                                             <button
@@ -53,7 +53,7 @@
                                                 class="btn btn-primary"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#exampleModalCenter"
-                                                onclick="popularModal(<%= "'"+i.getInvestimento().getIdFundo()+" - "+i.getFundo().getNome()+"'"  %>, <%= i.getInvestimento().getVrInvestido() * i.getRendimentos() %>)">
+                                                onclick="popularModal(<%=i.getInvestimento().getId()%>,<%= "'"+i.getInvestimento().getIdFundo()+" - "+i.getFundo().getNome()+"'"  %>, <%= i.getInvestimento().getVrInvestido() * i.getRendimentos() %>)">
                                                 Resgatar
                                             </button>
                                         </div>
@@ -79,14 +79,15 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form>
+                        <form method="POST" action="InvestimentoServlet?acao=RESGATE">
+                            <input type="hidden" name="idInvestimento" id="idInvestimento" value="-1">
                             <div class="form-group row">
                                 <label for="agencia">Fundo de Investimento</label>
-                                <input type="text" disabled="disabled" class="form-control" id="fundoInput" placeholder="" value="Fundo Padrão">
+                                <input type="text" readonly="readonly" class="form-control" id="fundoInput" name="fundoInput">
                             </div>
                             <div class="form-group row">
                                 <label for="conta">Valor (R$)</label>
-                                <input type="number" disabled="disabled" class="form-control" id="valorInvestido">
+                                <input type="number" class="form-control" id="valorInvestido" name="valorInvestido" readonly="readonly">
                             </div>
                             <button class="btn btn-primary w-100 py-2" style="margin-top: 10px" type="submit">Resgatar</button>
                         </form>
@@ -97,9 +98,11 @@
 
 
         <script>
-            function popularModal(nomeFundo, valorMaximo) {
+            function popularModal(idInvestimento, nomeFundo, valorMaximo) {
                 var inputNomeFundo = document.getElementById("fundoInput");
                 var inputValor = document.getElementById("valorInvestido");
+                var inputIdInvestimento = document.getElementById("idInvestimento");
+                inputIdInvestimento.value = idInvestimento;
                 inputValor.setAttribute("max", valorMaximo);
                 inputValor.value = valorMaximo;
                 inputNomeFundo.value = nomeFundo;

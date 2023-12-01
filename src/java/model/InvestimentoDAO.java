@@ -184,5 +184,16 @@ public class InvestimentoDAO implements Dao<Investimento> {
         }
         return investimentos;
     }
+    
+    public void resgatar(int investimento){
+        ContasBancariaDAO contaDao = new ContasBancariaDAO();
+        FundoDAO fundoDao = new FundoDAO();
+        Investimento entidade = get(investimento);
+        Fundo fundo = fundoDao.get(entidade.getIdFundo());
+        float rendimentos = fundo.getValorCota() / entidade.getVrCotaInicio();
+        System.out.println(rendimentos + " * " + entidade.getVrInvestido() + " = " + entidade.getVrInvestido() * rendimentos);
+        contaDao.atualizaSaldoAposOperacao(entidade.getContaBancaria(), entidade.getVrInvestido() * rendimentos);
+        delete(investimento);
+    }
 
 }

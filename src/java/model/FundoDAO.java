@@ -31,11 +31,12 @@ public class FundoDAO implements Dao<Fundo> {
                 while (resultado.next()) {
                     fundo.setIdFundo(Integer.parseInt(resultado.getString("id")));
                     fundo.setNome(resultado.getString("nome"));
-                    fundo.setValorCota(Float.parseFloat(resultado.getString("valor_cota")));
-                    fundo.setValorMinimo(Float.parseFloat(resultado.getString("valor_minimo")));
+                    fundo.setValorCota(Float.parseFloat(resultado.getString("vr_cota")));
+                    fundo.setValorMinimo(Float.parseFloat(resultado.getString("vr_minimo")));
                 }
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             System.err.println("Query de select (get fundo) incorreta");
         } finally {
             conexao.closeConexao();

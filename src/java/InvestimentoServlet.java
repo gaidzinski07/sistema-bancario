@@ -5,6 +5,7 @@
 
 import dto.InvestimentoDTO;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -33,11 +34,17 @@ public class InvestimentoServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        //int conta = Integer.parseInt(request.getParameter("conta"));
+        String acao = (String) request.getParameter("acao");
+        acao = acao == null ? "" : acao;
         int conta = 2;
         InvestimentoDAO dao = new InvestimentoDAO();
+        switch(acao){
+            case "RESGATE":
+                int idInvestimento = Integer.parseInt(request.getParameter("idInvestimento"));
+                dao.resgatar(idInvestimento);
+                break;
+        }
         List<InvestimentoDTO> dto = dao.getInvestimentosDoCliente(conta);
-        System.out.println(dto.toString());
         request.setAttribute("investimentos", dto);
         RequestDispatcher rd = request.getRequestDispatcher("visualizarInvestimentos.jsp");
         rd.forward(request, response);
