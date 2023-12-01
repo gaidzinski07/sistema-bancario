@@ -33,11 +33,15 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <%
+                                java.util.List<entidade.Fundo> list = (java.util.List<entidade.Fundo>) request.getAttribute("fundos");
+                                for(entidade.Fundo f : list){
+                                %>
                                 <tr>
-                                    <th scope="row">0001</th>
-                                    <td>Lojas Americanas</td>
-                                    <td>1,99</td>
-                                    <td>10,00</td>
+                                    <th scope="row"><%=f.getId()%></th>
+                                    <td><%=f.getNome()%></td>
+                                    <td><%=f.getValorCota()%></td>
+                                    <td><%=f.getValorMinimo()%></td>
                                     <td>
                                         <div class="btn-group">
                                             <button
@@ -45,48 +49,15 @@
                                                 class="btn btn-primary"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#exampleModalCenter"
-                                                onclick="popularModal('0001 - Lojas Americanas', 10)">
+                                                onclick="popularModal(<%=f.getId()%>,<%="'"+f.getNome()+"'"%>,<%=f.getValorMinimo()%>)">
                                                 Aplicar
                                             </button>
                                         </div>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <th scope="row">0002</th>
-                                    <td>777 Partners Investimentos Desportivos</td>
-                                    <td>7,77</td>
-                                    <td>77</td>
-                                    <td>
-                                        <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-primary"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#exampleModalCenter"
-                                                onclick="popularModal('0002 - 777 Partners Investimentos Desportivos', 77)">
-                                                Aplicar
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">0003</th>
-                                    <td>LG Tecnologia</td>
-                                    <td>88,99</td>
-                                    <td>180</td>
-                                    <td>
-                                        <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-primary"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#exampleModalCenter"
-                                                onclick="popularModal('0003 - LG Tecnologia', 180)">
-                                                Aplicar
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
+                                <%
+                                    }
+                                %>
                             </tbody>
                         </table>
                     </div>
@@ -105,14 +76,15 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form>
+                        <form method="POST" action="InvestimentoServlet?acao=APLICACAO">
+                            <input type="hidden" id="idFundo" name="idFundo">
                             <div class="form-group row">
                                 <label for="agencia">Fundo de Investimento</label>
                                 <input type="text" disabled="disabled" class="form-control" id="fundoInput" placeholder="" value="Fundo Padrão">
                             </div>
                             <div class="form-group row">
                                 <label for="conta">Valor (R$)</label>
-                                <input type="number" class="form-control" id="valorInvestido">
+                                <input type="number" class="form-control" id="valorInvestido" name="valorInvestido" step="0.01">
                             </div>
                             <button class="btn btn-primary w-100 py-2" style="margin-top: 10px" type="submit">Aplicar</button>
                         </form>
@@ -125,9 +97,11 @@
         </div>
 
         <script>
-            function popularModal(nomeFundo, valorMinimo) {
+            function popularModal(idFundo, nomeFundo, valorMinimo) {
                 var inputNomeFundo = document.getElementById("fundoInput");
                 var inputValor = document.getElementById("valorInvestido");
+                var inputIdFundo = document.getElementById("idFundo");
+                inputIdFundo.value = idFundo;
                 inputValor.setAttribute("min", valorMinimo);
                 inputValor.value = 0;
                 inputNomeFundo.value = nomeFundo;
