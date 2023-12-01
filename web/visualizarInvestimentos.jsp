@@ -35,13 +35,17 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <%
+                                    java.util.List<dto.InvestimentoDTO> list = (java.util.List<dto.InvestimentoDTO>) request.getAttribute("investimentos");
+                                    for(dto.InvestimentoDTO i : list){
+                                %>
                                 <tr>
-                                    <th scope="row">0001</th>
-                                    <td>Lojas Americanas</td>
-                                    <td>21/02/2023</td>
-                                    <td>200,00</td>
-                                    <td>1000,00</td>
-                                    <td style="color: green"><b>1500,00</b></td>
+                                    <th scope="row"><%= i.getInvestimento().getIdFundo() %></th>
+                                    <td><%= i.getFundo().getNome() %></td>
+                                    <td><%= i.getInvestimento().getData().toString() %></td>
+                                    <td><%= i.getInvestimento().getQtdCotas() %></td>
+                                    <td><%= i.getInvestimento().getVrInvestido() %></td>
+                                    <td style="color: green"><b><%= i.getInvestimento().getVrInvestido() * i.getRendimentos() %></b></td>
                                     <td>
                                         <div class="btn-group">
                                             <button
@@ -49,52 +53,15 @@
                                                 class="btn btn-primary"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#exampleModalCenter"
-                                                onclick="popularModal('0001 - Lojas Americanas', 1500)">
+                                                onclick="popularModal(<%= "'"+i.getInvestimento().getIdFundo()+" - "+i.getFundo().getNome()+"'"  %>, <%= i.getInvestimento().getVrInvestido() * i.getRendimentos() %>)">
                                                 Resgatar
                                             </button>
                                         </div>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <th scope="row">0002</th>
-                                    <td>777 Partners Investimentos Desportivos</td>
-                                    <td>30/09/2023</td>
-                                    <td>1000,00</td>
-                                    <td>1000,00</td>
-                                    <td><b>1000,00</b></td>
-                                    <td>
-                                        <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-primary"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#exampleModalCenter"
-                                                onclick="popularModal('0002 - 777 Partners Investimentos Desportivos', 1000)">
-                                                Resgatar
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">0003</th>
-                                    <td>LG Tecnologia</td>
-                                    <td>01/02/2022</td>
-                                    <td>1942,00</td>
-                                    <td>500,00</td>
-                                    <td style="color: red"><b>393,00</b></td>
-                                    <td>
-                                        <div class="btn-group">
-                                            <button
-                                                type="button"
-                                                class="btn btn-primary"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#exampleModalCenter"
-                                                onclick="popularModal('0003 - LG Tecnologia', 393)">
-                                                Resgatar
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
+                                <%    
+                                    }
+                                %>
                             </tbody>
                         </table>
                     </div>
@@ -119,7 +86,7 @@
                             </div>
                             <div class="form-group row">
                                 <label for="conta">Valor (R$)</label>
-                                <input type="number" class="form-control" id="valorInvestido">
+                                <input type="number" disabled="disabled" class="form-control" id="valorInvestido">
                             </div>
                             <button class="btn btn-primary w-100 py-2" style="margin-top: 10px" type="submit">Resgatar</button>
                         </form>
@@ -134,7 +101,7 @@
                 var inputNomeFundo = document.getElementById("fundoInput");
                 var inputValor = document.getElementById("valorInvestido");
                 inputValor.setAttribute("max", valorMaximo);
-                inputValor.value = 0;
+                inputValor.value = valorMaximo;
                 inputNomeFundo.value = nomeFundo;
             }
         </script>
