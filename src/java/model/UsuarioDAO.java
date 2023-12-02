@@ -59,8 +59,9 @@ public class UsuarioDAO {
                     usuario.setNome(resultado.getString("NOME"));
                     usuario.setCpf(resultado.getString("CPF"));
                     usuario.setEndereco(resultado.getString("endereco"));
-                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                    usuario.setDataNascimento(formatter.parse(resultado.getString("ts_deposito")));
+                    //SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                    //usuario.setDataNascimento(formatter.parse(resultado.getString("ts_deposito")));
+                    //usuario.setDataNascimento(dateFormat.format((resultado.getString("ts_deposito"))));
                     usuario.setSenha(resultado.getString("SENHA"));
                 }
             }

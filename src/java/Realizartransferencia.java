@@ -132,10 +132,10 @@ public class Realizartransferencia extends HttpServlet {
         ContasBancariaDAO contaDao = new ContasBancariaDAO();
         contabancaria = contaDao.get(1);
          
-        
+        boolean logado  = senha.equals(String.valueOf(usuariologado.getSenha()));
         
         RequestDispatcher rd;
-        if (senha.equals(String.valueOf(usuariologado.getSenha()))){
+        if (logado){
             if (tipoconta.equals("Option 1")){
                 
                 Float valor_retirado_final = contabancaria.getSaldoAtual() - (valor_receber);
@@ -145,6 +145,7 @@ public class Realizartransferencia extends HttpServlet {
                 contarecebedor.setSaldoAtual(valor_acrescido_final);
                 contaDaorecebedor.update(contarecebedor);
                 request.setAttribute("msg", "Transferência efetivada");
+                request.setAttribute("msgsenha", "Senha correta");
                 request.setAttribute("saldo", contabancaria.getSaldoAtual());
                 request.setAttribute("tipoconta", "Conta Corrente");
                 rd = request.getRequestDispatcher("/transferencia.jsp");
@@ -159,6 +160,7 @@ public class Realizartransferencia extends HttpServlet {
                 contarecebedor.setSaldoAtualPP(valor_acrescido_final);
                 contaDaorecebedor.update(contarecebedor);
                 request.setAttribute("msg", "Transferência efetivada");
+                request.setAttribute("msgsenha", "Senha correta");
                 request.setAttribute("saldo", contabancaria.getSaldoAtualPP());
                 request.setAttribute("tipoconta", "Conta Poupança");
                 rd = request.getRequestDispatcher("/transferencia.jsp");
@@ -172,7 +174,7 @@ public class Realizartransferencia extends HttpServlet {
                 request.setAttribute("saldo", contabancaria.getSaldoAtual());
                 request.setAttribute("tipoconta", "Conta Corrente");
             try {
-                request.setAttribute("msgsenha", usuarioDAOlogado.getUsuario(id_logado));
+                request.setAttribute("msgsenha", senha);
             } catch (Exception ex) {
                 Logger.getLogger(Realizartransferencia.class.getName()).log(Level.SEVERE, null, ex);
             }
