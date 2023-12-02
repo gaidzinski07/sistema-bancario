@@ -24,6 +24,7 @@ create table CONTA_BANCARIA(
 	conta_corrente int auto_increment,
 	id_agencia int not null,
 	saldo float not null default 0,
+        saldoPP float not null default 0,
 	FOREIGN KEY (id_agencia) REFERENCES AGENCIA(id),
 	primary key (conta_corrente, id_agencia)
 );
@@ -127,7 +128,10 @@ insert into saque(conta_bancaria, id_agencia, valor) values (1, 1, 100), (2, 2, 
 insert into transferencia(conta_bancaria_origem, conta_bancaria_destino, valor) values (1, 2, 100), (2, 1, 200);
 
 
-
+update conta_bancaria set saldo = 10 where conta_corrente =1; 
+update conta_bancaria set saldo = 20 where conta_corrente =2;
+update conta_bancaria set saldoPP = 100 where conta_corrente =1; 
+update conta_bancaria set saldoPP = 200 where conta_corrente =2; 
 
 
 
