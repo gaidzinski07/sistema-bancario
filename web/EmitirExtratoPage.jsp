@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.util.List" %>
-<%@ page import="Objects.Transacao" %>
+<%@ page import="dto.TransacaoDTO" %>
 <%@ page import="java.util.ArrayList" %>
 
 <!DOCTYPE html>
@@ -36,7 +36,7 @@
                                 </div>
                                 <%
                                     HttpSession sessao = request.getSession();
-                                    List<Transacao> transacoes = (List<Transacao>) sessao.getAttribute("transacoes");
+                                    List<TransacaoDTO> transacoes = (List<TransacaoDTO>) sessao.getAttribute("transacoes");
                                     Boolean mostrarTabela = (Boolean) sessao.getAttribute("mostrarTabela");
                                     if (mostrarTabela) {
                                         if (transacoes != null && !transacoes.isEmpty()) {
@@ -53,13 +53,13 @@
                                         </thead>
                                         <tbody>
                                             <%
-                                                for (Transacao transacao : transacoes) {
+                                                for (dto.TransacaoDTO transacao : transacoes) {
                                             %>
                                             <tr>
                                                 <th scope="row"><%= transacao.getId()%></th>
-                                                <td><%= transacao.getNome()%></td>
-                                                <td><%= transacao.getEntrada()%></td>
-                                                <td><%= transacao.getSaida()%></td>
+                                                <td><%= transacao.getTipo()%></td>
+                                                <td><%= transacao.getValor()%></td>
+                                                <td><%= transacao.getValor()%></td>
                                             </tr>
                                             <%
                                                 }

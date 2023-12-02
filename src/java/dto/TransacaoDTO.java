@@ -15,15 +15,25 @@ public class TransacaoDTO {
     private int id;
     private Timestamp data;
     private float valor;
+    private String nome;
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome == null ? "--" : nome;
+    }
 
     public TransacaoDTO() {
     }
 
-    public TransacaoDTO(String tipo, int id, Timestamp data, float valor) {
+    public TransacaoDTO(String tipo, int id, Timestamp data, float valor, String nome) {
         this.tipo = tipo;
         this.id = id;
         this.data = data;
         this.valor = valor;
+        setNome(nome);
     }
 
     public String getTipo() {

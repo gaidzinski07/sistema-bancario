@@ -148,42 +148,100 @@ public class ContasBancariaDAO implements Dao<ContaBancaria> {
         update(contaBancaria);
     }
 
-    public List<TransacaoDTO> getExtrato(ContaBancaria conta) {
+    public List<TransacaoDTO> getExtrato(int conta) {
         Conexao conexao = new Conexao();
 
         try {
-            String sql = "(select 'TRANSFERENCIA ENVIADA' tipo, t.id id, t.ts_transferencia dt, t.valor vr from transferencia t where t.conta_bancaria_origem = ? "
+            String sql = "( "
+                    + "select "
+                    + "'TRANSFERENCIA ENVIADA' tipo, "
+                    + "t.id id, "
+                    + "t.ts_transferencia dt, "
+                    + "t.valor vr, "
+                    + "u.nome nome "
+                    + "from "
+                    + "transferencia t "
+                    + "join cliente c on "
+                    + "t.conta_bancaria_destino = c.conta_bancaria "
+                    + "join usuario u on "
+                    + "u.id = c.id_usuario "
+                    + "where "
+                    + "t.conta_bancaria_origem = ? "
                     + "union all "
-                    + "select 'SAQUE' tipo, s.id id, s.ts_saque dt, s.valor vr from saque s where s.conta_bancaria = ? "
+                    + "select "
+                    + "'SAQUE' tipo, "
+                    + "s.id id, "
+                    + "s.ts_saque dt, "
+                    + "s.valor vr, "
+                    + "null nome "
+                    + "from "
+                    + "saque s "
+                    + "where "
+                    + "s.conta_bancaria = ? "
                     + "union all "
-                    + "select 'INVESTIMENTO' tipo, i.id id, i.ts_investimento dt, i.vr_investido vr from investimento i where i.conta_bancaria = ? "
+                    + "select "
+                    + "'INVESTIMENTO' tipo, "
+                    + "i.id id, "
+                    + "i.ts_investimento dt, "
+                    + "i.vr_investido vr, "
+                    + "f.nome nome "
+                    + "from "
+                    + "investimento i "
+                    + "join fundo f on "
+                    + "f.id = i.id_fundo "
+                    + "where "
+                    + "i.conta_bancaria = ? "
                     + "union all "
-                    + "select 'TRANSFERENCIA RECEBIDA' tipo, t2.id id, t2.ts_transferencia dt, t2.valor vr from transferencia t2 where t2.conta_bancaria_destino = ? "
+                    + "select "
+                    + "'TRANSFERENCIA RECEBIDA' tipo, "
+                    + "t2.id id, "
+                    + "t2.ts_transferencia dt, "
+                    + "t2.valor vr, "
+                    + "u.nome "
+                    + "from "
+                    + "transferencia t2 "
+                    + "join cliente c on "
+                    + "c.conta_bancaria = t2.conta_bancaria_origem "
+                    + "join usuario u on "
+                    + "u.id = c.id_usuario "
+                    + "where "
+                    + "t2.conta_bancaria_destino = ? "
                     + "union all "
-                    + "select 'DEPOSITO' tipo, d.id id, d.ts_deposito dt, d.valor vr from deposito d where d.conta_bancaria = ?) "
-                    + "order by dt asc; ";
+                    + "select "
+                    + "'DEPOSITO' tipo, "
+                    + "d.id id, "
+                    + "d.ts_deposito dt, "
+                    + "d.valor vr, "
+                    + "null nome "
+                    + "from "
+                    + "deposito d "
+                    + "where "
+                    + "d.conta_bancaria = ?) "
+                    + "order by "
+                    + "dt asc; ";
             PreparedStatement preparedStatement = conexao.getConexao().prepareStatement(sql);
-            preparedStatement.setInt(1, conta.getContaCorrente());
-            preparedStatement.setInt(2, conta.getContaCorrente());
-            preparedStatement.setInt(3, conta.getContaCorrente());
-            preparedStatement.setInt(4, conta.getContaCorrente());
-            preparedStatement.setInt(5, conta.getContaCorrente());
+            preparedStatement.setInt(1, conta);
+            preparedStatement.setInt(2, conta);
+            preparedStatement.setInt(3, conta);
+            preparedStatement.setInt(4, conta);
+            preparedStatement.setInt(5, conta);
             ResultSet result = preparedStatement.executeQuery();
             List<TransacaoDTO> transacoes = new ArrayList<TransacaoDTO>();
-            if(result != null){
-                while(result.next()){
+            if (result != null) {
+                while (result.next()) {
                     TransacaoDTO dto = new TransacaoDTO();
                     dto.setTipo(result.getString("tipo"));
                     dto.setData(result.getTimestamp("dt"));
                     dto.setId(result.getInt("id"));
                     dto.setValor(result.getFloat("vr"));
+                    dto.setNome(result.getString("nome"));
                     transacoes.add(dto);
                 }
             }
             return transacoes;
         } catch (SQLException ex) {
             Logger.getLogger(ContasBancariaDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             conexao.closeConexao();
         }
         return new ArrayList<TransacaoDTO>();
