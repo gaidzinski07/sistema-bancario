@@ -29,8 +29,9 @@ public class ContasBancariaDAO implements Dao<ContaBancaria> {
             if (resultado != null) {
                 while (resultado.next()) {
                     contaBancaria.setContaCorrente(Integer.parseInt(resultado.getString("conta_corrente")));
-                    contaBancaria.setSaldoAtual(Float.parseFloat(resultado.getString("saldo")));
                     contaBancaria.setIdAgencia(Integer.parseInt(resultado.getString("id_agencia")));
+                    contaBancaria.setSaldoAtual(Float.parseFloat(resultado.getString("saldo")));
+                    contaBancaria.setSaldoAtualPP(Float.parseFloat(resultado.getString("saldoPP")));
                 }
             }
         } catch (SQLException e) {
@@ -104,7 +105,8 @@ public class ContasBancariaDAO implements Dao<ContaBancaria> {
                     ContaBancaria contaBancaria = new ContaBancaria(
                             Integer.parseInt(resultado.getString("conta_corrente")),
                             Integer.parseInt(resultado.getString("id_agencia")),
-                            Float.parseFloat(resultado.getString("saldo_atual")));
+                            Float.parseFloat(resultado.getString("saldo")),
+                            Float.parseFloat(resultado.getString("saldoPP")));
                     contasBancarias.add(contaBancaria);
                 }
             }

@@ -1,3 +1,20 @@
+DROP TABLE IF EXISTS `Administrador`;
+DROP TABLE IF EXISTS `Contasbancaria`;
+--DROP TABLE IF EXISTS `Conta_bancaria`;
+--DROP TABLE IF EXISTS `Fundo`;
+DROP TABLE IF EXISTS `Saque`;
+DROP TABLE IF EXISTS `Deposito`;
+DROP TABLE IF EXISTS `Transferencia`;
+DROP TABLE IF EXISTS `Investimento`;
+DROP TABLE IF EXISTS `Fundo`;
+--ALTER TABLE Usuarios NOCHECK CONSTRAINT MyConstraint;
+--ALTER TABLE `cliente` DROP FOREIGN KEY `FK_user_cli`; 
+DROP TABLE IF EXISTS `Cliente`;
+DROP TABLE IF EXISTS `Conta_bancaria`;
+DROP TABLE IF EXISTS `Usuarios`;
+DROP TABLE IF EXISTS `Usuario`;
+DROP TABLE IF EXISTS `Agencia`;
+
 create table AGENCIA(
 	id int not null auto_increment primary key,
 	endereco varchar(100)
@@ -7,6 +24,7 @@ create table CONTA_BANCARIA(
 	conta_corrente int auto_increment,
 	id_agencia int not null,
 	saldo float not null default 0,
+        saldoPP float not null default 0,
 	FOREIGN KEY (id_agencia) REFERENCES AGENCIA(id),
 	primary key (conta_corrente, id_agencia)
 );
@@ -17,7 +35,7 @@ create table USUARIO(
 	nome varchar(100) not null,
 	endereco varchar(100),
 	data_nascimento Timestamp,
-	senha varchar(100) not null
+	senha varchar(100) not null        
 );
 
 create table ADMINISTRADOR(
@@ -94,10 +112,10 @@ insert into agencia (endereco) values ('Rua E, 5, Bairro E, Niterói - RJ'),
 
 insert into conta_bancaria (id_agencia) values (1), (3); 
 
-insert into cliente (id_usuario, tipo_cliente, conta_bancaria) values (6, 'Correntista', 1),
-(9, 'Investidor', 2);
+insert into cliente (id_usuario, tipo_cliente, conta_bancaria) values (1, 'Correntista', 1),
+(2, 'Investidor', 2);
 
-insert into administrador (id_usuario, tipo_administrador) values (7, 'Gerente'), (8, 'Operador');
+insert into administrador (id_usuario, tipo_administrador) values (1, 'Gerente'), (2, 'Operador');
 
 insert into fundo (nome, vr_cota, vr_minimo) values ('Lojas Americanas', 3.8, 1.9), ('777 Partners', 7.77, 7.77), ('Magalu', 5.2, 10.4);
 
@@ -110,7 +128,10 @@ insert into saque(conta_bancaria, id_agencia, valor) values (1, 1, 100), (2, 2, 
 insert into transferencia(conta_bancaria_origem, conta_bancaria_destino, valor) values (1, 2, 100), (2, 1, 200);
 
 
-
+update conta_bancaria set saldo = 10 where conta_corrente =1; 
+update conta_bancaria set saldo = 20 where conta_corrente =2;
+update conta_bancaria set saldoPP = 100 where conta_corrente =1; 
+update conta_bancaria set saldoPP = 200 where conta_corrente =2; 
 
 
 
