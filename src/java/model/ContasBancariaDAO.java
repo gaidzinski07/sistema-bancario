@@ -63,10 +63,12 @@ public class ContasBancariaDAO implements Dao<ContaBancaria> {
     public void update(ContaBancaria contaBancaria) {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("UPDATE CONTA_BANCARIA SET saldo = ?, id_agencia = ? WHERE conta_corrente = ?");
-            sql.setFloat(1, contaBancaria.getSaldoAtual());
-            sql.setInt(2, contaBancaria.getIdAgencia());
-            sql.setInt(3, contaBancaria.getContaCorrente());
+            PreparedStatement sql = conexao.getConexao().prepareStatement("UPDATE CONTA_BANCARIA SET id_agencia = ?, saldo = ?, saldoPP = ? WHERE conta_corrente = ?");
+            sql.setInt(1, contaBancaria.getIdAgencia());
+            sql.setFloat(2, contaBancaria.getSaldoAtual());            
+            sql.setFloat(3, contaBancaria.getSaldoAtualPP());
+            sql.setInt(4, contaBancaria.getContaCorrente());
+            
             sql.executeUpdate();
 
         } catch (SQLException e) {

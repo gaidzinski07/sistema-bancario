@@ -11,8 +11,8 @@ public class Usuario {
     private Date dataNascimento;
     private String senha;
 
-    public Usuario() {
-    }
+    //public Usuario() {
+    //}
 
     public Usuario(int id, String nome, String cpf, String endereco, Date dataNascimento, String senha) {
         this.id = id;
@@ -21,6 +21,15 @@ public class Usuario {
         this.endereco = endereco;
         this.dataNascimento = dataNascimento;
         this.senha = senha;
+    }
+    
+    public Usuario() {
+        this.id = 0;
+        this.nome = "";
+        this.cpf = "";
+        this.endereco = "";
+        this.dataNascimento = null;
+        this.senha = "";
     }
 
     public int getId() {

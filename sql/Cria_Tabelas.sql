@@ -101,16 +101,16 @@ create table TRANSFERENCIA(
 );
 
 
-INSERT INTO usuario (cpf, nome, endereco, data_nascimento, senha) values ('11111111111', 'João Vicente', 'Rua A, 1, Bairro A, Niterói - RJ', CURRENT_TIMESTAMP, '123'),
-('22222222222', 'Lucas Magalhães', 'Rua B, 2, Bairro B, Niterói - RJ', CURRENT_TIMESTAMP, '123'),
-('33333333333', 'Luiz Gustavo', 'Rua C, 3, Bairro C, Niterói - RJ', CURRENT_TIMESTAMP, '123'),
-('44444444444', 'Antônio Augusto', 'Rua D, 4, Bairro D, Niterói - RJ', CURRENT_TIMESTAMP, '123');
+INSERT INTO usuario (cpf, nome, endereco, data_nascimento, senha) values ('111', 'João Vicente', 'Rua A, 1, Bairro A, Niterói - RJ', CURRENT_TIMESTAMP, '123'),
+('222', 'Lucas Magalhães', 'Rua B, 2, Bairro B, Niterói - RJ', CURRENT_TIMESTAMP, '123'),
+('333', 'Luiz Gustavo', 'Rua C, 3, Bairro C, Niterói - RJ', CURRENT_TIMESTAMP, '123'),
+('444', 'Antônio Augusto', 'Rua D, 4, Bairro D, Niterói - RJ', CURRENT_TIMESTAMP, '123');
 
 insert into agencia (endereco) values ('Rua E, 5, Bairro E, Niterói - RJ'),
 ('Rua F, 6, Bairro F, Niterói - RJ'),
 ('Rua G, 7, Bairro G, Niterói - RJ');
 
-insert into conta_bancaria (id_agencia) values (1), (3); 
+insert into conta_bancaria (id_agencia) values (1), (2); 
 
 insert into cliente (id_usuario, tipo_cliente, conta_bancaria) values (1, 'Correntista', 1),
 (2, 'Investidor', 2);

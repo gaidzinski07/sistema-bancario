@@ -50,12 +50,12 @@ public class UsuarioDAO {
         Conexao conexao = new Conexao();
         try {
             Usuario usuario = new Usuario();
-            PreparedStatement sql = conexao.getConexao().prepareStatement("SELECT * FROM USUARIO WHERE ID = ? ");
+            PreparedStatement sql = conexao.getConexao().prepareStatement("SELECT * FROM USUARIO WHERE ID = ?");
             sql.setInt(1, id);
             ResultSet resultado = sql.executeQuery();
             if (resultado != null) {
                 while (resultado.next()) {
-                    usuario.setId(Integer.parseInt(resultado.getString("ID")));
+                    usuario.setId(Integer.parseInt(resultado.getString("id")));
                     usuario.setNome(resultado.getString("NOME"));
                     usuario.setCpf(resultado.getString("CPF"));
                     usuario.setEndereco(resultado.getString("endereco"));
@@ -203,6 +203,32 @@ public class UsuarioDAO {
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            throw new RuntimeException("Query de select (get) incorreta");
+        } finally {
+            conexao.closeConexao();
+        }
+    }
+    public Usuario getUsuarioCPF(String cpf) throws Exception {
+        Conexao conexao = new Conexao();
+        try {
+            Usuario usuario = new Usuario();
+            PreparedStatement sql = conexao.getConexao().prepareStatement("SELECT * FROM USUARIO WHERE CPF = ? ");
+            sql.setString(1, cpf);
+            ResultSet resultado = sql.executeQuery();
+            if (resultado != null) {
+                while (resultado.next()) {
+                    usuario.setId(Integer.parseInt(resultado.getString("ID")));
+                    usuario.setNome(resultado.getString("NOME"));
+                    usuario.setCpf(resultado.getString("CPF"));
+                    usuario.setEndereco(resultado.getString("endereco"));
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                    usuario.setDataNascimento(formatter.parse(resultado.getString("ts_deposito")));
+                    usuario.setSenha(resultado.getString("SENHA"));
+                }
+            }
+            return usuario;
+
+        } catch (SQLException e) {
             throw new RuntimeException("Query de select (get) incorreta");
         } finally {
             conexao.closeConexao();

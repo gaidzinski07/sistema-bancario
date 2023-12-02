@@ -19,6 +19,8 @@
         <jsp:include page="HeaderComponent.html"/>
         <% String mostra_saldo = String.valueOf(request.getAttribute("saldo")); %>
         <% String mostra_conta = String.valueOf(request.getAttribute("tipoconta")); %>
+        <% String mostra_msg = String.valueOf(request.getAttribute("msg")); %>
+        <% String mostra_senhaerrada = String.valueOf(request.getAttribute("msgsenha")); %>
             <h1>Realizar transferência entre contas</h1>
             <form name="myTrans" action="Realizartransferencia" id="myTrans">
                 <section class="vh-10">
@@ -52,7 +54,7 @@
                 
             </form>
                                         <p></p>
-            <form name="myTrans" action="Realizartransferencia" id="myTrans">
+            <form name="myTrans" action="Realizartransferencia" id="myTrans" method="POST">
                 <section class="vh-100">
             <div class="container h-100">
             <div class="container text-left">
@@ -74,8 +76,8 @@
                                  </select>
                                     <div class="row">
                                         <div class="home-container15">
-                                        <span class="home-text03">Saldo : </span>
-                                        <span class="home-text04" id="saldo"><%=mostra_saldo.toString()%></span>
+                                        <%--<span class="home-text03">Saldo : </span>
+                                        <span class="home-text04" id="saldo"><%=mostra_saldo.toString()%></span> --%>
                                   
                                         </div>
                                     </div>
@@ -84,11 +86,14 @@
                         </div>
                             <div class="mb-5">
                                     <label for="digitesenha" class="form-label">Digite sua senha</label>
-                                    <input type="valor" class="form-control" id="inputvalor" aria-describedby="valorhelp">
+                                    <input type="text" class="form-control" id="inputsenha" name="inputsenha" aria-describedby="valorhelp">
                                     <div id="valorhelp" class="form-text">Usuário deve digitar sua senha</div>
                                 </div>
                             <div class="row container justify-content-center">
                             <button type="submit" class="btn btn-primary">Enviar</button>
+                            <span class="home-text03">Mensagem : <%=mostra_msg.toString()%> </span>
+                            <span class="home-text03">Você digitou : <%=mostra_senhaerrada.toString()%> </span>
+                            
                             </div>
                         </div>
                 
