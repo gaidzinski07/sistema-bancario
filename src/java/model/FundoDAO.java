@@ -48,7 +48,7 @@ public class FundoDAO implements Dao<Fundo> {
     public void insert(Fundo fundo) {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("INSERT INTO Fundo (id, nome, valor_cota, valor_minimo) VALUES (?,?,?,?)");
+            PreparedStatement sql = conexao.getConexao().prepareStatement("INSERT INTO Fundo (id, nome, vr_cota, vr_minimo) VALUES (?,?,?,?)");
             sql.setInt(1, fundo.getId());
             sql.setString(2, fundo.getNome());
             sql.setFloat(3, fundo.getValorCota());
@@ -109,8 +109,8 @@ public class FundoDAO implements Dao<Fundo> {
                     Fundo fundo = new Fundo(
                             Integer.parseInt(resultado.getString("id")),
                             resultado.getString("nome"),
-                            Float.parseFloat(resultado.getString("valor_cota")),
-                            Float.parseFloat(resultado.getString("valor_minimo"))
+                            Float.parseFloat(resultado.getString("vr_cota")),
+                            Float.parseFloat(resultado.getString("vr_minimo"))
                     );
                     fundos.add(fundo);
                 }

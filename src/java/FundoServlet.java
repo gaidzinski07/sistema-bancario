@@ -3,9 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-import dto.InvestimentoDTO;
+import entidade.Fundo;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,14 +12,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.InvestimentoDAO;
+import model.FundoDAO;
 
 /**
  *
  * @author João
  */
-@WebServlet(urlPatterns = {"/InvestimentoServlet"})
-public class InvestimentoServlet extends HttpServlet {
+@WebServlet(urlPatterns = {"/FundoServlet"})
+public class FundoServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,25 +33,10 @@ public class InvestimentoServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String acao = (String) request.getParameter("acao");
-        acao = acao == null ? "" : acao;
-        int conta = 2;
-        InvestimentoDAO dao = new InvestimentoDAO();
-        switch(acao){
-            case "RESGATE":
-                int idInvestimento = Integer.parseInt(request.getParameter("idInvestimento"));
-                dao.resgatar(idInvestimento);
-                break;
-            case "APLICACAO":
-                int idFundo = Integer.parseInt(request.getParameter("idFundo"));
-                String vr = (String) request.getParameter("valorInvestido");
-                float valor = vr == null ? 0 : Float.parseFloat(vr);
-                dao.aplicar(idFundo, valor);
-                break;
-        }
-        List<InvestimentoDTO> dto = dao.getInvestimentosDoCliente(conta);
-        request.setAttribute("investimentos", dto);
-        RequestDispatcher rd = request.getRequestDispatcher("visualizarInvestimentos.jsp");
+        FundoDAO dao = new FundoDAO();
+        List<Fundo> list = dao.getAll();
+        request.setAttribute("fundos", list);
+        RequestDispatcher rd = request.getRequestDispatcher("realizarInvestimento.jsp");
         rd.forward(request, response);
     }
 

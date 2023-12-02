@@ -70,19 +70,17 @@ public class InvestimentoDAO implements Dao<Investimento> {
         Conexao conexao = new Conexao();
         try {
             PreparedStatement sql = conexao.getConexao()
-                    .prepareStatement("INSERT INTO Investimento (conta_bancaria, id_fundo, vr_cota_incio, vr_investido, qtd_cotas, ts_investimento) VALUES (?,?,?,?,?,?)");
+                    .prepareStatement("INSERT INTO investimento (conta_bancaria, id_fundo, vr_cota_inicio, vr_investido, qtd_cotas) VALUES (?,?,?,?,?)");
             sql.setInt(1, investimento.getContaBancaria());
             sql.setInt(2, investimento.getIdFundo());
             sql.setFloat(3, investimento.getVrCotaInicio());
             sql.setFloat(4, investimento.getVrInvestido());
             sql.setFloat(5, investimento.getQtdCotas());
-            sql.setTimestamp(6, investimento.getData());
             ContasBancariaDAO contaDao = new ContasBancariaDAO();
-            if(contaDao.podeFazerOperacaoSaida(investimento.getContaBancaria(), 0, investimento.getVrInvestido())){
-                sql.executeUpdate();
-            }
+            sql.executeUpdate();
 
         } catch (SQLException e) {
+            e.printStackTrace();
             System.err.println(e.getMessage());
         } finally {
             conexao.closeConexao();
@@ -194,6 +192,25 @@ public class InvestimentoDAO implements Dao<Investimento> {
         System.out.println(rendimentos + " * " + entidade.getVrInvestido() + " = " + entidade.getVrInvestido() * rendimentos);
         contaDao.atualizaSaldoAposOperacao(entidade.getContaBancaria(), entidade.getVrInvestido() * rendimentos);
         delete(investimento);
+    }
+
+    public boolean aplicar(int idFundo, float valor) {
+        System.out.println(idFundo + " - " + valor);
+        FundoDAO fundoDao = new FundoDAO();
+        Fundo fundo = fundoDao.get(idFundo);
+        ContasBancariaDAO contaDao = new ContasBancariaDAO();
+        boolean temSaldo = contaDao.podeFazerOperacaoSaida(2, 3, valor);
+        if(fundo != null && valor >= fundo.getValorMinimo() && temSaldo){
+            Investimento investimento = new Investimento();
+            investimento.setContaBancaria(2);
+            investimento.setIdFundo(idFundo);
+            investimento.setQtdCotas(valor / fundo.getValorCota());
+            investimento.setVrCotaInicio(fundo.getValorCota());
+            investimento.setVrInvestido(valor);
+            insert(investimento);
+            contaDao.atualizaSaldoAposOperacao(2, valor * -1);
+        }
+        return temSaldo;
     }
 
 }
