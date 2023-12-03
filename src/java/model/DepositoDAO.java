@@ -67,11 +67,12 @@ public class DepositoDAO implements Dao<Deposito> {
     public void insert(Deposito deposito) {
         Conexao conexao = new Conexao();
         try {
-            PreparedStatement sql = conexao.getConexao().prepareStatement("INSERT INTO Deposito (conta_bancaria, id_agencia, ts_saque, valor) VALUES (?,?,?,?)");
+            PreparedStatement sql = conexao.getConexao().prepareStatement("INSERT INTO Deposito (conta_bancaria, id_agencia, valor, tipo) VALUES (?,?,?,?)");
             sql.setInt(1, deposito.getContaBancaria());
             sql.setInt(2, deposito.getIdAgencia());
-            sql.setTimestamp(3, deposito.getDataDeposito());
-            sql.setFloat(4, deposito.getValor());
+            //sql.setTimestamp(3, deposito.getDataDeposito());
+            sql.setFloat(3, deposito.getValor());
+            sql.setInt(4, deposito.getTipo());
             sql.executeUpdate();
 
         } catch (SQLException e) {

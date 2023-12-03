@@ -70,11 +70,11 @@ public class TransferenciaDAO implements Dao<Transferencia> {
         Conexao conexao = new Conexao();
         try {
             PreparedStatement sql = conexao.getConexao()
-                    .prepareStatement("INSERT INTO Transferencia (conta_bancaria_origem, conta_bancaria_destino, ts_deposito, valor) VALUES (?,?,?,?)");
+                    .prepareStatement("INSERT INTO Transferencia (conta_bancaria_origem, conta_bancaria_destino, valor) VALUES (?,?,?)");
             sql.setInt(1, transferencia.getContaBancariaOrigem());
             sql.setInt(2, transferencia.getContaBancariaDestino());
-            sql.setTimestamp(3, transferencia.getData());
-            sql.setFloat(4, transferencia.getValor());
+            //sql.setTimestamp(3, transferencia.getData());
+            sql.setFloat(3, transferencia.getValor());
             sql.executeUpdate();
 
         } catch (SQLException e) {
@@ -89,12 +89,12 @@ public class TransferenciaDAO implements Dao<Transferencia> {
         Conexao conexao = new Conexao();
         try {
             PreparedStatement sql = conexao.getConexao()
-                    .prepareStatement("UPDATE Transferencia SET conta_bancaria_origem=?, conta_bancaria_destino=?, ts_deposito=?, valor=? WHERE id=?");
+                    .prepareStatement("UPDATE Transferencia SET conta_bancaria_origem=?, conta_bancaria_destino=?, valor=? WHERE id=?");
             sql.setInt(1, transferencia.getContaBancariaOrigem());
             sql.setInt(2, transferencia.getContaBancariaDestino());
             sql.setTimestamp(3, transferencia.getData());
-            sql.setFloat(4, transferencia.getValor());
-            sql.setInt(5, transferencia.getId());
+            //sql.setFloat(4, transferencia.getValor());
+            sql.setInt(4, transferencia.getId());
             sql.executeUpdate();
 
         } catch (SQLException e) {
