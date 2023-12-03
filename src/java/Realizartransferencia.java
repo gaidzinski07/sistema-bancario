@@ -11,10 +11,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.ContasBancariaDAO;
 import entidade.ContaBancaria;
+import entidade.Investimento;
+import entidade.Transferencia;
 import javax.servlet.RequestDispatcher;
 import entidade.Usuario;
+import java.security.Timestamp;
+import java.time.Instant;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.InvestimentoDAO;
+import model.TransferenciaDAO;
 import model.UsuarioDAO;
 
 /**
@@ -61,7 +70,13 @@ public class Realizartransferencia extends HttpServlet {
                 rd.forward(request, response);
             }
             else if(tipoconta.equals("Option 3")){
-            
+                Investimento investimento = new Investimento();
+                InvestimentoDAO investimentodao = new InvestimentoDAO();
+                investimento = investimentodao.get_CC(contabancaria.getContaCorrente());
+                request.setAttribute("saldo", investimento.getVrInvestido());
+                request.setAttribute("tipoconta", "Conta Investimento");
+                rd = request.getRequestDispatcher("/transferencia.jsp");
+                rd.forward(request, response);
             }        
                
         
@@ -133,7 +148,8 @@ public class Realizartransferencia extends HttpServlet {
         contabancaria = contaDao.get(1);
          
         boolean logado  = senha.equals(String.valueOf(usuariologado.getSenha()));
-        
+        long millis=System.currentTimeMillis();
+        java.sql.Timestamp date = new java.sql.Timestamp(millis); 
         RequestDispatcher rd;
         if (logado){
             if (tipoconta.equals("Option 1")){
@@ -148,6 +164,9 @@ public class Realizartransferencia extends HttpServlet {
                 request.setAttribute("msgsenha", "Senha correta");
                 request.setAttribute("saldo", contabancaria.getSaldoAtual());
                 request.setAttribute("tipoconta", "Conta Corrente");
+                Transferencia transferencia = new Transferencia(1, contabancaria.getContaCorrente(), contarecebedor.getContaCorrente(), date, valor_receber);
+                TransferenciaDAO transferenciadao = new TransferenciaDAO();
+                transferenciadao.insert(transferencia);
                 rd = request.getRequestDispatcher("/transferencia.jsp");
                 rd.forward(request, response);
             }
@@ -163,11 +182,29 @@ public class Realizartransferencia extends HttpServlet {
                 request.setAttribute("msgsenha", "Senha correta");
                 request.setAttribute("saldo", contabancaria.getSaldoAtualPP());
                 request.setAttribute("tipoconta", "Conta Poupança");
+                Transferencia transferencia = new Transferencia(1, contabancaria.getContaCorrente(), contarecebedor.getContaCorrente(), date, valor_receber);
+                TransferenciaDAO transferenciadao = new TransferenciaDAO();
+                transferenciadao.insert(transferencia);
                 rd = request.getRequestDispatcher("/transferencia.jsp");
                 rd.forward(request, response);
             }
             else if(tipoconta.equals("Option 3")){
-            
+                Investimento investimento;
+                InvestimentoDAO investimentodao = new InvestimentoDAO();
+                int conta_cedente = contabancaria.getContaCorrente();
+                investimento = investimentodao.get_CC(conta_cedente);
+                Float valor_retirado_final = investimento.getVrInvestido() - (valor_receber);
+                investimento.setVrInvestido(valor_retirado_final);
+                investimentodao.update(investimento);
+                Float valor_acrescido_final = contarecebedor.getSaldoAtualPP() + (valor_receber);
+                contarecebedor.setSaldoAtualPP(valor_acrescido_final);
+                contaDaorecebedor.update(contarecebedor);
+                request.setAttribute("msg", "Transferência efetivada");
+                request.setAttribute("msgsenha", "Senha correta");
+                request.setAttribute("saldo", investimento.getVrInvestido());
+                request.setAttribute("tipoconta", "Conta Investimento");
+                rd = request.getRequestDispatcher("/transferencia.jsp");
+                rd.forward(request, response);
             }
         }
         else {request.setAttribute("msg", "Senha incorreta");
@@ -193,5 +230,9 @@ public class Realizartransferencia extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    //private Timestamp Timestamp(Instant now) {
+    //    throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    //}
 
 }

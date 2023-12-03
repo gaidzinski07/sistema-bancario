@@ -42,6 +42,27 @@ public class InvestimentoDAO implements Dao<Investimento> {
         }
         return investimento;
     }
+    
+    public Investimento get_CC(int cc) {
+        Conexao conexao = new Conexao();
+        Investimento investimento = new Investimento();
+        try {
+            PreparedStatement sql = conexao.getConexao().prepareStatement("SELECT * FROM Investimento WHERE conta_bancaria = ?");
+            sql.setInt(1, cc);
+            ResultSet resultado = sql.executeQuery();
+
+            if (resultado != null) {
+                while (resultado.next()) {
+                    investimento = createFromResultSet(resultado);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        } finally {
+            conexao.closeConexao();
+        }
+        return investimento;
+    }
 
     @Override
     public ArrayList<Investimento> getAll() {
@@ -92,14 +113,14 @@ public class InvestimentoDAO implements Dao<Investimento> {
         Conexao conexao = new Conexao();
         try {
             PreparedStatement sql = conexao.getConexao()
-                    .prepareStatement("UPDATE Investimento SET conta_bancaria=?, id_fundo=?, vr_cota_incio=?, vr_investido=?, qtd_cotas=?, ts_investimento = ? WHERE id=?");
+                    .prepareStatement("UPDATE investimento SET conta_bancaria=?, id_fundo=?, vr_cota_incio=?, vr_investido=?, qtd_cotas=? WHERE ID=?");
             sql.setInt(1, investimento.getContaBancaria());
             sql.setInt(2, investimento.getIdFundo());
             sql.setFloat(3, investimento.getVrCotaInicio());
             sql.setFloat(4, investimento.getVrInvestido());
             sql.setFloat(5, investimento.getQtdCotas());
-            sql.setTimestamp(6, investimento.getData());
-            sql.setInt(7, investimento.getId());
+            //sql.setTimestamp(6, investimento.getData());
+            sql.setInt(6, investimento.getId());
             sql.executeUpdate();
 
         } catch (SQLException e) {
