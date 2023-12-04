@@ -12,8 +12,8 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebFilter(filterName = "filtroRestrito", urlPatterns = {"/admin/*"})
-public class filtroRestrito implements Filter {
+@WebFilter(filterName = "createUserFilter", urlPatterns = {"/CreateUser"})
+public class createUserFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response,
@@ -22,8 +22,8 @@ public class filtroRestrito implements Filter {
 
         Usuario usuario = (Usuario)((HttpServletRequest) request).getSession().getAttribute("usuario");
 
-        //if ((usuario != null) && (!((String) usuario.getNome()).isEmpty())) {
-        if (1 == 1) {
+        if ((usuario != null) && (!((String) usuario.getNome()).isEmpty())) {
+        //if (1 == 1) {
             chain.doFilter(request, response);
         } else {
             ((HttpServletResponse) response).sendRedirect("http://localhost:8080/sistema-bancario/home.jsp?showToast=true");

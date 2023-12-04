@@ -24,14 +24,25 @@
     %>
     <div style="margin-top: 10px;margin-left: 10px;margin-right: 10px;">
         <div class="alert alert-danger" role="alert">
-          É preciso fazer <a href="/sistema-bancario/login.jsp" class="alert-link">Login</a> para acessar esta função
+            É preciso fazer <a href="/sistema-bancario/login.jsp" class="alert-link">Login</a> para acessar esta função
         </div> 
     </div>
 
     <%
         }
     %>
-    <body class="gradientBackground">
+
+    <%
+            String msgSucess = (String) request.getAttribute("userLogged");
+            if ((msgSucess != null) && (!msgSucess.isEmpty())) {%>
+
+    <div style="margin-top: 10px;margin-left: 10px;margin-right: 10px;">
+        <div class="alert alert-success" role="alert">
+            <%= msgSucess%>
+        </div>
+    </div>
+    <% }%>
+ <body class="gradientBackground">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
                 <a class="navbar-brand" href="index.html">
@@ -43,8 +54,15 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarScroll">
                     <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
-                        <li class="nav-item">
-                            <a class="nav-link" href="login.jsp">Fazer Login</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                Login
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+                                <li><a class="dropdown-item" href="LoginController">Logar Adminstrador</a></li>
+                                <li><a class="dropdown-item" href="login.jsp">Logar Cliente</a></li>
+                            </ul>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button"
@@ -52,7 +70,7 @@
                                 Administrador
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-                                <li><a class="dropdown-item" href="admin/createUserPage.jsp">Criar Usuário</a></li>
+                                <li><a class="dropdown-item" href="CreateUser">Criar Usuário</a></li>
                                 <li><a class="dropdown-item" href="admin/createBankAccountPage.jsp">Criar Conta Bancária</a></li>
                             </ul>
                         </li>
@@ -64,8 +82,8 @@
                             <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
                                 <li><a class="dropdown-item" href="transferencia.jsp">Realizar Transferência</a></li>
                                 <li><a class="dropdown-item" href="realizardeposito.jsp">Realizar Depósito</a></li>
-                                <li><a class="dropdown-item" href="realizarInvestimento.jsp">Realizar Investimentos</a></li>
-                                <li><a class="dropdown-item" href="visualizarInvestimentos.jsp">Meus Investimentos</a></li>
+                                <li><a class="dropdown-item" href="FundoServlet">Realizar Investimentos</a></li>
+                                <li><a class="dropdown-item" href="InvestimentoServlet">Meus Investimentos</a></li>
                                 <li><a class="dropdown-item" href="EmitirExtratoController">Emitir Extrato</a></li>
                                 <li><a class="dropdown-item" href="EmitirSaldoController">Emitir Saldo</a></li>
                             </ul>
@@ -169,8 +187,10 @@
                 </div>
             </div>
         </section>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    </body>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+                crossorigin="anonymous">
+
+        </script>
+</body>
 </html>

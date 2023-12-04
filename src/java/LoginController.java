@@ -1,3 +1,4 @@
+
 import entidade.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,10 +12,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import model.UsuarioDAO;
 
-@WebServlet(urlPatterns = {"/CreateUser"})
-public class GenerateUserController extends HttpServlet {
+@WebServlet(urlPatterns = {"/LoginController"})
+public class LoginController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -34,39 +36,43 @@ public class GenerateUserController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        RequestDispatcher rd;
         // Recuperar os dados do formulário
-        System.out.println("entrei na classe controller: ");
         Usuario newUser = new Usuario();
+        Usuario usuarioLogado = new Usuario();
         UsuarioDAO userDao = new UsuarioDAO();
 
         try {
-            newUser.setNome(request.getParameter("nomeInput"));
+
             newUser.setCpf(request.getParameter("cpfInput"));
             newUser.setSenha(request.getParameter("senhaInput"));
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            Date date = formatter.parse(request.getParameter("dataInput"));
-            newUser.setDataNascimento(date);
-            // Mostrar os dados no console
-            System.out.println("getCpf: " + newUser.getCpf());
-            System.out.println("getNome: " + newUser.getNome());
-            System.out.println("getSenha: " + newUser.getSenha());
-            
-            userDao.inserir(newUser);
-            
+
+            usuarioLogado = userDao.logar(newUser);
+            System.out.println("CPF: " + usuarioLogado.getCpf());
         } catch (Exception ex) {
             Logger.getLogger(GenerateUserController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        RequestDispatcher rd;
-        request.setAttribute("msgOperacaoRealizada", "Usuário criado com Sucesso!");
-        request.setAttribute("link", "http://localhost:8080/sistema-bancario/index.html");
-        rd = request.getRequestDispatcher("showMessage.jsp");
-        rd.forward(request, response);
+
+        if (usuarioLogado.getId() != 0) {
+            HttpSession session = request.getSession();
+            session.setAttribute("usuario", usuarioLogado);
+            
+            request.setAttribute("userLogged", "Usário " + usuarioLogado.getNome() + " " + "logado com sucesso!");
+            rd = request.getRequestDispatcher("/home.jsp");
+            rd.forward(request, response);
+
+        } else {
+            request.setAttribute("msgError", "Usuário e/ou senha incorreto");
+            rd = request.getRequestDispatcher("/loginAdmin.jsp");
+            rd.forward(request, response);
+
+        }
     }
 
     private void renderForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Redirecionar para o JSP desejado
-        request.getRequestDispatcher("/admin/createUserPage.jsp").forward(request, response);
+        request.getRequestDispatcher("/loginAdmin.jsp").forward(request, response);
     }
 
     @Override

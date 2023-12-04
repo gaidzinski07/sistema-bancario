@@ -9,25 +9,15 @@ import entidade.Cliente;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/*
--- Estrutura da tabela `USUARIO`
-
-CREATE TABLE IF NOT EXISTS `USUARIO` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nome` varchar(40) NOT NULL,
-  `cpf` varchar(14) NOT NULL,
-  `senha` varchar(8) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
-
- */
 public class UsuarioDAO {
 
     public void inserir(Usuario usuario) throws Exception {
+        System.out.println("Entrei na classe UsuarioDAO");
         Conexao conexao = new Conexao();
         try {
             PreparedStatement sql = conexao.getConexao().prepareStatement("INSERT INTO USUARIO (nome, cpf, endereco, data_nascimento, senha)"
@@ -59,9 +49,6 @@ public class UsuarioDAO {
                     usuario.setNome(resultado.getString("NOME"));
                     usuario.setCpf(resultado.getString("CPF"));
                     usuario.setEndereco(resultado.getString("endereco"));
-                    //SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                    //usuario.setDataNascimento(formatter.parse(resultado.getString("ts_deposito")));
-                    //usuario.setDataNascimento(dateFormat.format((resultado.getString("ts_deposito"))));
                     usuario.setSenha(resultado.getString("SENHA"));
                 }
             }
@@ -152,8 +139,10 @@ public class UsuarioDAO {
                     usuarioObtido.setNome(resultado.getString("NOME"));
                     usuarioObtido.setCpf(resultado.getString("CPF"));
                     usuarioObtido.setEndereco(resultado.getString("endereco"));
-                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                    usuarioObtido.setDataNascimento(formatter.parse(resultado.getString("ts_deposito")));
+
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                    Date date = formatter.parse(resultado.getString("data_nascimento"));
+                    usuarioObtido.setDataNascimento(date);
                     usuarioObtido.setSenha(resultado.getString("SENHA"));
                 }
             }
@@ -166,7 +155,7 @@ public class UsuarioDAO {
             conexao.closeConexao();
         }
     }
-    
+
     public Usuario logarContaCorrente(Integer ContaCorrente) throws Exception {
         Conexao conexao = new Conexao();
         int idusuario;
@@ -175,15 +164,15 @@ public class UsuarioDAO {
             sql.setInt(1, ContaCorrente);
             ResultSet resultado1 = sql.executeQuery();
             Cliente clienteObtido = new Cliente();
-             if (resultado1 != null) {
+            if (resultado1 != null) {
                 while (resultado1.next()) {
-                clienteObtido.setIdUsuario(Integer.parseInt(resultado1.getString("id_usuario")));
-                clienteObtido.setTipoCliente(resultado1.getString("tipo_cliente"));
-                clienteObtido.setContaBancaria(Integer.parseInt(resultado1.getString("conta_bancaria")));
+                    clienteObtido.setIdUsuario(Integer.parseInt(resultado1.getString("id_usuario")));
+                    clienteObtido.setTipoCliente(resultado1.getString("tipo_cliente"));
+                    clienteObtido.setContaBancaria(Integer.parseInt(resultado1.getString("conta_bancaria")));
                 }
-             }
+            }
             idusuario = clienteObtido.getIdUsuario();
-            
+
             PreparedStatement sql2 = conexao.getConexao().prepareStatement("SELECT * FROM USUARIO WHERE id=? LIMIT 1");
             sql2.setInt(1, idusuario);
             ResultSet resultado2 = sql2.executeQuery();
@@ -198,9 +187,8 @@ public class UsuarioDAO {
                     usuarioObtido.setDataNascimento(formatter.parse(resultado2.getString("ts_deposito")));
                     usuarioObtido.setSenha(resultado2.getString("SENHA"));
                 }
-            }        
+            }
             return usuarioObtido;
-        
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -209,6 +197,7 @@ public class UsuarioDAO {
             conexao.closeConexao();
         }
     }
+
     public Usuario getUsuarioCPF(String cpf) throws Exception {
         Conexao conexao = new Conexao();
         try {

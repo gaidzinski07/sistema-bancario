@@ -37,6 +37,13 @@
                                             </div>
                                         </div>
                                         <div class="d-flex flex-row align-items-center mb-4">
+                                            <i class="fas fa-calendar fa-lg me-3 fa-fw"></i>
+                                            <div class="form-outline flex-fill mb-0">
+                                                <input type="date" class="form-control" name="dataInput" placeholder="Selecione a data" />
+                                                <label class="form-label">Data</label>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex flex-row align-items-center mb-4">
                                             <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
                                             <div class="form-outline flex-fill mb-0">
                                                 <input type="password" class="form-control" name="senhaInput" placeholder="Insira sua senha" />
@@ -44,7 +51,7 @@
                                             </div>
                                         </div>
                                         <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                                            <button type="submit" name="createUser" value="true" class="btn btn-primary btn-lg" disabled>Cadastrar</button>
+                                            <button type="submit" name="createUser" value="true" class="btn btn-primary btn-lg">Cadastrar</button>
                                         </div>
                                     </form>
                                 </div>
