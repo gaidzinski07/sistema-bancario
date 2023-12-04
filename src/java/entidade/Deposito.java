@@ -18,16 +18,18 @@ public class Deposito {
     private Timestamp dataDeposito;
     private int idAgencia;
     private float valor;
+    private int tipo;
 
     public Deposito() {
     }
 
-    public Deposito(int id, int contaBancaria, Timestamp dataDeposito, int idAgencia, float valor) {
+    public Deposito(int id, int contaBancaria, Timestamp dataDeposito, int idAgencia, float valor, int tipo) {
         this.id = id;
         this.contaBancaria = contaBancaria;
         this.dataDeposito = dataDeposito;
         this.idAgencia = idAgencia;
         this.valor = valor;
+        this.tipo = tipo;
     }
 
     public int getId() {
@@ -69,4 +71,13 @@ public class Deposito {
     public void setValor(float valor) {
         this.valor = valor;
     }
+    
+    public int getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(int tipo) {
+        this.tipo = tipo;
+    }
+   
 }

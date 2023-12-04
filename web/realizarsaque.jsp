@@ -18,9 +18,9 @@
     <body>
         <jsp:include page="HeaderComponent.html"/>
         <% String mostra_msg = String.valueOf(request.getAttribute("msg")); %>
-        <form name="myDep" action="Realizardeposito" id="myDep" method="POST">
+        <form name="mySaq" action="Realizarsaque" id="mySaq" method="POST">
             <section class="vh-100 gradient-custom">
-                <h1>Depósito no caixa eletrônico</h1>
+                <h1>Saque no caixa eletrônico</h1>
                 <div class="container h-100">
                     <div class="row d-flex justify-content-center align-items-center h-100">
                         <div class="col-lg-12 col-xl-11">
@@ -29,29 +29,26 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" value="1">
                                     <label class="form-check-label" for="flexRadioDefault1">
-                                        Depósito em cheque
+                                        Saque na Conta Corrente (CC)
                                     </label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked value="2">
                                     <label class="form-check-label" for="flexRadioDefault2">
-                                        Depósito em dinheiro
+                                        Saque na Conta Poupança (CP)
                                     </label>
                                 </div>
-                                <h6>Não é possível depositar Cheque + Dinheiro em espécie. Favor realizar depósitos separados.</h6>
+                                <h6>Escolha uma conta a retirar!</h6>
                                 <div class="mb-5">
-                                    <label for="valordeposito" class="form-label">Valor sendo depositado</label>
-                                    <input type="valor" class="form-control" id="inputvalor" aria-describedby="valorhelp" name="valordep">
-                                    <div id="valorhelp" class="form-text">Sujeito a a verificação dos valores no envelope.</div>
+                                    <label for="valordeposito" class="form-label">Valor em formato R$ 0 inteiros a ser retirado</label>
+                                    <input type="valor" class="form-control" id="inputvalor" aria-describedby="valorhelp" name="valorsaq">
+                                    <div id="valorhelp" class="form-text">Não incluir centavos.</div>
                                 </div>
                                 <div class="mb-5">
                                     <label for="senha" class="form-label">Digite sua Senha</label>
                                     <input type="password" class="form-control" id="InputPassword" name="password">
                                 </div>
-                                <div class="mb-3 form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck1" name="confirmaveracidade" value="1">
-                                    <label class="form-check-label" for="exampleCheck1">Confirmo que as informações prestadas são verdadeiras e que se houver valores distintos o depósito não será realizado.</label>
-                                </div>
+                                
 
                                 <button type="submit" class="btn btn-primary">Enviar</button>
                                 <span class="home-text03">Mensagem : <%=mostra_msg.toString()%> </span>

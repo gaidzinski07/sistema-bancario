@@ -86,6 +86,7 @@ create table DEPOSITO(
 	id_agencia int not null,
 	ts_deposito Timestamp not null default CURRENT_TIMESTAMP,
 	valor float not null,
+        tipo int not null,
 	FOREIGN KEY (conta_bancaria) REFERENCES CONTA_BANCARIA(conta_corrente),
 	FOREIGN KEY (id_agencia) REFERENCES AGENCIA(id)
 );
@@ -121,7 +122,7 @@ insert into fundo (nome, vr_cota, vr_minimo) values ('Lojas Americanas', 3.8, 1.
 
 insert into investimento (conta_bancaria, id_fundo, vr_cota_inicio, vr_investido, qtd_cotas) values (2, 2, 7.77, 7770, 100), (2, 1, 3.8, 11.4, 3), (1, 2, 7.77, 777, 10);
 
-insert into deposito(conta_bancaria, id_agencia, valor) values (1, 1, 2000), (2, 3, 10000);
+insert into deposito(conta_bancaria, id_agencia, valor, tipo) values (1, 1, 2000,1), (2, 3, 10000, 1);
 
 insert into saque(conta_bancaria, id_agencia, valor) values (1, 1, 100), (2, 2, 200);
 
