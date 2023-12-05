@@ -65,7 +65,7 @@ public class ClienteController extends HttpServlet {
 
         } else {
             request.setAttribute("msgError", "Usuário e/ou senha incorreto");
-            rd = request.getRequestDispatcher("/loginAdmin.jsp");
+            rd = request.getRequestDispatcher("/login.jsp");
             rd.forward(request, response);
 
         }
