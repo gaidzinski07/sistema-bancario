@@ -204,15 +204,18 @@ public class InvestimentoDAO implements Dao<Investimento> {
         return investimentos;
     }
     
-    public void resgatar(int investimento){
+    public boolean resgatar(int investimento){
         ContasBancariaDAO contaDao = new ContasBancariaDAO();
         FundoDAO fundoDao = new FundoDAO();
         Investimento entidade = get(investimento);
         Fundo fundo = fundoDao.get(entidade.getIdFundo());
+        if(entidade == null || fundo == null){
+            return false;
+        }
         float rendimentos = fundo.getValorCota() / entidade.getVrCotaInicio();
-        System.out.println(rendimentos + " * " + entidade.getVrInvestido() + " = " + entidade.getVrInvestido() * rendimentos);
         contaDao.atualizaSaldoAposOperacao(entidade.getContaBancaria(), entidade.getVrInvestido() * rendimentos);
         delete(investimento);
+        return true;
     }
 
     public boolean aplicar(int idFundo, float valor) {
@@ -230,8 +233,10 @@ public class InvestimentoDAO implements Dao<Investimento> {
             investimento.setVrInvestido(valor);
             insert(investimento);
             contaDao.atualizaSaldoAposOperacao(2, valor * -1);
+            return true;
+        }else{
+            return false;
         }
-        return temSaldo;
     }
 
 }

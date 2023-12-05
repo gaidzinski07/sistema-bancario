@@ -256,5 +256,25 @@ public class UsuarioDAO {
             conexao.closeConexao();
         }
     }
+    
+    public int findContaBancariaByUsuario(Usuario usuario){
+        int conta = -1;
+        try {
+            Conexao con = new Conexao();
+            String sql = "select c.conta_bancaria conta from cliente c where c.id_usuario = ?";
+            PreparedStatement ps = con.getConexao().prepareStatement(sql);
+            ps.setInt(1, usuario.getId());
+            ResultSet rs = ps.executeQuery();
+            if(rs != null){
+                while(rs.next()){
+                    conta = rs.getInt("conta");
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            return conta;
+        }
+    }
 
 }
