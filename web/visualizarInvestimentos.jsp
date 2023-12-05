@@ -107,6 +107,15 @@
                 inputValor.value = valorMaximo;
                 inputNomeFundo.value = nomeFundo;
             }
+            
+            function showMessage(message){
+                console.log(message);
+                if(message != null && typeof message === "string" && message != ""){
+                    alert(message);
+                }
+                    
+            }
+            showMessage(<%="\"" + (String) request.getAttribute("mensagem") + "\""%>);
         </script>
     </body>
 </html>

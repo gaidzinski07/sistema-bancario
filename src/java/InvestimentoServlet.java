@@ -42,12 +42,14 @@ public class InvestimentoServlet extends HttpServlet {
             case "RESGATE":
                 int idInvestimento = Integer.parseInt(request.getParameter("idInvestimento"));
                 dao.resgatar(idInvestimento);
+                request.setAttribute("mensagem", "Resgate realizado com sucesso!");
                 break;
             case "APLICACAO":
                 int idFundo = Integer.parseInt(request.getParameter("idFundo"));
                 String vr = (String) request.getParameter("valorInvestido");
                 float valor = vr == null ? 0 : Float.parseFloat(vr);
                 dao.aplicar(idFundo, valor);
+                request.setAttribute("mensagem", "Aplicação realizada com sucesso!");
                 break;
         }
         List<InvestimentoDTO> dto = dao.getInvestimentosDoCliente(conta);
