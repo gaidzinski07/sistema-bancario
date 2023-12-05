@@ -13,6 +13,17 @@
         <title>Login UFFBank</title>
     </head>
     <jsp:include page="HeaderComponent.html"/>
+    <%
+        String msgError = (String) request.getAttribute("msgError");
+        if ((msgError != null) && (!msgError.isEmpty())) {%>
+
+    <div style="margin-top: 10px;margin-left: 10px;margin-right: 10px;">
+        <div class="alert alert-danger" role="alert">
+            <%= msgError%>
+        </div>
+    </div>
+    <% }%>
+    
     <body style="background-color: #0156a5">
         <div class="container">
             <div class="row align-items-center vh-100">
