@@ -155,6 +155,38 @@ public class UsuarioDAO {
             conexao.closeConexao();
         }
     }
+    
+        public Usuario logarCliente(Usuario usuario) throws Exception {
+        Conexao conexao = new Conexao();
+        try {
+            PreparedStatement sql = conexao.getConexao().prepareStatement("SELECT * FROM USUARIO WHERE Id=? and senha =? LIMIT 1");
+            sql.setInt(1, usuario.getId());
+            sql.setString(2, usuario.getSenha());
+            System.out.println("sql " + sql);
+            ResultSet resultado = sql.executeQuery();
+            Usuario usuarioObtido = new Usuario();
+            if (resultado != null) {
+                while (resultado.next()) {
+                    usuarioObtido.setId(Integer.parseInt(resultado.getString("ID")));
+                    usuarioObtido.setNome(resultado.getString("NOME"));
+                    usuarioObtido.setCpf(resultado.getString("CPF"));
+                    usuarioObtido.setEndereco(resultado.getString("endereco"));
+
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                    Date date = formatter.parse(resultado.getString("data_nascimento"));
+                    usuarioObtido.setDataNascimento(date);
+                    usuarioObtido.setSenha(resultado.getString("SENHA"));
+                }
+            }
+            return usuarioObtido;
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            throw new RuntimeException("Query de select (get) incorreta");
+        } finally {
+            conexao.closeConexao();
+        }
+    }
 
     public Usuario logarContaCorrente(Integer ContaCorrente) throws Exception {
         Conexao conexao = new Conexao();

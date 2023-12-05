@@ -4,6 +4,7 @@
     Author     : lucas
 --%>
 
+<%@page import="entidade.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <!DOCTYPE html>
@@ -61,7 +62,7 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
                                 <li><a class="dropdown-item" href="LoginController">Logar Adminstrador</a></li>
-                                <li><a class="dropdown-item" href="login.jsp">Logar Cliente</a></li>
+                                <li><a class="dropdown-item" href="ClienteController">Logar Cliente</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">

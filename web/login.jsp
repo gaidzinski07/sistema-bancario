@@ -23,18 +23,18 @@
                                 <img class="mb-4" src="https://uploaddeimagens.com.br/images/004/641/545/original/Design_sem_nome.png?1697751630" alt="Logo do banco" height="57">
                             </div>
                             <h1>Entrar</h1>
-                            <form>
+                            <form method="post">
                                 <div class="form-group row">
                                     <label for="agencia">Agência</label>
                                     <input type="text" pattern="\d*" maxlength="4" class="form-control" id="agencia" placeholder="">
                                 </div>
                                 <div class="form-group row">
                                     <label for="conta">Conta Corrente</label>
-                                    <input type="text" class="form-control" id="conta" placeholder="">
+                                    <input type="text" class="form-control" name="contaBancariaInput" placeholder="">
                                 </div>
                                 <div class="form-group row">
                                     <label for="senha">Senha</label>
-                                    <input type="password" class="form-control" id="senha" placeholder="">
+                                    <input type="password" class="form-control" name="senhaInput" placeholder="">
                                 </div>
 
                                 <button class="btn btn-primary w-100 py-2" style="margin-top: 10px" type="submit">Fazer Login</button>

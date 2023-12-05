@@ -1,9 +1,8 @@
 
+import entidade.Cliente;
 import entidade.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -13,10 +12,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.ClienteDAO;
 import model.UsuarioDAO;
 
-@WebServlet(urlPatterns = {"/LoginController"})
-public class LoginController extends HttpServlet {
+@WebServlet(urlPatterns = {"/ClienteController"})
+public class ClienteController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -38,24 +38,27 @@ public class LoginController extends HttpServlet {
             throws ServletException, IOException {
         RequestDispatcher rd;
         // Recuperar os dados do formulário
+        Cliente newClient = new Cliente();
         Usuario newUser = new Usuario();
         Usuario usuarioLogado = new Usuario();
         UsuarioDAO userDao = new UsuarioDAO();
-
+        ClienteDAO clienteDao = new ClienteDAO();
+       
         try {
-
-            newUser.setCpf(request.getParameter("cpfInput"));
+            newClient = clienteDao.getClienteFromContaBancaria(Integer.valueOf(request.getParameter("contaBancariaInput")));
             newUser.setSenha(request.getParameter("senhaInput"));
-
-            usuarioLogado = userDao.logar(newUser);
+            newUser.setId(newClient.getIdUsuario());
+           
+            usuarioLogado = userDao.logarCliente(newUser);
+             System.out.println("Id User: " + usuarioLogado.getId());
         } catch (Exception ex) {
             Logger.getLogger(GenerateUserController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
         if (usuarioLogado.getId() != 0) {
             HttpSession session = request.getSession();
             session.setAttribute("usuario", usuarioLogado);
-            
+
             request.setAttribute("userLogged", "Usário " + usuarioLogado.getNome() + " " + "logado com sucesso!");
             rd = request.getRequestDispatcher("/home.jsp");
             rd.forward(request, response);
@@ -67,11 +70,12 @@ public class LoginController extends HttpServlet {
 
         }
     }
+   
 
     private void renderForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Redirecionar para o JSP desejado
-        request.getRequestDispatcher("/loginAdmin.jsp").forward(request, response);
+        request.getRequestDispatcher("/login.jsp").forward(request, response);
     }
 
     @Override

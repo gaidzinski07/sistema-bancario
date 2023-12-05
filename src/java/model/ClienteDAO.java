@@ -31,6 +31,31 @@ public class ClienteDAO implements Dao<Cliente> {
         }
         return cliente;
     }
+    
+    
+    public Cliente getClienteFromContaBancaria(int contaBancaria) {
+        Conexao conexao = new Conexao();
+        Cliente cliente = new Cliente();
+        try {
+            PreparedStatement sql = conexao.getConexao().prepareStatement("SELECT * FROM Cliente WHERE conta_bancaria = ? ");
+            sql.setInt(1, contaBancaria);
+            ResultSet resultado = sql.executeQuery();
+
+            if (resultado != null) {
+                while (resultado.next()) {
+                    cliente.setIdUsuario(Integer.parseInt(resultado.getString("id_usuario")));
+                    cliente.setTipoCliente(String.valueOf(resultado.getString("tipo_cliente")));
+                    cliente.setContaBancaria(Integer.parseInt(resultado.getString("conta_bancaria")));
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Query de select (get categoria) incorreta");
+        } finally {
+            conexao.closeConexao();
+        }
+        return cliente;
+    }
+
 
     @Override
     public void insert(Cliente t) {
