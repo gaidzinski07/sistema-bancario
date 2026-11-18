@@ -5,6 +5,11 @@ spring:
     username: ${DB_USER}
     password: ${DB_PASSWORD}
 
+banco:
+  seguranca:
+    jwt:
+      segredo: ${JWT_SECRET}
+
 springdoc:
   api-docs:
     enabled: false

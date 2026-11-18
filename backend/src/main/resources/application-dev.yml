@@ -5,6 +5,12 @@ spring:
   flyway:
     locations: classpath:db/migration, classpath:db/seed
 
+banco:
+  seguranca:
+    jwt:
+      # Chave SÓ para desenvolvimento local. Em qualquer outro ambiente, defina JWT_SECRET.
+      segredo: ${JWT_SECRET:P7xKZQZZ7vwM3MOJszfCxUwYVsG3S/GVDhzk0EkJP+vBC3dlTg6Vqr9ronvmI43t}
+
 logging:
   level:
     br.uff.banco: DEBUG

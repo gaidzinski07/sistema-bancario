@@ -140,7 +140,7 @@ As operações financeiras ignoram a sessão e sempre agem sobre o usuário/cont
 | Dinheiro | `BigDecimal` / `DECIMAL(19,2)`; cotas `DECIMAL(19,8)` | elimina `float` |
 | Consistência | `@Transactional` nos serviços de aplicação; lock pessimista (`SELECT ... FOR UPDATE`) nas contas envolvidas, adquirido em ordem de ID para evitar deadlock; `@Version` como rede de segurança | resolve 2.2 (atomicidade e corrida) |
 | Extrato | Tabela de **lançamentos** (ledger) gerada por toda operação | extrato vira uma consulta paginada simples, e o saldo é auditável |
-| Segurança | Spring Security, BCrypt, papéis `ADMIN`/`CLIENTE`, sessão em cookie `HttpOnly` + CSRF (o `HttpClient` do Angular já trata o `XSRF-TOKEN`) | SPA servida no mesmo domínio dispensa JWT; trocar por JWT só se houver outros clientes (app mobile etc.) |
+| Segurança | Spring Security, BCrypt, papéis `ADMIN`/`CLIENTE`, **JWT** stateless (HS256, 15 min) + refresh token opaco (7 dias, hash no banco, rotação a cada uso, detecção de reuso, revogado no logout). Sem sessão e sem cookies, logo sem CSRF | decisão do grupo na Fase 2 (substituiu a proposta inicial de sessão em cookie). O refresh token revogável compensa o JWT não poder ser invalidado antes de expirar |
 | Confirmação de operação | **Senha de transação** separada (hash), exigida em saque/transferência/aplicação/resgate | preserva a regra atual de "digite sua senha" sem reutilizar a senha de login |
 | API | REST + DTOs `record`, Bean Validation, erros como `ProblemDetail` (RFC 9457) via `@RestControllerAdvice`, OpenAPI via springdoc | contrato explícito com o front |
 | Front | Angular com standalone components, signals, reactive forms, rotas lazy, guards por papel | |
@@ -269,9 +269,9 @@ Tudo é commitado junto ou nada é — o oposto dos 3 commits soltos de `Realiza
 
 | Legado | Novo endpoint | Papel |
 |---|---|---|
-| `LoginController` / `ClienteController` (POST) | `POST /api/auth/login` (CPF + senha, para os dois papéis), `POST /api/auth/logout`, `GET /api/auth/me` | público / autenticado |
-| `CreateUser` | `POST /api/admin/usuarios`, `GET /api/admin/usuarios` | ADMIN |
-| `admin/createBankAccountPage.jsp` (não implementado) | `POST /api/admin/clientes/{id}/contas` | ADMIN |
+| `LoginController` / `ClienteController` (POST) | `POST /api/auth/login` (CPF + senha, para os dois papéis), `POST /api/auth/refresh`, `POST /api/auth/logout`, `GET /api/auth/me` | público / autenticado |
+| `CreateUser` | `POST /api/admin/clientes`, `GET /api/admin/clientes`, `GET /api/admin/clientes/{id}`, `POST /api/admin/administradores` | ADMIN |
+| `admin/createBankAccountPage.jsp` (não implementado) | `POST /api/admin/clientes/{id}/contas`, `GET /api/admin/clientes/{id}/contas` | ADMIN |
 | — | `GET/POST /api/admin/agencias`, `POST /api/admin/fundos`, `PUT /api/admin/fundos/{id}/cotacao` | ADMIN |
 | `EmitirSaldoController` (mock) | `GET /api/contas` (minhas contas com saldo), `GET /api/contas/{id}` | CLIENTE |
 | `EmitirExtratoController` | `GET /api/contas/{id}/extrato?de=&ate=&page=` | CLIENTE |
@@ -290,7 +290,8 @@ Toda rota de cliente obtém a conta **a partir do usuário autenticado** e valid
 
 ```
 frontend/src/app/
-├── core/          auth.service, auth.guard, role.guard, http interceptors (erro → toast, 401 → login),
+├── core/          auth.service (guarda o access token em memória e renova via refresh), auth.guard, role.guard,
+│                  http interceptors (Bearer, erro → toast, 401 → tenta refresh uma vez → login),
 │                  layout (header/nav únicos, substituindo as 3 cópias)
 ├── shared/        componentes de UI, pipes (moeda BRL, CPF, conta/agência), validators (CPF, valor > 0)
 ├── features/
@@ -329,7 +330,7 @@ Cada fase termina com algo executável e testado. Backend e frontend podem andar
 
 ### Fase 2 — Identidade e cadastros
 - `Usuario`, `Cliente`, `Agencia`, `Conta` (sem operações ainda) + repositórios + `@DataJpaTest`.
-- Spring Security: login por CPF e senha (BCrypt), sessão em cookie, CSRF, papéis, logout que invalida a sessão.
+- Spring Security: login por CPF e senha (BCrypt), JWT + refresh token com rotação, papéis, logout que revoga o refresh token.
 - Endpoints de admin: criar usuário/cliente, abrir conta (corrente/poupança) — implementando o que hoje é só tela.
 - **Pronto quando:** testes provam que CLIENTE recebe 403 em `/api/admin/**` e anônimo recebe 401 em tudo, menos no login.
 
@@ -371,6 +372,12 @@ O banco atual só tem dados de seed, então **não há migração de dados**: o 
   conta separada, resgate parcial etc.). O seed de desenvolvimento torna o usuário 1 admin + cliente,
   como no legado (decisão 7 ainda em aberto). Se o grupo decidir diferente, o ajuste entra como `V2`.
   Além do MySQL 8 (alvo), o backend roda contra MariaDB local via `jdbc:mariadb://`.
+- **Fase 2 — concluída (2026-11-18).** Entidades `Usuario`, `Cliente` (`@MapsId`), `Agencia`, `Conta` e
+  `RefreshToken`; migration `V2` (refresh tokens e numeração de contas por agência, com lock pessimista).
+  Autenticação por **JWT** (decisão do grupo, no lugar da sessão em cookie). Endpoints de admin para
+  agências, clientes, contas e administradores. Coleção do Postman em `docs/postman/`.
+  Fica para fases seguintes: troca de senha, definição da senha de transação pelo cliente (Fase 3),
+  limite de tentativas de login e restrição de quem pode criar administradores (hoje, qualquer ADMIN).
 
 ## 5. Decisões de negócio a confirmar antes da Fase 1
 

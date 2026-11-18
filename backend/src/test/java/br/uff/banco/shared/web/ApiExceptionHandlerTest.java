@@ -1,9 +1,9 @@
 package br.uff.banco.shared.web;
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -18,8 +18,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,6 +37,10 @@ class ApiExceptionHandlerTest {
 
     @Autowired
     MockMvc mvc;
+
+    /** Exigido pelo AuthenticationManager do SecurityConfig; o login não é exercitado aqui. */
+    @MockitoBean
+    UserDetailsService usuarios;
 
     @Test
     void regraDeNegocioVira422ComCodigo() throws Exception {
@@ -60,7 +68,7 @@ class ApiExceptionHandlerTest {
 
     @Test
     void validacaoVira400ComErrosPorCampo() throws Exception {
-        mvc.perform(post("/teste/validacao").with(csrf())
+        mvc.perform(post("/teste/validacao")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"descricao\": \"\", \"valor\": -1}"))
                 .andExpect(status().isBadRequest())
@@ -69,11 +77,30 @@ class ApiExceptionHandlerTest {
     }
 
     @Test
-    void postSemTokenCsrfEhRecusado() throws Exception {
+    void jsonMalformadoVira400ComCodigo() throws Exception {
+        mvc.perform(post("/teste/validacao")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"descricao\": \"x\", \"valor\": \"abc\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.codigo").value("corpo-invalido"));
+    }
+
+    @Test
+    @WithAnonymousUser
+    void semTokenVira401EmProblemDetailComDesafioBearer() throws Exception {
+        mvc.perform(get("/teste/regra"))
+                .andExpect(status().isUnauthorized())
+                .andExpect(header().string(HttpHeaders.WWW_AUTHENTICATE, "Bearer"))
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+                .andExpect(jsonPath("$.codigo").value("nao-autenticado"));
+    }
+
+    @Test
+    void apiStatelessNaoExigeCsrf() throws Exception {
         mvc.perform(post("/teste/validacao")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"descricao\": \"x\", \"valor\": 1}"))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isOk());
     }
 
     @RestController
