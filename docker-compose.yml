@@ -1,5 +1,9 @@
-# Banco de desenvolvimento.
-# Porta 3307 no host para não conflitar com um MySQL local já instalado na 3306.
+# Ambiente local.
+#
+#   docker compose up -d mysql                  # só o banco (desenvolvimento com mvnw + ng serve)
+#   docker compose --profile completo up -d     # banco + aplicação (API servindo o Angular) em http://localhost:8080
+#
+# O MySQL fica na porta 3307 do host para não conflitar com um MySQL local já instalado na 3306.
 services:
   mysql:
     image: mysql:8.4
@@ -18,6 +22,22 @@ services:
       interval: 5s
       timeout: 3s
       retries: 20
+
+  # Imagem de produção (Dockerfile) rodando com o profile dev: mesmo artefato que iria para o
+  # servidor, mas com os dados de exemplo do seed para demonstração.
+  app:
+    profiles: ["completo"]
+    build: .
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      DB_URL: jdbc:mysql://mysql:3306/banco
+      DB_USER: banco
+      DB_PASSWORD: banco
+    ports:
+      - "8080:8080"
 
 volumes:
   mysql-data:

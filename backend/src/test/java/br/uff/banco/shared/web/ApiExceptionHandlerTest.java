@@ -44,7 +44,7 @@ class ApiExceptionHandlerTest {
 
     @Test
     void regraDeNegocioVira422ComCodigo() throws Exception {
-        mvc.perform(get("/teste/regra"))
+        mvc.perform(get("/api/teste/regra"))
                 .andExpect(status().isUnprocessableContent())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
                 .andExpect(jsonPath("$.codigo").value("saldo-insuficiente"))
@@ -53,14 +53,14 @@ class ApiExceptionHandlerTest {
 
     @Test
     void recursoNaoEncontradoVira404() throws Exception {
-        mvc.perform(get("/teste/nao-encontrado"))
+        mvc.perform(get("/api/teste/nao-encontrado"))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.codigo").value("nao-encontrado"));
     }
 
     @Test
     void erroInesperadoVira500SemVazarDetalhes() throws Exception {
-        mvc.perform(get("/teste/erro"))
+        mvc.perform(get("/api/teste/erro"))
                 .andExpect(status().isInternalServerError())
                 .andExpect(jsonPath("$.codigo").value("erro-interno"))
                 .andExpect(jsonPath("$.detail").value("Ocorreu um erro inesperado. Tente novamente mais tarde."));
@@ -68,7 +68,7 @@ class ApiExceptionHandlerTest {
 
     @Test
     void validacaoVira400ComErrosPorCampo() throws Exception {
-        mvc.perform(post("/teste/validacao")
+        mvc.perform(post("/api/teste/validacao")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"descricao\": \"\", \"valor\": -1}"))
                 .andExpect(status().isBadRequest())
@@ -78,7 +78,7 @@ class ApiExceptionHandlerTest {
 
     @Test
     void jsonMalformadoVira400ComCodigo() throws Exception {
-        mvc.perform(post("/teste/validacao")
+        mvc.perform(post("/api/teste/validacao")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"descricao\": \"x\", \"valor\": \"abc\"}"))
                 .andExpect(status().isBadRequest())
@@ -88,7 +88,7 @@ class ApiExceptionHandlerTest {
     @Test
     @WithAnonymousUser
     void semTokenVira401EmProblemDetailComDesafioBearer() throws Exception {
-        mvc.perform(get("/teste/regra"))
+        mvc.perform(get("/api/teste/regra"))
                 .andExpect(status().isUnauthorized())
                 .andExpect(header().string(HttpHeaders.WWW_AUTHENTICATE, "Bearer"))
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
@@ -97,7 +97,7 @@ class ApiExceptionHandlerTest {
 
     @Test
     void apiStatelessNaoExigeCsrf() throws Exception {
-        mvc.perform(post("/teste/validacao")
+        mvc.perform(post("/api/teste/validacao")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"descricao\": \"x\", \"valor\": 1}"))
                 .andExpect(status().isOk());
@@ -106,22 +106,22 @@ class ApiExceptionHandlerTest {
     @RestController
     static class ControllerDeTeste {
 
-        @GetMapping("/teste/regra")
+        @GetMapping("/api/teste/regra")
         void regra() {
             throw new RegraNegocioException("saldo-insuficiente", "Saldo insuficiente.");
         }
 
-        @GetMapping("/teste/nao-encontrado")
+        @GetMapping("/api/teste/nao-encontrado")
         void naoEncontrado() {
             throw RecursoNaoEncontradoException.de("Conta", 99);
         }
 
-        @GetMapping("/teste/erro")
+        @GetMapping("/api/teste/erro")
         void erro() {
             throw new IllegalStateException("detalhe interno que não pode vazar");
         }
 
-        @PostMapping("/teste/validacao")
+        @PostMapping("/api/teste/validacao")
         void validacao(@Valid @RequestBody Requisicao requisicao) {
         }
 

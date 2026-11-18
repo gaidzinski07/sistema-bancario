@@ -1,19 +1,17 @@
+# Backend e frontend têm o próprio .gitignore (backend/.gitignore, frontend/.gitignore).
+
+# Restos locais do sistema legado (NetBeans/JSP), removido na Fase 7 — ver a tag legacy-jsp
 /build/
+/nbproject/
+/test/
+/web/
 
-# NetBeans specific #
-nbproject/private/
-build/
-nbbuild/
-dist/
-nbdist/
-nbactions.xml
-nb-configuration.xml
-nbproject/private/private.xml
-nbproject/private/private.properties
-nbproject/project.properties
+# IDEs e sistema (o frontend versiona frontend/.vscode de propósito: extensões e debug recomendados)
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
 
-# Claude Code (instruções locais, não versionar)
+# Claude Code (instruções e configuração locais, não versionar)
 CLAUDE.md
-
-# Configuração local do Claude Code (caminhos desta máquina)
 .claude/

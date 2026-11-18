@@ -11,6 +11,8 @@
 
 ## 1. Retrato do sistema atual
 
+> **Fase 7:** o código legado foi removido do `main` e está preservado na tag `legacy-jsp`. Os links desta seção e da seguinte apontam para os arquivos nessa tag.
+
 | Camada | O que existe |
 |---|---|
 | Build | NetBeans + Ant (`build.xml`, `nbproject/`), driver MySQL commitado em `web/driver/`, caminhos absolutos das máquinas de colegas em `nbproject/project.properties` |
@@ -53,38 +55,38 @@ Severidade: 🔴 crítico (dinheiro/segurança) · 🟠 bug funcional · 🟡 d�
 
 As operações financeiras ignoram a sessão e sempre agem sobre o usuário/conta 1:
 
-- [Realizardeposito.java:88](src/java/Realizardeposito.java:88) — `int id_logado = 1;`
-- [Realizarsaque.java:89](src/java/Realizarsaque.java:89) — `int id_logado = 1;`
-- [Realizartransferencia.java:116](src/java/Realizartransferencia.java:116) — `int id_logado = 1;` e [linha 148](src/java/Realizartransferencia.java:148) / [linha 55](src/java/Realizartransferencia.java:55) — `contaDao.get(1)`
+- [Realizardeposito.java:88](https://github.com/gaidzinski07/sistema-bancario/blob/legacy-jsp/src/java/Realizardeposito.java#L88) — `int id_logado = 1;`
+- [Realizarsaque.java:89](https://github.com/gaidzinski07/sistema-bancario/blob/legacy-jsp/src/java/Realizarsaque.java#L89) — `int id_logado = 1;`
+- [Realizartransferencia.java:116](https://github.com/gaidzinski07/sistema-bancario/blob/legacy-jsp/src/java/Realizartransferencia.java#L116) — `int id_logado = 1;` e [linha 148](https://github.com/gaidzinski07/sistema-bancario/blob/legacy-jsp/src/java/Realizartransferencia.java#L148) / [linha 55](https://github.com/gaidzinski07/sistema-bancario/blob/legacy-jsp/src/java/Realizartransferencia.java#L55) — `contaDao.get(1)`
 - Até o commit `f2b3b06` o mesmo acontecia em investimentos/extrato (`getExtrato(2)`, `aplicar(...)` com conta `2` e agência `3` fixas). As alterações não commitadas corrigem extrato e aplicação, mas **resgate** ainda não valida o dono (ver 2.3).
 
 ### 2.2 Regras de negócio financeiras ausentes 🔴
 
-- **Saque sem verificação de saldo** ([Realizarsaque.java:114-125](src/java/Realizarsaque.java:114)) — saldo pode ficar negativo.
-- **Transferência sem verificação de saldo, sem validar valor positivo** — valor negativo "puxa" dinheiro do destinatário ([Realizartransferencia.java:157-162](src/java/Realizartransferencia.java:157)).
-- **Agência e CPF do destinatário são lidos e ignorados** ([Realizartransferencia.java:127-143](src/java/Realizartransferencia.java:127)); `getUsuarioCPF` sempre lança exceção (lê coluna inexistente `ts_deposito`, [UsuarioDAO.java:247](src/java/model/UsuarioDAO.java:247)), que é engolida.
-- **Transferência "de investimento" (Option 3) cria dinheiro do nada**: debita `vr_investido` via `InvestimentoDAO.update`, cujo SQL tem typo (`vr_cota_incio`, [InvestimentoDAO.java:116](src/java/model/InvestimentoDAO.java:116)) e falha silenciosamente, mas o crédito na poupança do destinatário é gravado. Também não registra `TRANSFERENCIA`.
+- **Saque sem verificação de saldo** ([Realizarsaque.java:114-125](https://github.com/gaidzinski07/sistema-bancario/blob/legacy-jsp/src/java/Realizarsaque.java#L114)) — saldo pode ficar negativo.
+- **Transferência sem verificação de saldo, sem validar valor positivo** — valor negativo "puxa" dinheiro do destinatário ([Realizartransferencia.java:157-162](https://github.com/gaidzinski07/sistema-bancario/blob/legacy-jsp/src/java/Realizartransferencia.java#L157)).
+- **Agência e CPF do destinatário são lidos e ignorados** ([Realizartransferencia.java:127-143](https://github.com/gaidzinski07/sistema-bancario/blob/legacy-jsp/src/java/Realizartransferencia.java#L127)); `getUsuarioCPF` sempre lança exceção (lê coluna inexistente `ts_deposito`, [UsuarioDAO.java:247](https://github.com/gaidzinski07/sistema-bancario/blob/legacy-jsp/src/java/model/UsuarioDAO.java#L247)), que é engolida.
+- **Transferência "de investimento" (Option 3) cria dinheiro do nada**: debita `vr_investido` via `InvestimentoDAO.update`, cujo SQL tem typo (`vr_cota_incio`, [InvestimentoDAO.java:116](https://github.com/gaidzinski07/sistema-bancario/blob/legacy-jsp/src/java/model/InvestimentoDAO.java#L116)) e falha silenciosamente, mas o crédito na poupança do destinatário é gravado. Também não registra `TRANSFERENCIA`.
 - **Transferência de poupança é gravada igual à de corrente** — extrato não distingue; e o crédito cai na poupança do destino.
 - **Depósito ignora o tipo de conta** — sempre credita `saldo` (corrente). O `tipo` (1=cheque, 2=dinheiro) é gravado como `int` mágico.
 - **Saque/depósito na poupança não são distinguíveis no extrato**.
-- **Resgate** ([InvestimentoDAO.java:207-219](src/java/model/InvestimentoDAO.java:207)): não confere se o investimento pertence à conta da sessão (qualquer cliente resgata o investimento de outro passando `idInvestimento`); checa `entidade == null` depois de já usá-la, e `get()` nunca retorna `null`; resgata só total.
+- **Resgate** ([InvestimentoDAO.java:207-219](https://github.com/gaidzinski07/sistema-bancario/blob/legacy-jsp/src/java/model/InvestimentoDAO.java#L207)): não confere se o investimento pertence à conta da sessão (qualquer cliente resgata o investimento de outro passando `idInvestimento`); checa `entidade == null` depois de já usá-la, e `get()` nunca retorna `null`; resgata só total.
 - **Nada é transacional**: cada DAO abre sua própria conexão com autocommit. Débito, crédito e registro da transferência são 3 commits independentes; falha no meio deixa dinheiro sumido/duplicado.
-- **Condição de corrida** em `atualizaSaldoAposOperacao` ([ContasBancariaDAO.java:148](src/java/model/ContasBancariaDAO.java:148)): lê saldo, soma em Java, grava — duas operações simultâneas perdem uma atualização.
+- **Condição de corrida** em `atualizaSaldoAposOperacao` ([ContasBancariaDAO.java:148](https://github.com/gaidzinski07/sistema-bancario/blob/legacy-jsp/src/java/model/ContasBancariaDAO.java#L148)): lê saldo, soma em Java, grava — duas operações simultâneas perdem uma atualização.
 - **`float` para dinheiro** (Java e SQL) — erro de arredondamento.
-- `podeFazerOperacaoSaida` passa a conta com `setFloat` ([ContasBancariaDAO.java:132](src/java/model/ContasBancariaDAO.java:132)).
+- `podeFazerOperacaoSaida` passa a conta com `setFloat` ([ContasBancariaDAO.java:132](https://github.com/gaidzinski07/sistema-bancario/blob/legacy-jsp/src/java/model/ContasBancariaDAO.java#L132)).
 
 ### 2.3 Segurança 🔴
 
 - **Senhas em texto puro** no banco e na comparação (`senha.equals(...)`); seeds com `'123'`.
-- **A tela de transferência mostra a senha digitada**: campo `type="text"` ([transferencia.jsp:89](web/transferencia.jsp:89)) e "Você digitou: <senha>" ([transferencia.jsp:95](web/transferencia.jsp:95)) — a servlet devolve a senha em `msgsenha`.
-- **Senha logada no console** em [GenerateUserController.java:52](src/java/GenerateUserController.java:52).
+- **A tela de transferência mostra a senha digitada**: campo `type="text"` ([transferencia.jsp:89](https://github.com/gaidzinski07/sistema-bancario/blob/legacy-jsp/web/transferencia.jsp#L89)) e "Você digitou: <senha>" ([transferencia.jsp:95](https://github.com/gaidzinski07/sistema-bancario/blob/legacy-jsp/web/transferencia.jsp#L95)) — a servlet devolve a senha em `msgsenha`.
+- **Senha logada no console** em [GenerateUserController.java:52](https://github.com/gaidzinski07/sistema-bancario/blob/legacy-jsp/src/java/GenerateUserController.java#L52).
 - **Sem papéis**: admin e cliente gravam o mesmo atributo `usuario` na sessão. Os filtros só verificam "está logado", então qualquer cliente cria usuários.
-- **Filtro de admin não protege nada**: `urlPatterns = {"/admin*"}` ([createBankAccountFilter.java:15](src/java/filtro/createBankAccountFilter.java:15)) é tratado como URL exata; o correto seria `/admin/*`.
+- **Filtro de admin não protege nada**: `urlPatterns = {"/admin*"}` ([createBankAccountFilter.java:15](https://github.com/gaidzinski07/sistema-bancario/blob/legacy-jsp/src/java/filtro/createBankAccountFilter.java#L15)) é tratado como URL exata; o correto seria `/admin/*`.
 - **Logout é um link para `login.jsp`** — a sessão nunca é invalidada.
 - **XSS**: tudo é impresso com `<%= %>` sem escape, inclusive dentro de JavaScript (`popularModal(..., '<nome>')` em `realizarInvestimento.jsp`/`visualizarInvestimentos.jsp`, e `showMessage("<mensagem>")`).
 - **Sem CSRF** em nenhum formulário POST.
 - **IDOR** no resgate (2.2) e em qualquer operação que receba IDs do cliente.
-- Credenciais do banco no código ([Conexao.java:15](src/java/model/Conexao.java:15)).
+- Credenciais do banco no código ([Conexao.java:15](https://github.com/gaidzinski07/sistema-bancario/blob/legacy-jsp/src/java/model/Conexao.java#L15)).
 - Servlets de debug expostos em produção: `/Teste`, `/ConexaoTesteBD` (lista todas as contas/clientes).
 - `web/sql/*.sql` é servido como estático e insere no schema de sistema `mysql.*`.
 
@@ -92,22 +94,22 @@ As operações financeiras ignoram a sessão e sempre agem sobre o usuário/cont
 
 | Local | Defeito |
 |---|---|
-| [FundoDAO.java:55](src/java/model/FundoDAO.java:55) | `sql.setFloat(42, ...)` — índice inexistente |
-| [FundoDAO.java:69](src/java/model/FundoDAO.java:69) | `UPDATE` usa colunas `valor_cota`/`valor_minimo` (não existem) |
-| [DepositoDAO.java:90](src/java/model/DepositoDAO.java:90) | `UPDATE Deposito SET ... ts_saque` (coluna de outra tabela) |
-| [AdministradorDAO.java:68](src/java/model/AdministradorDAO.java:68) | 3 placeholders, só 2 parâmetros |
-| [TransferenciaDAO.java:95](src/java/model/TransferenciaDAO.java:95) | timestamp no lugar do `valor`, `setFloat` comentado |
-| [ClienteDAO.java:65](src/java/model/ClienteDAO.java:65) | `INSERT` sem `id_usuario` (PK) |
-| [UsuarioDAO.java:195](src/java/model/UsuarioDAO.java:195) | `SELECT * contasbancaria` sem `FROM`, tabela do schema antigo |
-| [UsuarioDAO.java:113](src/java/model/UsuarioDAO.java:113), [:219](src/java/model/UsuarioDAO.java:219), [:247](src/java/model/UsuarioDAO.java:247) | leem `ts_deposito` da tabela `USUARIO` |
-| [UsuarioDAO.java:260-277](src/java/model/UsuarioDAO.java:260) | conexão nunca fechada; `return` dentro do `finally` engole exceções |
-| [InvestimentoDAO.java:46](src/java/model/InvestimentoDAO.java:46) | `get_CC` devolve só o último investimento da conta |
+| [FundoDAO.java:55](https://github.com/gaidzinski07/sistema-bancario/blob/legacy-jsp/src/java/model/FundoDAO.java#L55) | `sql.setFloat(42, ...)` — índice inexistente |
+| [FundoDAO.java:69](https://github.com/gaidzinski07/sistema-bancario/blob/legacy-jsp/src/java/model/FundoDAO.java#L69) | `UPDATE` usa colunas `valor_cota`/`valor_minimo` (não existem) |
+| [DepositoDAO.java:90](https://github.com/gaidzinski07/sistema-bancario/blob/legacy-jsp/src/java/model/DepositoDAO.java#L90) | `UPDATE Deposito SET ... ts_saque` (coluna de outra tabela) |
+| [AdministradorDAO.java:68](https://github.com/gaidzinski07/sistema-bancario/blob/legacy-jsp/src/java/model/AdministradorDAO.java#L68) | 3 placeholders, só 2 parâmetros |
+| [TransferenciaDAO.java:95](https://github.com/gaidzinski07/sistema-bancario/blob/legacy-jsp/src/java/model/TransferenciaDAO.java#L95) | timestamp no lugar do `valor`, `setFloat` comentado |
+| [ClienteDAO.java:65](https://github.com/gaidzinski07/sistema-bancario/blob/legacy-jsp/src/java/model/ClienteDAO.java#L65) | `INSERT` sem `id_usuario` (PK) |
+| [UsuarioDAO.java:195](https://github.com/gaidzinski07/sistema-bancario/blob/legacy-jsp/src/java/model/UsuarioDAO.java#L195) | `SELECT * contasbancaria` sem `FROM`, tabela do schema antigo |
+| [UsuarioDAO.java:113](https://github.com/gaidzinski07/sistema-bancario/blob/legacy-jsp/src/java/model/UsuarioDAO.java#L113), [:219](https://github.com/gaidzinski07/sistema-bancario/blob/legacy-jsp/src/java/model/UsuarioDAO.java#L219), [:247](https://github.com/gaidzinski07/sistema-bancario/blob/legacy-jsp/src/java/model/UsuarioDAO.java#L247) | leem `ts_deposito` da tabela `USUARIO` |
+| [UsuarioDAO.java:260-277](https://github.com/gaidzinski07/sistema-bancario/blob/legacy-jsp/src/java/model/UsuarioDAO.java#L260) | conexão nunca fechada; `return` dentro do `finally` engole exceções |
+| [InvestimentoDAO.java:46](https://github.com/gaidzinski07/sistema-bancario/blob/legacy-jsp/src/java/model/InvestimentoDAO.java#L46) | `get_CC` devolve só o último investimento da conta |
 | `logar`/`logarCliente` | `SimpleDateFormat.parse(null)` se `data_nascimento` for nulo → login falha silenciosamente |
 | Todos | `catch` que só faz `System.err.println` e retorna objeto vazio; "não encontrado" é `id == 0` |
 
 ### 2.5 Telas falsas ou quebradas 🟠
 
-- **Saldo é mockado**: agência `0123`, conta `1234 5678 9843 1253` e saldo `R$85,00` fixos ([EmitirSaldoPage.jsp:54-62](web/EmitirSaldoPage.jsp:54)).
+- **Saldo é mockado**: agência `0123`, conta `1234 5678 9843 1253` e saldo `R$85,00` fixos ([EmitirSaldoPage.jsp:54-62](https://github.com/gaidzinski07/sistema-bancario/blob/legacy-jsp/web/EmitirSaldoPage.jsp#L54)).
 - `EmitirExtratoPage.jsp` é código morto (a servlet agora vai para `extrato.jsp`) e mostra o mesmo valor em "Entrada" e "Saída".
 - **Criar conta bancária** não existe: formulário com `action=""` e `GenerateAccount` é o template do NetBeans.
 - Login de cliente tem campo agência sem `name` (ignorado).
@@ -354,7 +356,7 @@ Cada fase termina com algo executável e testado. Backend e frontend podem andar
 - Playwright: login, transferência ponta a ponta, resgate.
 - **Pronto quando:** todas as funcionalidades da seção 1 funcionam pelo Angular, sem nenhuma JSP.
 
-### Fase 7 — Corte e limpeza
+### Fase 7 — Corte e limpeza (concluída)
 - Remover `src/`, `web/`, `nbproject/`, `build.xml`, `sql/` do `main` (permanecem na tag `legacy-jsp`).
 - README com como subir (compose), usuários de seed, arquitetura e decisões (ADRs curtos em `docs/adr/`).
 - Opcional: Dockerfile multi-stage (build do Angular embutido no jar), observabilidade (logs estruturados, métricas do Actuator).
@@ -406,6 +408,21 @@ O banco atual só tem dados de seed, então **não há migração de dados**: o 
   área de administração (clientes, abertura de conta, agências, fundos e cotas, administradores). Sessão
   JWT com renovação compartilhada no interceptor. Testes: unitários (Vitest) e ponta a ponta
   (Playwright: login, transferência, aplicação + resgate), todos no CI.
+- **Fase 7 — concluída (2026-11-18). Migração encerrada.** Legado (`src/`, `web/`, `sql/`, `nbproject/`,
+  `build.xml`, 120 arquivos) removido do `main` e preservado na tag `legacy-jsp`; links deste documento
+  apontam para ela. `Dockerfile` multi-stage com a API servindo o build do Angular (mesmo domínio,
+  fallback de rotas do front para `index.html`, usuário não-root), `docker compose --profile completo`
+  para subir tudo, e criação do primeiro administrador em produção por variáveis de ambiente
+  (`BANCO_ADMIN_INICIAL_*`). README da raiz reescrito.
+
+### Backlog pós-migração (fora do escopo de paridade com o legado)
+
+- Decisões de negócio ainda abertas: 6 (compensação de cheque), 7 (papéis admin/cliente exclusivos?),
+  9 (limites de saque e transferência).
+- Segurança: limite de tentativas de login; troca da senha de login pelo usuário; só GERENTE cria
+  administradores; cabeçalhos de segurança (CSP, HSTS) no deploy.
+- Operação: bloquear/encerrar contas e desativar usuários pela administração; idempotência também em
+  aplicação e resgate; logs estruturados e métricas do Actuator.
 
 ## 5. Decisões de negócio a confirmar antes da Fase 1
 

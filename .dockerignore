@@ -1,0 +1,21 @@
+# Só o necessário entra no contexto de build da imagem.
+.git
+.github
+.claude
+CLAUDE.md
+docs
+build
+nbproject
+test
+web
+
+backend/target
+backend/.idea
+backend/*.iml
+
+frontend/node_modules
+frontend/dist
+frontend/.angular
+frontend/test-results
+frontend/playwright-report
+frontend/e2e
