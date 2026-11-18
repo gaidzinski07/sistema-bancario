@@ -28,6 +28,7 @@ spring:
       enabled: true
 
 banco:
+  fuso-horario: America/Sao_Paulo       # datas de calendário (ex.: período do extrato); instantes ficam em UTC
   seguranca:
     jwt:
       segredo: ${JWT_SECRET:}            # Base64, >= 256 bits. Obrigatório (dev tem default em application-dev.yml)

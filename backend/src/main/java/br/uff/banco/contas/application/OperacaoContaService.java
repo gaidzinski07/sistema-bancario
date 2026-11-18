@@ -5,21 +5,19 @@ import br.uff.banco.contas.domain.Deposito;
 import br.uff.banco.contas.domain.FormaDeposito;
 import br.uff.banco.contas.domain.Lancamento;
 import br.uff.banco.contas.domain.Saque;
-import br.uff.banco.contas.infra.ContaRepository;
 import br.uff.banco.contas.infra.DepositoRepository;
 import br.uff.banco.contas.infra.LancamentoRepository;
 import br.uff.banco.contas.infra.SaqueRepository;
 import br.uff.banco.identidade.application.SenhaTransacaoService;
 import br.uff.banco.shared.domain.Dinheiro;
 import java.time.Clock;
-import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 
 /**
- * Operações do cliente sobre uma conta própria: consulta, depósito e saque.
+ * Operações do cliente que movimentam o saldo de uma conta própria: depósito e saque
+ * (consultas ficam em {@link ConsultaContaService}).
  * <p>
  * Cada operação: (1) confere a senha de transação, numa transação própria; (2) numa
  * segunda transação, trava a conta, registra a operação, movimenta o saldo e grava
@@ -33,7 +31,6 @@ import org.springframework.transaction.support.TransactionTemplate;
 @Service
 public class OperacaoContaService {
 
-    private final ContaRepository contas;
     private final ContasTravadas contasTravadas;
     private final DepositoRepository depositos;
     private final SaqueRepository saques;
@@ -42,10 +39,9 @@ public class OperacaoContaService {
     private final TransactionTemplate emTransacao;
     private final Clock relogio;
 
-    OperacaoContaService(ContaRepository contas, ContasTravadas contasTravadas, DepositoRepository depositos,
+    OperacaoContaService(ContasTravadas contasTravadas, DepositoRepository depositos,
             SaqueRepository saques, LancamentoRepository lancamentos, SenhaTransacaoService senhaTransacao,
             PlatformTransactionManager transacoes, Clock relogio) {
-        this.contas = contas;
         this.contasTravadas = contasTravadas;
         this.depositos = depositos;
         this.saques = saques;
@@ -53,11 +49,6 @@ public class OperacaoContaService {
         this.senhaTransacao = senhaTransacao;
         this.emTransacao = new TransactionTemplate(transacoes);
         this.relogio = relogio;
-    }
-
-    @Transactional(readOnly = true)
-    public List<ContaView> contasDoCliente(Long clienteId) {
-        return contas.findByTitularIdOrderById(clienteId).stream().map(ContaView::de).toList();
     }
 
     /**

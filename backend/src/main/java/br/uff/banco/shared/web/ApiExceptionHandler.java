@@ -7,6 +7,7 @@ import jakarta.validation.ConstraintViolationException;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.TypeMismatchException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -115,6 +116,16 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         return ResponseEntity.badRequest().headers(headers).body(
                 problema(HttpStatus.BAD_REQUEST, "corpo-invalido", "O corpo da requisição é inválido ou está malformado."));
+    }
+
+    /** Parâmetro de URL/query com tipo errado (ex.: {@code de=2026-13-45}, {@code pagina=abc}). */
+    @Override
+    protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers,
+            HttpStatusCode status, WebRequest request) {
+        String parametro = ex.getPropertyName() != null ? ex.getPropertyName() : "parâmetro";
+        var problema = problema(HttpStatus.BAD_REQUEST, "dados-invalidos", "Dados inválidos.");
+        problema.setProperty("erros", List.of(new ErroDeCampo(parametro, "valor em formato inválido")));
+        return ResponseEntity.badRequest().headers(headers).body(problema);
     }
 
     /** Header obrigatório ausente (ex.: {@code Idempotency-Key}). */

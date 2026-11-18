@@ -385,6 +385,12 @@ O banco atual só tem dados de seed, então **não há migração de dados**: o 
   simultâneos, transferências cruzadas, mesma chave em paralelo). `GET /api/contas` (minhas contas com
   saldo) foi antecipado da Fase 4, porque o cliente precisa dos IDs para operar.
   Decisões assumidas: cheque creditado na hora (decisão 6 em aberto); sem limites diários (decisão 9).
+- **Fase 4 — concluída (2026-11-18).** `GET /api/contas/{id}` e `GET /api/contas/{id}/extrato` por
+  período (dias de calendário no fuso `America/Sao_Paulo`, padrão de 30 dias, máximo de 366), com saldo
+  inicial/final e totais do período inteiro e lançamentos paginados em ordem cronológica. O saldo de
+  um instante sai do `saldo_apos` do último lançamento anterior, sem somar o histórico. Critério de
+  pronto coberto por um teste com 150 operações aleatórias (semente fixa) que confere saldo × soma dos
+  lançamentos, cadeia de `saldo_apos`, extrato e conservação do total.
 
 ## 5. Decisões de negócio a confirmar antes da Fase 1
 

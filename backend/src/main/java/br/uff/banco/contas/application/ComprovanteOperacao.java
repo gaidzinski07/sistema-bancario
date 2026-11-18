@@ -1,6 +1,5 @@
 package br.uff.banco.contas.application;
 
-import br.uff.banco.contas.domain.Conta;
 import br.uff.banco.contas.domain.Lancamento;
 import br.uff.banco.contas.domain.TipoLancamento;
 import java.math.BigDecimal;
@@ -25,12 +24,5 @@ public record ComprovanteOperacao(
                 lancamento.getSaldoApos().valor(),
                 lancamento.getOcorridoEm(),
                 ContaResumo.de(lancamento.getConta()));
-    }
-
-    public record ContaResumo(Long id, String agencia, String conta, String tipo) {
-
-        static ContaResumo de(Conta conta) {
-            return new ContaResumo(conta.getId(), conta.getAgencia().getCodigo(), conta.getNumeroComDigito(), conta.getTipo().name());
-        }
     }
 }

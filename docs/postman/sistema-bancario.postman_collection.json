@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "Sistema Bancário — API",
-    "description": "Coleção da API Spring Boot (Fases 2 e 3: autenticação JWT, cadastros e operações).\n\n1. Rode **Auth → Login (admin)**: os tokens são salvos nas variáveis da coleção.\n2. As demais requisições usam `Authorization: Bearer {{accessToken}}` (herdado da coleção).\n3. O access token vale 15 min; use **Auth → Refresh** para renovar (o refresh token é de uso único).\n\nCredenciais de teste: ver o cabeçalho de `backend/src/main/resources/db/seed/V1_1__seed_dev.sql`.",
+    "description": "Coleção da API Spring Boot (Fases 2 a 4: autenticação JWT, cadastros, operações e extrato).\n\n1. Rode **Auth → Login (admin)**: os tokens são salvos nas variáveis da coleção.\n2. As demais requisições usam `Authorization: Bearer {{accessToken}}` (herdado da coleção).\n3. O access token vale 15 min; use **Auth → Refresh** para renovar (o refresh token é de uso único).\n\nCredenciais de teste: ver o cabeçalho de `backend/src/main/resources/db/seed/V1_1__seed_dev.sql`.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "auth": {
@@ -296,6 +296,66 @@
               }
             }
           ]
+        },
+        {
+          "name": "Detalhar conta",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/contas/{{contaId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "contas",
+                "{{contaId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Extrato",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/contas/{{contaId}}/extrato?de=2026-11-01&ate=2026-11-30&pagina=0&tamanho=50",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "contas",
+                "{{contaId}}",
+                "extrato"
+              ],
+              "query": [
+                {
+                  "key": "de",
+                  "value": "2026-11-01",
+                  "description": "AAAA-MM-DD, inclusive. Opcional (padrão: 29 dias antes de 'ate')."
+                },
+                {
+                  "key": "ate",
+                  "value": "2026-11-30",
+                  "description": "AAAA-MM-DD, inclusive. Opcional (padrão: hoje)."
+                },
+                {
+                  "key": "pagina",
+                  "value": "0",
+                  "description": ""
+                },
+                {
+                  "key": "tamanho",
+                  "value": "50",
+                  "description": "1 a 100"
+                }
+              ]
+            },
+            "description": "Datas no fuso America/Sao_Paulo. Período máximo de 366 dias. Saldos e totais são do período inteiro; os lançamentos vêm paginados em ordem cronológica."
+          }
         },
         {
           "name": "Definir senha de transação",
