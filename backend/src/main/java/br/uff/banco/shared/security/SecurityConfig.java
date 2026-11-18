@@ -34,7 +34,7 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
  *   <li>{@code POST /api/auth/login} troca CPF + senha por um access token (JWT, curto) e um refresh token (opaco, revogável).</li>
  *   <li>Toda outra chamada envia {@code Authorization: Bearer <accessToken>}.</li>
  *   <li>Sem sessão e sem cookies, portanto sem CSRF: o navegador não envia o token sozinho.</li>
- *   <li>{@code /api/admin/**} exige o papel ADMIN.</li>
+ *   <li>{@code /api/admin/**} exige o papel ADMIN; contas e transferências do cliente exigem CLIENTE.</li>
  * </ul>
  * O JWT é assinado com HMAC-SHA256 (chave simétrica de {@code JWT_SECRET}). Se outro
  * serviço precisar validar tokens sem conhecer a chave, o caminho é migrar para RS256.
@@ -60,6 +60,7 @@ public class SecurityConfig {
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                 .requestMatchers(HttpMethod.POST, ROTAS_PUBLICAS_POST).permitAll()
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                .requestMatchers("/api/contas/**", "/api/transferencias/**").hasRole("CLIENTE")
                 .anyRequest().authenticated())
             .sessionManagement(sessao -> sessao.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .csrf(csrf -> csrf.disable())

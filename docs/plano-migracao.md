@@ -340,7 +340,7 @@ Cada fase termina com algo executável e testado. Backend e frontend podem andar
 - **Pronto quando:** todos os defeitos de 2.1 e 2.2 têm teste que reproduz o cenário e passa.
 
 ### Fase 4 — Saldo e extrato
-- `GET /api/contas`, extrato paginado sobre `lancamento` com filtro de período.
+- ~~`GET /api/contas`~~ (entregue na Fase 3), extrato paginado sobre `lancamento` com filtro de período.
 - **Pronto quando:** a soma dos lançamentos bate com o saldo da conta (teste de invariante).
 
 ### Fase 5 — Investimentos
@@ -378,6 +378,13 @@ O banco atual só tem dados de seed, então **não há migração de dados**: o 
   agências, clientes, contas e administradores. Coleção do Postman em `docs/postman/`.
   Fica para fases seguintes: troca de senha, definição da senha de transação pelo cliente (Fase 3),
   limite de tentativas de login e restrição de quem pode criar administradores (hoje, qualquer ADMIN).
+- **Fase 3 — concluída (2026-11-18).** Depósito, saque e transferência com lock pessimista (ordem por
+  ID entre duas contas), lançamento gerado junto de toda mudança de saldo, titularidade pelo token,
+  idempotência por `Idempotency-Key` e senha de transação (4–6 dígitos, bloqueio de 15 min após 3
+  erros; migration `V3`). Testes reproduzem os defeitos de 2.1–2.3 e a concorrência (saques
+  simultâneos, transferências cruzadas, mesma chave em paralelo). `GET /api/contas` (minhas contas com
+  saldo) foi antecipado da Fase 4, porque o cliente precisa dos IDs para operar.
+  Decisões assumidas: cheque creditado na hora (decisão 6 em aberto); sem limites diários (decisão 9).
 
 ## 5. Decisões de negócio a confirmar antes da Fase 1
 

@@ -48,10 +48,30 @@ Coleção do Postman: [`docs/postman/sistema-bancario.postman_collection.json`](
 |---|---|
 | `/api/auth/login`, `/refresh`, `/logout` | público |
 | `/api/admin/**` | papel `ADMIN` |
+| `/api/contas/**`, `/api/transferencias` | papel `CLIENTE` |
 | demais `/api/**` | qualquer usuário autenticado |
 
 Erros de autenticação/autorização seguem o mesmo `ProblemDetail` do resto da API (`401` com
 `codigo: nao-autenticado` ou `token-invalido`; `403` com `codigo: acesso-negado`).
+
+## Operações do cliente
+
+| Endpoint | |
+|---|---|
+| `PUT /api/auth/senha-transacao` | define a senha de transação (4–6 dígitos); exige a senha de login |
+| `GET /api/contas` | minhas contas, com saldo |
+| `POST /api/contas/{id}/depositos` | `{"valor", "forma": "DINHEIRO"\|"CHEQUE", "senhaTransacao"}` |
+| `POST /api/contas/{id}/saques` | `{"valor", "senhaTransacao"}` |
+| `POST /api/transferencias` | header `Idempotency-Key` + `{"contaOrigemId", "agenciaDestino", "contaDestino": "00003-5", "cpfDestino", "valor", "senhaTransacao"}` |
+
+- Toda operação exige a **senha de transação**. Após 3 erros seguidos ela fica bloqueada por 15 minutos
+  (redefinir pelo `PUT` desbloqueia).
+- A conta tem que ser do cliente do token; conta de outra pessoa responde 404.
+- Valores com mais de 2 casas decimais são recusados (400), não arredondados.
+- Transferência: agência, conta com dígito e CPF do titular do destino têm que bater. Reenviar com a mesma
+  `Idempotency-Key` devolve o comprovante original (200) sem transferir de novo.
+- Por baixo: lock pessimista nas contas (em ordem de ID quando são duas), operação + saldo + lançamento
+  na mesma transação, e `@Version` como segunda proteção contra atualização perdida.
 
 ## Profiles
 

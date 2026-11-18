@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "Sistema Bancário — API",
-    "description": "Coleção da API Spring Boot (Fase 2: autenticação JWT e cadastros).\n\n1. Rode **Auth → Login (admin)**: os tokens são salvos nas variáveis da coleção.\n2. As demais requisições usam `Authorization: Bearer {{accessToken}}` (herdado da coleção).\n3. O access token vale 15 min; use **Auth → Refresh** para renovar (o refresh token é de uso único).\n\nCredenciais de teste: ver o cabeçalho de `backend/src/main/resources/db/seed/V1_1__seed_dev.sql`.",
+    "description": "Coleção da API Spring Boot (Fases 2 e 3: autenticação JWT, cadastros e operações).\n\n1. Rode **Auth → Login (admin)**: os tokens são salvos nas variáveis da coleção.\n2. As demais requisições usam `Authorization: Bearer {{accessToken}}` (herdado da coleção).\n3. O access token vale 15 min; use **Auth → Refresh** para renovar (o refresh token é de uso único).\n\nCredenciais de teste: ver o cabeçalho de `backend/src/main/resources/db/seed/V1_1__seed_dev.sql`.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "auth": {
@@ -34,6 +34,10 @@
     {
       "key": "agenciaId",
       "value": "1"
+    },
+    {
+      "key": "contaId",
+      "value": "5"
     }
   ],
   "item": [
@@ -255,6 +259,181 @@
               }
             }
           ]
+        }
+      ]
+    },
+    {
+      "name": "Cliente",
+      "description": "Faça antes **Auth → Login (cliente)**. O cliente do seed (Luiz Gustavo) tem a conta 5 com R$ 500,00 e senha de transação já definida (ver o seed).",
+      "item": [
+        {
+          "name": "Minhas contas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/contas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "contas"
+              ]
+            },
+            "description": "Lista as contas do cliente autenticado e guarda a primeira em {{contaId}}."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const contas = pm.response.json();",
+                  "if (contas.length) pm.collectionVariables.set('contaId', contas[0].id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Definir senha de transação",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/senha-transacao",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "senha-transacao"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"senhaLogin\": \"Senha@123\",\n  \"novaSenhaTransacao\": \"1234\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "4 a 6 dígitos. Exige a senha de login. Também desbloqueia a senha após 3 erros."
+          }
+        },
+        {
+          "name": "Depósito",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/contas/{{contaId}}/depositos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "contas",
+                "{{contaId}}",
+                "depositos"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"valor\": 100.0,\n  \"forma\": \"DINHEIRO\",\n  \"senhaTransacao\": \"1234\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "forma: DINHEIRO ou CHEQUE. Valor com no máximo 2 casas decimais."
+          }
+        },
+        {
+          "name": "Saque",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/contas/{{contaId}}/saques",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "contas",
+                "{{contaId}}",
+                "saques"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"valor\": 50.0,\n  \"senhaTransacao\": \"1234\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Recusado (422 saldo-insuficiente) se o saldo não cobrir o valor."
+          }
+        },
+        {
+          "name": "Transferência",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Idempotency-Key",
+                "value": "{{$guid}}",
+                "description": "Uma chave nova a cada envio. Reenviar com a MESMA chave devolve o comprovante original (200) sem transferir de novo."
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/transferencias",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "transferencias"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contaOrigemId\": {{contaId}},\n  \"agenciaDestino\": \"0001\",\n  \"contaDestino\": \"00001-9\",\n  \"cpfDestino\": \"529.982.247-25\",\n  \"valor\": 25.0,\n  \"senhaTransacao\": \"1234\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Destino de exemplo: conta corrente do João Vicente (seed). Agência, conta com dígito e CPF do titular têm que bater."
+          }
         }
       ]
     },
