@@ -27,6 +27,14 @@ spring:
     problemdetails:
       enabled: true
 
+banco:
+  seguranca:
+    jwt:
+      segredo: ${JWT_SECRET:}            # Base64, >= 256 bits. Obrigatório (dev tem default em application-dev.yml)
+      emissor: banco-backend
+      validade-access-token: 15m
+      validade-refresh-token: 7d
+
 # Documentação da API (Swagger UI em /swagger-ui.html). Desligada no profile prod.
 springdoc:
   api-docs:

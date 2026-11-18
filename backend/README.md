@@ -34,12 +34,37 @@ Para MySQL, troque o prefixo por `jdbc:mysql://`.
 | `GET /actuator/health` | health check (público) |
 | `/swagger-ui.html` | documentação da API (desligada em `prod`) |
 
+Coleção do Postman: [`docs/postman/sistema-bancario.postman_collection.json`](../docs/postman/sistema-bancario.postman_collection.json).
+
+## Autenticação (JWT)
+
+1. `POST /api/auth/login` com `{"cpf": "...", "senha": "..."}` → `accessToken` (JWT, 15 min) + `refreshToken` (7 dias).
+2. Demais chamadas: header `Authorization: Bearer <accessToken>`.
+3. Expirou? `POST /api/auth/refresh` com `{"refreshToken": "..."}` → novo par. O refresh token é **de uso único**;
+   reapresentar um já usado revoga a sessão inteira (proteção contra token vazado).
+4. `POST /api/auth/logout` com o refresh token. O access token continua válido até expirar — o cliente deve descartá-lo.
+
+| Rotas | Acesso |
+|---|---|
+| `/api/auth/login`, `/refresh`, `/logout` | público |
+| `/api/admin/**` | papel `ADMIN` |
+| demais `/api/**` | qualquer usuário autenticado |
+
+Erros de autenticação/autorização seguem o mesmo `ProblemDetail` do resto da API (`401` com
+`codigo: nao-autenticado` ou `token-invalido`; `403` com `codigo: acesso-negado`).
+
 ## Profiles
 
 | Profile | Uso |
 |---|---|
-| `dev` (padrão) | banco local, carrega `db/seed` (usuários e contas de exemplo — credenciais no cabeçalho de `V1_1__seed_dev.sql`) |
-| `prod` | tudo vem de `DB_URL`/`DB_USER`/`DB_PASSWORD`, sem seed, sem Swagger |
+| `dev` (padrão) | banco local, carrega `db/seed` (usuários e contas de exemplo — credenciais no cabeçalho de `V1_1__seed_dev.sql`) e usa uma chave JWT fixa de desenvolvimento |
+| `prod` | tudo vem do ambiente: `DB_URL`/`DB_USER`/`DB_PASSWORD` e `JWT_SECRET` (Base64, ≥ 256 bits); sem seed, sem Swagger |
+
+Para gerar um `JWT_SECRET`:
+
+```bash
+openssl rand -base64 48
+```
 
 ## Testes
 
@@ -49,6 +74,7 @@ Para MySQL, troque o prefixo por `jdbc:mysql://`.
 
 - `*Test` — unitários, fatias MVC e regras de arquitetura (ArchUnit); rodam em qualquer máquina.
 - `*IT` — sobem a aplicação contra um MySQL real via Testcontainers. **Sem Docker são pulados**; no CI sempre rodam.
+  Compartilham um único container/contexto (`@TesteDeIntegracao`), então cada teste cria seus próprios dados.
 
 ## Estrutura
 

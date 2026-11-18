@@ -1,17 +1,24 @@
 package br.uff.banco.shared.web;
 
+import br.uff.banco.shared.domain.NaoAutenticadoException;
 import br.uff.banco.shared.domain.RecursoNaoEncontradoException;
 import br.uff.banco.shared.domain.RegraNegocioException;
 import jakarta.validation.ConstraintViolationException;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.oauth2.server.resource.InvalidBearerTokenException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -39,6 +46,32 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(RecursoNaoEncontradoException.class)
     ProblemDetail naoEncontrado(RecursoNaoEncontradoException ex) {
         return problema(HttpStatus.NOT_FOUND, "nao-encontrado", ex.getMessage());
+    }
+
+    @ExceptionHandler(NaoAutenticadoException.class)
+    ResponseEntity<ProblemDetail> naoAutenticado(NaoAutenticadoException ex) {
+        return naoAutenticado("nao-autenticado", ex.getMessage());
+    }
+
+    /** Vem do filtro de segurança (token ausente, inválido ou expirado), via entry point. */
+    @ExceptionHandler(AuthenticationException.class)
+    ResponseEntity<ProblemDetail> falhaDeAutenticacao(AuthenticationException ex) {
+        if (ex instanceof InvalidBearerTokenException) {
+            return naoAutenticado("token-invalido", "Token inválido ou expirado.");
+        }
+        return naoAutenticado("nao-autenticado", "Autenticação necessária.");
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    ProblemDetail acessoNegado(AccessDeniedException ex) {
+        return problema(HttpStatus.FORBIDDEN, "acesso-negado", "Você não tem permissão para esta operação.");
+    }
+
+    /** Corrida entre a checagem de unicidade (CPF, e-mail, código) e o INSERT. */
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    ProblemDetail violacaoDeIntegridade(DataIntegrityViolationException ex) {
+        log.warn("Violação de integridade: {}", ex.getMostSpecificCause().getMessage());
+        return problema(HttpStatus.CONFLICT, "conflito", "O registro conflita com dados já existentes.");
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
@@ -72,6 +105,32 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .toList();
         problema.setProperty("erros", erros);
         return ResponseEntity.badRequest().headers(headers).body(problema);
+    }
+
+    /** JSON malformado, tipo errado (ex.: texto em campo numérico) ou valor de enum inexistente. */
+    @Override
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
+            HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        return ResponseEntity.badRequest().headers(headers).body(
+                problema(HttpStatus.BAD_REQUEST, "corpo-invalido", "O corpo da requisição é inválido ou está malformado."));
+    }
+
+    /** Validação de parâmetros de URL/query (ex.: {@code @Max} em {@code tamanho}). */
+    @Override
+    protected ResponseEntity<Object> handleHandlerMethodValidationException(HandlerMethodValidationException ex,
+            HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        var problema = problema(HttpStatus.BAD_REQUEST, "dados-invalidos", "Dados inválidos.");
+        problema.setProperty("erros", ex.getParameterValidationResults().stream()
+                .flatMap(resultado -> resultado.getResolvableErrors().stream()
+                        .map(erro -> new ErroDeCampo(resultado.getMethodParameter().getParameterName(), erro.getDefaultMessage())))
+                .toList());
+        return ResponseEntity.badRequest().headers(headers).body(problema);
+    }
+
+    private static ResponseEntity<ProblemDetail> naoAutenticado(String codigo, String detalhe) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .header(HttpHeaders.WWW_AUTHENTICATE, "Bearer")
+                .body(problema(HttpStatus.UNAUTHORIZED, codigo, detalhe));
     }
 
     private static ProblemDetail problema(HttpStatus status, String codigo, String detalhe) {

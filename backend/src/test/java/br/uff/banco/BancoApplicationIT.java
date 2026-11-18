@@ -1,39 +1,22 @@
 package br.uff.banco;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import br.uff.banco.suporte.TesteDeIntegracao;
 import java.math.BigDecimal;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.mysql.MySQLContainer;
 
-/**
- * Sobe a aplicação inteira contra um MySQL real (Testcontainers), aplicando as
- * migrations e o seed de desenvolvimento.
- * <p>
- * Sem Docker disponível o teste é pulado (localmente); no CI ele sempre roda.
- */
-@SpringBootTest
-@AutoConfigureMockMvc
-@ActiveProfiles("dev")
-@Testcontainers(disabledWithoutDocker = true)
+/** Sobe a aplicação inteira contra um MySQL real e confere migrations, seed e invariantes do schema. */
+@TesteDeIntegracao
 class BancoApplicationIT {
-
-    @Container
-    @ServiceConnection
-    static MySQLContainer mysql = new MySQLContainer("mysql:8.4");
 
     @Autowired
     MockMvc mvc;
@@ -50,17 +33,25 @@ class BancoApplicationIT {
 
     @Test
     void endpointsNaoPublicosExigemAutenticacao() throws Exception {
-        mvc.perform(get("/api/contas")).andExpect(status().isUnauthorized());
+        mvc.perform(get("/api/admin/clientes")).andExpect(status().isUnauthorized());
     }
 
     @Test
     void migrationsESeedForamAplicados() {
         List<String> versoes = jdbc.queryForList(
                 "SELECT version FROM flyway_schema_history WHERE success = 1 ORDER BY installed_rank", String.class);
-        assertThat(versoes).containsExactly("1", "1.1");
+        assertThat(versoes).containsExactly("1", "1.1", "2");
 
-        assertThat(jdbc.queryForObject("SELECT COUNT(*) FROM usuario", Integer.class)).isEqualTo(4);
-        assertThat(jdbc.queryForObject("SELECT COUNT(*) FROM conta", Integer.class)).isEqualTo(5);
+        // O banco é compartilhado entre as classes de teste: confere os registros do seed, não contagens.
+        assertThat(jdbc.queryForList("SELECT id FROM usuario WHERE id <= 4", Long.class)).containsExactly(1L, 2L, 3L, 4L);
+        assertThat(jdbc.queryForList("SELECT id FROM conta WHERE id <= 5", Long.class)).hasSize(5);
+    }
+
+    @Test
+    void v2ContinuaANumeracaoDasContasDoSeedPorAgencia() {
+        // Agência 1 tem as contas 00001 e 00002 no seed; a próxima é a 3 (ou mais, se outro teste já abriu contas).
+        Long proximo = jdbc.queryForObject("SELECT proximo_numero_conta FROM agencia WHERE id = 1", Long.class);
+        assertThat(proximo).isGreaterThanOrEqualTo(3L);
     }
 
     @Test
@@ -77,8 +68,7 @@ class BancoApplicationIT {
 
     @Test
     void bancoRecusaSaldoNegativo() {
-        org.assertj.core.api.Assertions.assertThatThrownBy(() ->
-                jdbc.update("UPDATE conta SET saldo = ? WHERE id = 1", new BigDecimal("-0.01")))
+        assertThatThrownBy(() -> jdbc.update("UPDATE conta SET saldo = ? WHERE id = 1", new BigDecimal("-0.01")))
                 .hasMessageContaining("ck_conta_saldo_nao_negativo");
     }
 }
