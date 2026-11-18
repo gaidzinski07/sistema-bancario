@@ -1,6 +1,5 @@
 package br.uff.banco.contas.application;
 
-import br.uff.banco.contas.application.ComprovanteOperacao.ContaResumo;
 import br.uff.banco.contas.domain.Transferencia;
 import br.uff.banco.shared.domain.Dinheiro;
 import java.math.BigDecimal;

@@ -60,6 +60,8 @@ Erros de autenticação/autorização seguem o mesmo `ProblemDetail` do resto da
 |---|---|
 | `PUT /api/auth/senha-transacao` | define a senha de transação (4–6 dígitos); exige a senha de login |
 | `GET /api/contas` | minhas contas, com saldo |
+| `GET /api/contas/{id}` | detalhe de uma conta |
+| `GET /api/contas/{id}/extrato?de=&ate=&pagina=&tamanho=` | extrato do período (padrão: últimos 30 dias) |
 | `POST /api/contas/{id}/depositos` | `{"valor", "forma": "DINHEIRO"\|"CHEQUE", "senhaTransacao"}` |
 | `POST /api/contas/{id}/saques` | `{"valor", "senhaTransacao"}` |
 | `POST /api/transferencias` | header `Idempotency-Key` + `{"contaOrigemId", "agenciaDestino", "contaDestino": "00003-5", "cpfDestino", "valor", "senhaTransacao"}` |
@@ -70,6 +72,9 @@ Erros de autenticação/autorização seguem o mesmo `ProblemDetail` do resto da
 - Valores com mais de 2 casas decimais são recusados (400), não arredondados.
 - Transferência: agência, conta com dígito e CPF do titular do destino têm que bater. Reenviar com a mesma
   `Idempotency-Key` devolve o comprovante original (200) sem transferir de novo.
+- Extrato: `de`/`ate` são dias de calendário no fuso `America/Sao_Paulo` (configurável em
+  `banco.fuso-horario`), ambos inclusive, até 366 dias. Saldos e totais são do período inteiro, e vale
+  sempre `saldoInicial + totalCreditos − totalDebitos = saldoFinal`. Os instantes vêm em UTC (ISO-8601).
 - Por baixo: lock pessimista nas contas (em ordem de ID quando são duas), operação + saldo + lançamento
   na mesma transação, e `@Version` como segunda proteção contra atualização perdida.
 
