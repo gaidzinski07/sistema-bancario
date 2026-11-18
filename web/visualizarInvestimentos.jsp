@@ -110,7 +110,7 @@
             
             function showMessage(message){
                 console.log(message);
-                if(message != null && typeof message === "string" && message != ""){
+                if(message != null && message != "null" && typeof message === "string" && message != ""){
                     alert(message);
                 }
                     

@@ -54,7 +54,7 @@ public class InvestimentoServlet extends HttpServlet {
                     int idFundo = Integer.parseInt(request.getParameter("idFundo"));
                     String vr = (String) request.getParameter("valorInvestido");
                     float valor = vr == null ? 0 : Float.parseFloat(vr);
-                    boolean aplicou = dao.aplicar(idFundo, valor);
+                    boolean aplicou = dao.aplicar(idFundo, valor, conta);
                     request.setAttribute("mensagem", aplicou? "Aplicação realizada com sucesso!" : "Houve um erro no processamento da aplicação");
                     break;
             }
