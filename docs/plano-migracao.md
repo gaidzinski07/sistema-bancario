@@ -391,15 +391,23 @@ O banco atual só tem dados de seed, então **não há migração de dados**: o 
   um instante sai do `saldo_apos` do último lançamento anterior, sem somar o histórico. Critério de
   pronto coberto por um teste com 150 operações aleatórias (semente fixa) que confere saldo × soma dos
   lançamentos, cadeia de `saldo_apos`, extrato e conservação do total.
+- **Fase 5 — concluída (2026-11-18).** Fundos (cadastro, desativação, cota do dia pelo admin com
+  histórico), aplicação a partir da conta corrente, carteira com valor atual/rendimento/rentabilidade,
+  e resgate parcial ou total com baixa do custo pelo custo médio. Cotas com 8 casas e arredondamento a
+  favor de não criar dinheiro (aplicação trunca cotas; resgate parcial arredonda cotas para cima; valor
+  atual trunca no centavo). Operações exigem senha de transação, travam a conta e depois a posição, e
+  geram lançamento (APLICACAO/RESGATE) no extrato. Decisões 3, 4 e 8 tomadas pelo grupo. Sem migration
+  nova: as tabelas já existiam desde a V1. Fora do escopo: IR/IOF/come-cotas, cotização D+N,
+  idempotência em aplicação/resgate.
 
 ## 5. Decisões de negócio a confirmar antes da Fase 1
 
 1. **Poupança como conta separada** (recomendado) ou sub-saldo da mesma conta?
 2. Transferência entre corrente e poupança do mesmo titular é permitida (recomendado: sim, como transferência comum)?
-3. Remover a transferência direta a partir do investimento (recomendado: sim; usa resgate)?
-4. Resgate parcial (recomendado: sim) e resgate sempre para a conta corrente?
+3. ~~Remover a transferência direta a partir do investimento (recomendado: sim; usa resgate)?~~ **Decidido (Fase 5): removida.** O caminho é resgate → conta corrente → transferência.
+4. ~~Resgate parcial (recomendado: sim) e resgate sempre para a conta corrente?~~ **Decidido (Fase 5): resgate parcial ou total, sempre para a conta corrente da posição.**
 5. Destino da transferência identificado por agência + conta, com CPF como confirmação (recomendado) ou só pelo CPF?
 6. Depósito em cheque: credita na hora (como hoje) ou fica "em compensação" até o admin liberar?
 7. Admin também pode ser cliente (como nos seeds atuais) ou os papéis são exclusivos?
-8. Quem atualiza a cota dos fundos: admin manualmente (como hoje, direto no banco) ou um job agendado?
+8. ~~Quem atualiza a cota dos fundos: admin manualmente (como hoje, direto no banco) ou um job agendado?~~ **Decidido (Fase 5): o admin informa a cota do dia pela API** (`PUT /api/admin/fundos/{id}/cotacao`), com histórico em `cotacao_fundo`.
 9. Limites (saque diário, valor máximo de transferência) entram no escopo?

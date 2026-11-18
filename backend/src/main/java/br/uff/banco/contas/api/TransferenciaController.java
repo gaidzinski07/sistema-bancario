@@ -6,6 +6,7 @@ import br.uff.banco.contas.application.TransferenciaService;
 import br.uff.banco.contas.application.TransferenciaService.ResultadoTransferencia;
 import br.uff.banco.shared.domain.Dinheiro;
 import br.uff.banco.shared.security.UsuarioAutenticado;
+import br.uff.banco.shared.web.ValorMonetario;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;

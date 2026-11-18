@@ -8,6 +8,7 @@ import br.uff.banco.contas.application.OperacaoContaService;
 import br.uff.banco.contas.domain.FormaDeposito;
 import br.uff.banco.shared.domain.Dinheiro;
 import br.uff.banco.shared.security.UsuarioAutenticado;
+import br.uff.banco.shared.web.ValorMonetario;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

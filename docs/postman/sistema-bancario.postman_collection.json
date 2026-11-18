@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "Sistema Bancário — API",
-    "description": "Coleção da API Spring Boot (Fases 2 a 4: autenticação JWT, cadastros, operações e extrato).\n\n1. Rode **Auth → Login (admin)**: os tokens são salvos nas variáveis da coleção.\n2. As demais requisições usam `Authorization: Bearer {{accessToken}}` (herdado da coleção).\n3. O access token vale 15 min; use **Auth → Refresh** para renovar (o refresh token é de uso único).\n\nCredenciais de teste: ver o cabeçalho de `backend/src/main/resources/db/seed/V1_1__seed_dev.sql`.",
+    "description": "Coleção da API Spring Boot (Fases 2 a 5: autenticação JWT, cadastros, operações, extrato e investimentos).\n\n1. Rode **Auth → Login (admin)**: os tokens são salvos nas variáveis da coleção.\n2. As demais requisições usam `Authorization: Bearer {{accessToken}}` (herdado da coleção).\n3. O access token vale 15 min; use **Auth → Refresh** para renovar (o refresh token é de uso único).\n\nCredenciais de teste: ver o cabeçalho de `backend/src/main/resources/db/seed/V1_1__seed_dev.sql`.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "auth": {
@@ -38,6 +38,14 @@
     {
       "key": "contaId",
       "value": "5"
+    },
+    {
+      "key": "fundoId",
+      "value": "1"
+    },
+    {
+      "key": "posicaoId",
+      "value": ""
     }
   ],
   "item": [
@@ -498,6 +506,212 @@
       ]
     },
     {
+      "name": "Investimentos",
+      "description": "Cliente: faça antes **Auth → Login (cliente)**. Aplicações saem da conta corrente ({{contaId}}) e resgates voltam para ela.",
+      "item": [
+        {
+          "name": "Fundos disponíveis",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/fundos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "fundos"
+              ]
+            },
+            "description": "Guarda o primeiro fundo em {{fundoId}}."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const f = pm.response.json(); if (f.length) pm.collectionVariables.set('fundoId', f[0].id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Histórico da cota",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/fundos/{{fundoId}}/cotacoes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "fundos",
+                "{{fundoId}}",
+                "cotacoes"
+              ]
+            },
+            "description": "Parâmetros opcionais de/ate (AAAA-MM-DD). Padrão: últimos 30 dias."
+          }
+        },
+        {
+          "name": "Aplicar",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/investimentos/aplicacoes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "investimentos",
+                "aplicacoes"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contaId\": {{contaId}},\n  \"fundoId\": {{fundoId}},\n  \"valor\": 150.0,\n  \"senhaTransacao\": \"1234\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Respeite a aplicação mínima do fundo. Guarda a posição em {{posicaoId}}."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 201', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('posicaoId', pm.response.json().posicao.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Carteira",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/investimentos/posicoes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "investimentos",
+                "posicoes"
+              ]
+            },
+            "description": "Valor atual e rendimento pela cota de agora."
+          }
+        },
+        {
+          "name": "Detalhe da posição",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/investimentos/posicoes/{{posicaoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "investimentos",
+                "posicoes",
+                "{{posicaoId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Resgate parcial",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/investimentos/posicoes/{{posicaoId}}/resgates",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "investimentos",
+                "posicoes",
+                "{{posicaoId}}",
+                "resgates"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"valor\": 50.0,\n  \"senhaTransacao\": \"1234\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Resgate total",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/investimentos/posicoes/{{posicaoId}}/resgates",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "investimentos",
+                "posicoes",
+                "{{posicaoId}}",
+                "resgates"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"total\": true,\n  \"senhaTransacao\": \"1234\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
       "name": "Admin",
       "item": [
         {
@@ -740,6 +954,124 @@
               }
             },
             "description": "Se o CPF já existir (422 cpf-ja-cadastrado), troque por outro CPF válido."
+          }
+        },
+        {
+          "name": "Listar fundos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/fundos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "fundos"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Criar fundo",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/fundos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "fundos"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Fundo Postman\",\n  \"cotaInicial\": 10.0,\n  \"aplicacaoMinima\": 100.0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Se o nome já existir (422 fundo-ja-existe), troque o nome."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 201', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('fundoId', pm.response.json().id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Atualizar cota do dia",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/fundos/{{fundoId}}/cotacao",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "fundos",
+                "{{fundoId}}",
+                "cotacao"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"valorCota\": 10.5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Vale na hora para aplicações, resgates e carteira. Até 8 casas decimais."
+          }
+        },
+        {
+          "name": "Desativar fundo",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/fundos/{{fundoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "fundos",
+                "{{fundoId}}"
+              ]
+            },
+            "description": "Bloqueia novas aplicações; resgates continuam permitidos."
           }
         }
       ]

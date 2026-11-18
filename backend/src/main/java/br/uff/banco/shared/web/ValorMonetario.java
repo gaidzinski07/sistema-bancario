@@ -1,4 +1,4 @@
-package br.uff.banco.contas.api;
+package br.uff.banco.shared.web;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
@@ -22,7 +22,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = {})
 @Target({ElementType.FIELD, ElementType.RECORD_COMPONENT, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-@interface ValorMonetario {
+public @interface ValorMonetario {
 
     String message() default "deve ser um valor positivo com até 2 casas decimais";
 

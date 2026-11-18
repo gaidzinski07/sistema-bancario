@@ -60,7 +60,7 @@ public class SecurityConfig {
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                 .requestMatchers(HttpMethod.POST, ROTAS_PUBLICAS_POST).permitAll()
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                .requestMatchers("/api/contas/**", "/api/transferencias/**").hasRole("CLIENTE")
+                .requestMatchers("/api/contas/**", "/api/transferencias/**", "/api/investimentos/**").hasRole("CLIENTE")
                 .anyRequest().authenticated())
             .sessionManagement(sessao -> sessao.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .csrf(csrf -> csrf.disable())
