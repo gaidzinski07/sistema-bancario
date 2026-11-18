@@ -399,6 +399,13 @@ O banco atual só tem dados de seed, então **não há migração de dados**: o 
   geram lançamento (APLICACAO/RESGATE) no extrato. Decisões 3, 4 e 8 tomadas pelo grupo. Sem migration
   nova: as tabelas já existiam desde a V1. Fora do escopo: IR/IOF/come-cotas, cotização D+N,
   idempotência em aplicação/resgate.
+- **Fase 6 — concluída (2026-11-18).** Frontend em `frontend/`: Angular 22 (standalone, signals,
+  zoneless) + Angular Material 22 (decisão do grupo), Node 22 (`.nvmrc`). Todas as funcionalidades da
+  seção 1 têm tela: login único, início com saldos reais, extrato por período, depósito, saque,
+  transferência em 3 passos com idempotência, senha de transação, fundos/aplicação/carteira/resgate e a
+  área de administração (clientes, abertura de conta, agências, fundos e cotas, administradores). Sessão
+  JWT com renovação compartilhada no interceptor. Testes: unitários (Vitest) e ponta a ponta
+  (Playwright: login, transferência, aplicação + resgate), todos no CI.
 
 ## 5. Decisões de negócio a confirmar antes da Fase 1
 
