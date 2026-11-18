@@ -20,6 +20,8 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.server.resource.InvalidBearerTokenException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingRequestHeaderException;
+import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
@@ -113,6 +115,16 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         return ResponseEntity.badRequest().headers(headers).body(
                 problema(HttpStatus.BAD_REQUEST, "corpo-invalido", "O corpo da requisição é inválido ou está malformado."));
+    }
+
+    /** Header obrigatório ausente (ex.: {@code Idempotency-Key}). */
+    @Override
+    protected ResponseEntity<Object> handleServletRequestBindingException(ServletRequestBindingException ex,
+            HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        String detalhe = ex instanceof MissingRequestHeaderException faltando
+                ? "O header " + faltando.getHeaderName() + " é obrigatório."
+                : "Requisição inválida.";
+        return ResponseEntity.badRequest().headers(headers).body(problema(HttpStatus.BAD_REQUEST, "requisicao-invalida", detalhe));
     }
 
     /** Validação de parâmetros de URL/query (ex.: {@code @Max} em {@code tamanho}). */

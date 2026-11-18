@@ -19,8 +19,10 @@ import java.util.Objects;
 /**
  * Conta bancária (corrente ou poupança) de um titular, numa agência.
  * <p>
- * Nesta fase a conta só é aberta; débito e crédito (com lock e lançamentos)
- * entram na Fase 3.
+ * O saldo só muda por {@link #creditar} e {@link #debitar}, que sempre devolvem o
+ * {@link Lancamento} correspondente. Quem chama deve ter a conta travada
+ * ({@code SELECT ... FOR UPDATE}) — no legado o saldo era lido, somado em Java e
+ * regravado sem lock, e operações simultâneas perdiam atualizações.
  */
 @Entity
 @Table(name = "conta")
@@ -105,6 +107,33 @@ public class Conta extends EntidadeBase {
         }
         int digito = 11 - (soma % 11);
         return digito >= 10 ? 0 : digito;
+    }
+
+    public Lancamento creditar(Movimento movimento) {
+        exigirAtiva();
+        saldo = saldo.somar(movimento.valor());
+        return new Lancamento(this, Natureza.CREDITO, saldo, movimento);
+    }
+
+    /** @throws SaldoInsuficienteException se o saldo não cobre o valor (não há cheque especial) */
+    public Lancamento debitar(Movimento movimento) {
+        exigirAtiva();
+        if (saldo.isMenorQue(movimento.valor())) {
+            throw new SaldoInsuficienteException();
+        }
+        saldo = saldo.subtrair(movimento.valor());
+        return new Lancamento(this, Natureza.DEBITO, saldo, movimento);
+    }
+
+    public boolean pertenceA(Long clienteId) {
+        // getId() do proxy LAZY não dispara SELECT
+        return titular.getId().equals(clienteId);
+    }
+
+    private void exigirAtiva() {
+        if (status != StatusConta.ATIVA) {
+            throw new RegraNegocioException("conta-nao-ativa", "A conta " + getNumeroComDigito() + " não está ativa.");
+        }
     }
 
     public String getNumeroComDigito() {

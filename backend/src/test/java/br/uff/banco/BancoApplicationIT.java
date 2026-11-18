@@ -40,7 +40,7 @@ class BancoApplicationIT {
     void migrationsESeedForamAplicados() {
         List<String> versoes = jdbc.queryForList(
                 "SELECT version FROM flyway_schema_history WHERE success = 1 ORDER BY installed_rank", String.class);
-        assertThat(versoes).containsExactly("1", "1.1", "2");
+        assertThat(versoes).containsExactly("1", "1.1", "2", "3");
 
         // O banco é compartilhado entre as classes de teste: confere os registros do seed, não contagens.
         assertThat(jdbc.queryForList("SELECT id FROM usuario WHERE id <= 4", Long.class)).containsExactly(1L, 2L, 3L, 4L);
