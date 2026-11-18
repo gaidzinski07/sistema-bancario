@@ -48,7 +48,7 @@ Coleção do Postman: [`docs/postman/sistema-bancario.postman_collection.json`](
 |---|---|
 | `/api/auth/login`, `/refresh`, `/logout` | público |
 | `/api/admin/**` | papel `ADMIN` |
-| `/api/contas/**`, `/api/transferencias` | papel `CLIENTE` |
+| `/api/contas/**`, `/api/transferencias`, `/api/investimentos/**` | papel `CLIENTE` |
 | demais `/api/**` | qualquer usuário autenticado |
 
 Erros de autenticação/autorização seguem o mesmo `ProblemDetail` do resto da API (`401` com
@@ -65,6 +65,25 @@ Erros de autenticação/autorização seguem o mesmo `ProblemDetail` do resto da
 | `POST /api/contas/{id}/depositos` | `{"valor", "forma": "DINHEIRO"\|"CHEQUE", "senhaTransacao"}` |
 | `POST /api/contas/{id}/saques` | `{"valor", "senhaTransacao"}` |
 | `POST /api/transferencias` | header `Idempotency-Key` + `{"contaOrigemId", "agenciaDestino", "contaDestino": "00003-5", "cpfDestino", "valor", "senhaTransacao"}` |
+
+### Investimentos
+
+| Endpoint | |
+|---|---|
+| `GET /api/fundos` | fundos ativos (qualquer usuário autenticado) |
+| `GET /api/fundos/{id}/cotacoes?de=&ate=` | histórico da cota |
+| `POST /api/investimentos/aplicacoes` | `{"contaId", "fundoId", "valor", "senhaTransacao"}` — debita a conta corrente |
+| `GET /api/investimentos/posicoes` | carteira: cotas, valor aplicado, valor atual, rendimento, rentabilidade |
+| `GET /api/investimentos/posicoes/{id}` | posição + histórico de aplicações e resgates |
+| `POST /api/investimentos/posicoes/{id}/resgates` | `{"valor", "senhaTransacao"}` (parcial) ou `{"total": true, "senhaTransacao"}` |
+| `GET/POST /api/admin/fundos`, `PUT /api/admin/fundos/{id}/cotacao`, `DELETE /api/admin/fundos/{id}` | admin: fundos, cota do dia, desativação |
+
+- Cotas com 8 casas. Aplicação trunca as cotas; resgate parcial arredonda as cotas para cima; o valor
+  atual (cotas × cota) é truncado no centavo — é exatamente o que o resgate total paga.
+- Resgate parcial baixa o custo na proporção das cotas vendidas (custo médio), mantendo a rentabilidade.
+- Fundo desativado não aceita aplicação, mas permite resgate.
+
+### Regras gerais
 
 - Toda operação exige a **senha de transação**. Após 3 erros seguidos ela fica bloqueada por 15 minutos
   (redefinir pelo `PUT` desbloqueia).
