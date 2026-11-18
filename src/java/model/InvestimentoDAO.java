@@ -204,34 +204,40 @@ public class InvestimentoDAO implements Dao<Investimento> {
         return investimentos;
     }
     
-    public void resgatar(int investimento){
+    public boolean resgatar(int investimento){
         ContasBancariaDAO contaDao = new ContasBancariaDAO();
         FundoDAO fundoDao = new FundoDAO();
         Investimento entidade = get(investimento);
         Fundo fundo = fundoDao.get(entidade.getIdFundo());
+        if(entidade == null || fundo == null){
+            return false;
+        }
         float rendimentos = fundo.getValorCota() / entidade.getVrCotaInicio();
-        System.out.println(rendimentos + " * " + entidade.getVrInvestido() + " = " + entidade.getVrInvestido() * rendimentos);
         contaDao.atualizaSaldoAposOperacao(entidade.getContaBancaria(), entidade.getVrInvestido() * rendimentos);
         delete(investimento);
+        return true;
     }
 
-    public boolean aplicar(int idFundo, float valor) {
+    public boolean aplicar(int idFundo, float valor, int contaBancaria) {
         System.out.println(idFundo + " - " + valor);
         FundoDAO fundoDao = new FundoDAO();
         Fundo fundo = fundoDao.get(idFundo);
         ContasBancariaDAO contaDao = new ContasBancariaDAO();
-        boolean temSaldo = contaDao.podeFazerOperacaoSaida(2, 3, valor);
+        
+        boolean temSaldo = contaDao.podeFazerOperacaoSaida(contaBancaria, valor);
         if(fundo != null && valor >= fundo.getValorMinimo() && temSaldo){
             Investimento investimento = new Investimento();
-            investimento.setContaBancaria(2);
+            investimento.setContaBancaria(contaBancaria);
             investimento.setIdFundo(idFundo);
             investimento.setQtdCotas(valor / fundo.getValorCota());
             investimento.setVrCotaInicio(fundo.getValorCota());
             investimento.setVrInvestido(valor);
             insert(investimento);
-            contaDao.atualizaSaldoAposOperacao(2, valor * -1);
+            contaDao.atualizaSaldoAposOperacao(contaBancaria, valor * -1);
+            return true;
+        }else{
+            return false;
         }
-        return temSaldo;
     }
 
 }

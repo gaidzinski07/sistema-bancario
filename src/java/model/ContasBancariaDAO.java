@@ -120,17 +120,16 @@ public class ContasBancariaDAO implements Dao<ContaBancaria> {
         return contasBancarias;
     }
 
-    public boolean podeFazerOperacaoSaida(int conta, int agencia, float valor) {
+    public boolean podeFazerOperacaoSaida(int conta, float valor) {
         Conexao conexao = new Conexao();
         try {
             String sql = "select (cb.saldo >= ?) tem_saldo "
                     + "from conta_bancaria cb "
-                    + "where cb.conta_corrente  = ? and id_agencia = ? ";
+                    + "where cb.conta_corrente  = ? ";
             PreparedStatement preparedStatement;
             preparedStatement = conexao.getConexao().prepareStatement(sql);
             preparedStatement.setFloat(1, valor);
             preparedStatement.setFloat(2, conta);
-            preparedStatement.setFloat(3, agencia);
             ResultSet resultado = preparedStatement.executeQuery();
             if (resultado != null) {
                 while (resultado.next()) {

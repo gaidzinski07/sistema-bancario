@@ -1,0 +1,12 @@
+# Produção: tudo vem do ambiente, sem defaults e sem seed.
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false

@@ -4,8 +4,8 @@
  */
 
 import dto.InvestimentoDTO;
+import entidade.Usuario;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,7 +13,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import model.InvestimentoDAO;
+import model.UsuarioDAO;
 
 /**
  *
@@ -36,24 +38,34 @@ public class InvestimentoServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String acao = (String) request.getParameter("acao");
         acao = acao == null ? "" : acao;
-        int conta = 2;
-        InvestimentoDAO dao = new InvestimentoDAO();
-        switch(acao){
-            case "RESGATE":
-                int idInvestimento = Integer.parseInt(request.getParameter("idInvestimento"));
-                dao.resgatar(idInvestimento);
-                break;
-            case "APLICACAO":
-                int idFundo = Integer.parseInt(request.getParameter("idFundo"));
-                String vr = (String) request.getParameter("valorInvestido");
-                float valor = vr == null ? 0 : Float.parseFloat(vr);
-                dao.aplicar(idFundo, valor);
-                break;
+        HttpSession session = request.getSession();
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        UsuarioDAO userDao = new UsuarioDAO();
+        int conta = userDao.findContaBancariaByUsuario(usuario);
+        if(conta > -1){
+            InvestimentoDAO dao = new InvestimentoDAO();
+            switch(acao){
+                case "RESGATE":
+                    int idInvestimento = Integer.parseInt(request.getParameter("idInvestimento"));
+                    boolean resgatou = dao.resgatar(idInvestimento);
+                    request.setAttribute("mensagem", resgatou? "Resgate realizado com sucesso!" : "Houve um erro no processamento da aplicação");
+                    break;
+                case "APLICACAO":
+                    int idFundo = Integer.parseInt(request.getParameter("idFundo"));
+                    String vr = (String) request.getParameter("valorInvestido");
+                    float valor = vr == null ? 0 : Float.parseFloat(vr);
+                    boolean aplicou = dao.aplicar(idFundo, valor, conta);
+                    request.setAttribute("mensagem", aplicou? "Aplicação realizada com sucesso!" : "Houve um erro no processamento da aplicação");
+                    break;
+            }
+            List<InvestimentoDTO> dto = dao.getInvestimentosDoCliente(conta);
+            request.setAttribute("investimentos", dto);
+            RequestDispatcher rd = request.getRequestDispatcher("visualizarInvestimentos.jsp");
+            rd.forward(request, response);
+        }else{
+            RequestDispatcher rd = request.getRequestDispatcher("index.html");
+            rd.forward(request, response);
         }
-        List<InvestimentoDTO> dto = dao.getInvestimentosDoCliente(conta);
-        request.setAttribute("investimentos", dto);
-        RequestDispatcher rd = request.getRequestDispatcher("visualizarInvestimentos.jsp");
-        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

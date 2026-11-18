@@ -135,6 +135,10 @@ update conta_bancaria set saldoPP = 100 where conta_corrente =1;
 update conta_bancaria set saldoPP = 200 where conta_corrente =2; 
 
 
+alter table investimento 
+add ts_investimento Timestamp not null default CURRENT_TIMESTAMP;
+
+
 
 
 

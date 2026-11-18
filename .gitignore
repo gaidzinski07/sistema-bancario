@@ -11,3 +11,6 @@ nb-configuration.xml
 nbproject/private/private.xml
 nbproject/private/private.properties
 nbproject/project.properties
+
+# Claude Code (instruções locais, não versionar)
+CLAUDE.md
