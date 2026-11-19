@@ -35,6 +35,7 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
  *   <li>Toda outra chamada envia {@code Authorization: Bearer <accessToken>}.</li>
  *   <li>Sem sessão e sem cookies, portanto sem CSRF: o navegador não envia o token sozinho.</li>
  *   <li>{@code /api/admin/**} exige o papel ADMIN; contas e transferências do cliente exigem CLIENTE.</li>
+ *   <li>O restante de {@code /api/**} exige autenticação; fora da API ficam só os arquivos do frontend.</li>
  * </ul>
  * O JWT é assinado com HMAC-SHA256 (chave simétrica de {@code JWT_SECRET}). Se outro
  * serviço precisar validar tokens sem conhecer a chave, o caminho é migrar para RS256.
@@ -61,7 +62,9 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, ROTAS_PUBLICAS_POST).permitAll()
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .requestMatchers("/api/contas/**", "/api/transferencias/**", "/api/investimentos/**").hasRole("CLIENTE")
-                .anyRequest().authenticated())
+                .requestMatchers("/api/**", "/actuator/**").authenticated()
+                // Fora da API: arquivos e rotas do frontend (FrontendConfig), públicos por natureza.
+                .anyRequest().permitAll())
             .sessionManagement(sessao -> sessao.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .csrf(csrf -> csrf.disable())
             .httpBasic(basic -> basic.disable())

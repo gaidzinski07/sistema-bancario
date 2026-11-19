@@ -1,3 +1,6 @@
+# Integração contínua. A entrega do frontend não passa por aqui: a integração Git da Vercel
+# publica um preview a cada pull request e a produção a cada push na main (frontend/vercel.json;
+# commits que não mexem em frontend/ não geram deploy).
 name: CI
 
 on:

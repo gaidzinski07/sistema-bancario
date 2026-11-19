@@ -1,5 +1,6 @@
 package br.uff.banco.identidade.infra;
 
+import br.uff.banco.identidade.domain.Papel;
 import br.uff.banco.identidade.domain.Usuario;
 import br.uff.banco.shared.domain.Cpf;
 import jakarta.persistence.LockModeType;
@@ -23,6 +24,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select u from Usuario u where u.id = :id")
     Optional<Usuario> findParaAtualizacao(@Param("id") Long id);
+
+    @Query("select count(u) > 0 from Usuario u join u.papeis p where p = :papel")
+    boolean existeComPapel(@Param("papel") Papel papel);
 
     boolean existsByCpf(Cpf cpf);
 
