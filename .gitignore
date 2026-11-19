@@ -15,3 +15,7 @@ Thumbs.db
 # Claude Code (instruções e configuração locais, não versionar)
 CLAUDE.md
 .claude/
+
+# Vercel CLI (vínculo local com o projeto e token OIDC)
+.vercel
+.env.local

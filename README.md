@@ -104,3 +104,14 @@ A imagem sobe com o profile `prod`: sem dados de exemplo e sem Swagger. Variáve
 docker build -t banco .
 docker run -p 8080:8080 -e DB_URL=... -e DB_USER=... -e DB_PASSWORD=... -e JWT_SECRET=... banco
 ```
+
+### Frontend na Vercel
+
+O frontend também é publicado na Vercel (projeto `sistema-bancario`, diretório raiz `frontend/`),
+pela integração com o GitHub: cada pull request ganha um deploy de preview e cada push na `main` vai
+para produção. A configuração do build e o fallback das rotas do Angular ficam em
+[`frontend/vercel.json`](frontend/vercel.json); commits que não alteram `frontend/` não geram deploy.
+
+A Vercel hospeda só os arquivos estáticos. O front chama a API em `/api` no mesmo domínio, então,
+com a API publicada em outro lugar, basta uma regra de rewrite de `/api/:caminho*` para ela no
+`vercel.json` (sem CORS e sem mudar o código do front).
